@@ -1,0 +1,18 @@
+# Generated outputs
+Main/outputs/** linguist-generated=true
+
+# Assets
+assets/** linguist-vendored
+
+# Documents
+*.pdf linguist-documentation
+*.pptx linguist-documentation
+
+# Graph files
+*.gml linguist-generated=true
+
+# Generated HTML
+*.html linguist-generated=true
+
+# Python
+*.py linguist-language=Python
