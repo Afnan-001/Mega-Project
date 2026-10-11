@@ -12,90 +12,27 @@ from typing import Dict, List, Set
 
 
 # ---------------------------------------------------------------------------
-# Curated DBMS seed terms (always included if found in corpus)
+# Curated generic educational & technical seed terms
 # ---------------------------------------------------------------------------
-DBMS_SEED_TERMS: Set[str] = {
-    # SQL & languages
-    "SQL", "DDL", "DML", "DCL", "TCL", "PL/SQL", "T-SQL", "HQL", "XQuery",
-    "SPARQL", "MDX",
-    # Architectures & standards
-    "DBMS", "RDBMS", "OODBMS", "ORDBMS", "NoSQL", "NewSQL",
-    "3-tier architecture", "2-tier architecture", "client-server architecture",
-    # Normal forms
-    "1NF", "2NF", "3NF", "BCNF", "4NF", "5NF", "6NF", "DKNF",
-    "3NF Synthesis",
-    # Relationship cardinalities
-    "1:1 relationship", "1:N relationship", "M:N relationship",
-    "one-to-one", "one-to-many", "many-to-many",
-    # ACID & transactions
-    "ACID", "atomicity", "consistency", "isolation", "durability",
-    "two-phase locking", "2PL", "strict 2PL",
-    "MVCC", "multiversion concurrency control",
-    "deadlock", "livelock", "serializability",
-    "conflict serializability", "view serializability",
-    "transaction", "commit", "rollback", "savepoint",
-    # Indexing & storage
-    "B-tree", "B+ tree", "B* tree", "indexing",
-    "hash index", "clustered index", "non-clustered index",
-    "bitmap index", "dense index", "sparse index",
-    "ISAM", "heap file", "sequential file",
-    # Query processing
-    "query optimization", "query processing",
-    "relational algebra", "relational calculus",
-    "tuple relational calculus", "domain relational calculus",
-    "join", "natural join", "outer join", "left join", "right join",
-    "cross join", "theta join", "equijoin", "semi-join", "anti-join",
-    "selection", "projection", "union", "intersection", "difference",
-    "Cartesian product", "division",
-    # ER model
-    "ER model", "E-R model", "EER model", "entity-relationship model", "entity relationship",
-    "entity", "attribute", "relationship", "weak entity",
-    "composite attribute", "derived attribute", "multivalued attribute",
-    "participation constraint", "cardinality ratio",
-    "total participation", "partial participation",
-    "identifying relationship", "recursive relationship",
-    # Relational model
-    "relational model", "relation", "tuple", "domain",
-    "primary key", "foreign key", "candidate key", "superkey",
-    "alternate key", "composite key", "natural key", "surrogate key",
-    "referential integrity", "entity integrity",
-    # Normalization
-    "normalization", "denormalization",
-    "functional dependency", "trivial functional dependency",
-    "multivalued dependency", "join dependency",
-    "Armstrong's axioms", "closure", "canonical cover",
-    "lossless join", "dependency preservation",
-    # Recovery
-    "database recovery", "ARIES", "write-ahead log", "WAL",
-    "checkpoint", "redo", "undo", "shadow paging",
-    "log-based recovery", "deferred update", "immediate update",
-    # Concurrency
-    "concurrency control", "lock", "shared lock", "exclusive lock",
-    "timestamp ordering", "optimistic concurrency control",
-    "phantom read", "dirty read", "non-repeatable read",
-    "isolation level", "READ COMMITTED", "REPEATABLE READ",
-    "SERIALIZABLE", "READ UNCOMMITTED",
-    # Distributed & advanced
-    "distributed database", "distributed DBMS",
-    "replication", "fragmentation", "horizontal fragmentation",
-    "vertical fragmentation", "federated database",
-    "data warehouse", "OLAP", "OLTP", "ETL",
-    "star schema", "snowflake schema", "fact table", "dimension table",
-    # XML & other
-    "XML", "JSON", "RDF", "OWL", "ontology",
-    "XPath", "XSLT", "XML schema", "DTD",
-    # Object model
-    "object-oriented database", "object-relational mapping", "ORM",
-    "inheritance", "encapsulation", "polymorphism",
-    # Misc
-    "data model", "schema", "instance", "metadata",
-    "data dictionary", "system catalog", "view",
-    "stored procedure", "trigger", "assertion", "constraint",
-    "data independence", "physical data independence",
-    "logical data independence",
-    "data abstraction", "view level", "logical level", "physical level",
-    "three-schema architecture", "ANSI/SPARC",
+GENERIC_SEED_TERMS: Set[str] = {
+    # CS, Systems & Architecture
+    "API", "CPU", "RAM", "GPU", "IO", "OS", "SDK", "IDE", "GUI", "CLI",
+    "HTTP", "HTTPS", "IP", "TCP", "UDP", "DNS", "URL", "URI", "JSON", "XML",
+    "RAM", "ROM", "CACHE", "FIFO", "LIFO", "LRU", "ALU", "ISA", "DMA",
+    # Data & Databases
+    "SQL", "DDL", "DML", "ACID", "DBMS", "RDBMS", "NoSQL", "RDF",
+    # Algorithms, Math & Complexity
+    "O(N)", "Big-O", "NP-hard", "NP-complete", "DFS", "BFS", "Dijkstra",
+    "binary search", "hash table", "linked list", "binary tree", "graph",
+    "matrix", "vector", "eigenvalue", "eigenvector", "derivative", "integral",
+    # Software & Compilers
+    "AST", "IR", "lexer", "parser", "compiler", "interpreter", "assembler",
+    "recursion", "iteration", "polymorphism", "inheritance", "encapsulation",
+    "abstraction", "concurrency", "multithreading", "deadlock", "mutex",
 }
+
+# Backward compatibility alias
+DBMS_SEED_TERMS: Set[str] = GENERIC_SEED_TERMS
 
 # ---------------------------------------------------------------------------
 # Regex patterns for technical abbreviations not in the seed list

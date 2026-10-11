@@ -25,6 +25,14 @@ _BLOCK_UNIGRAMS = {
     "server", "file", "line", "need", "also", "well", "often",
     "called", "used", "given", "based", "shown", "many", "however",
     "therefore", "thus", "i.e", "e.g", "etc", "fig",
+    # Generic verbs and action words that leak through as n-grams
+    "make", "take", "show", "give", "know", "work", "see", "mean", "look",
+    "come", "want", "require", "consider", "follow", "provide", "define",
+    "describe", "include", "contain", "create", "allow", "ensure", "store",
+    "represent", "perform", "support", "apply", "refer", "process",
+    "different", "various", "important", "necessary", "possible", "common",
+    "specific", "general", "large", "small", "simple", "complex", "new",
+    "following", "using", "involves", "leads",
 }
 
 # Pure grammatical stop words (should not start or end any multi-word n-gram)
@@ -81,8 +89,8 @@ def _ngram_ok(tokens: List[str]) -> bool:
 def extract_ngrams(
     texts: List[str],
     n_range: Tuple[int, int] = (1, 4),
-    min_df: int = 2,
-    max_df_ratio: float = 0.7,
+    min_df: int = 3,
+    max_df_ratio: float = 0.6,
 ) -> Tuple[Dict[str, int], Dict[str, float]]:
     """
     Extract n-gram frequencies and TF-IDF scores from the corpus.

@@ -1,5 +1,5 @@
 """
-loader.py — Loads dbms_chunks.json into memory.
+loader.py — Loads content_chunks.json into memory.
 """
 
 from __future__ import annotations

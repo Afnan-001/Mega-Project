@@ -7,7 +7,7 @@ Strategy
 2.  Group all raw forms that share the same canonical key.
 3.  Pick the best display form from the group using a priority order:
       a. Known capitalization from CAP_MAP (highest priority)
-      b. Curated seed term from technical_terms.DBMS_SEED_TERMS
+      b. Curated seed term from technical_terms.GENERIC_SEED_TERMS
       c. Raw form with the highest frequency in the corpus
       d. Title-cased fallback
 4.  Do NOT stem or lemmatize technical abbreviations.
@@ -92,16 +92,49 @@ CAP_MAP: Dict[str, str] = {
 }
 
 
+def singularize_word(word: str) -> str:
+    """Basic English singularization for noun phrase canonical keys."""
+    if len(word) <= 3:
+        return word
+    w_lower = word.lower()
+    # Irregular / common technical exceptions
+    exceptions = {
+        "status": "status", "bus": "bus", "class": "class", "process": "process",
+        "access": "access", "address": "address", "alias": "alias", "analysis": "analysis",
+        "basis": "basis", "canvas": "canvas", "index": "index", "matrices": "matrix",
+        "automata": "automaton", "data": "data", "criteria": "criterion", "queries": "query",
+        "entities": "entity", "dependencies": "dependency", "dictionaries": "dictionary",
+        "trees": "tree", "axes": "axis", "indices": "index"
+    }
+    if w_lower in exceptions:
+        return exceptions[w_lower]
+
+    if w_lower.endswith("ies") and len(w_lower) > 4:
+        return w_lower[:-3] + "y"
+    if w_lower.endswith("ses") and not w_lower.endswith("asses"):
+        return w_lower[:-2]
+    if w_lower.endswith("xes") or w_lower.endswith("ches") or w_lower.endswith("shes"):
+        return w_lower[:-2]
+    if w_lower.endswith("s") and not w_lower.endswith("ss") and not w_lower.endswith("us") and not w_lower.endswith("is"):
+        return w_lower[:-1]
+    return word
+
+
 def _canonical_key(phrase: str) -> str:
     """
     Compute a normalised merge key.
     Lowercases, replaces hyphens/slashes/dots with spaces,
-    strips punctuation, collapses whitespace.
+    strips punctuation, collapses whitespace, and singularizes final word.
     """
     key = phrase.lower()
     key = re.sub(r"[/\-]", " ", key)          # hyphens & slashes → space
     key = re.sub(r"[^\w\s\:\+\*]", "", key)   # remove punctuation (keep : + *)
     key = re.sub(r"\s{2,}", " ", key).strip()
+
+    tokens = key.split()
+    if tokens:
+        tokens[-1] = singularize_word(tokens[-1])
+        key = " ".join(tokens)
     return key
 
 

@@ -6,8 +6,8 @@ Scoring Formula
 final_score =
     w_tfidf   * tfidf_score           # corpus-level statistical importance
   + w_freq    * freq_norm             # relative frequency (normalized 0-1)
-  + w_np      * noun_phrase_score     # spaCy NP evidence (0 or 1)
-  + w_yake    * yake_score            # YAKE inverted score (0-1)
+  + w_np      * noun_phrase_score     # NLTK NP evidence (0 or 1)
+  + w_yake    * yake_score            # PositionalRank inverted score (0-1)
   + w_heading * heading_score         # appears in detected chapter/section headings
   + w_def     * definition_score      # appears in "X is defined as…" patterns
   + w_spread  * chunk_spread_score    # proportion of chunks that contain it
@@ -15,13 +15,24 @@ final_score =
   - p_generic * generic_penalty       # in generic English word list
   - p_noise   * noise_penalty         # matched noise / boilerplate pattern
 
+Quality Gates (applied BEFORE scoring)
+---------------------------------------
+1. Signal Agreement Gate: a candidate must have evidence from ≥2 independent
+   signals (tfidf, np, yake, heading, definition, technical, spread) OR be an
+   explicit technical term / heading / definition.  Single-signal candidates
+   are discarded immediately (they are almost always noise).
+2. Length Gate: single-word candidates shorter than 4 chars are dropped unless
+   they are in the technical seed list.
+3. Structure Gate: candidates with more than 5 words are dropped (too long to
+   be a standalone concept).
+
 Weight rationale
 ----------------
 heading (3.0), definition (3.0): Ground-truth signals — chapter titles and
     "X is defined as" are the most authoritative domain signals.
 tfidf (2.5): Strong unsupervised corpus-level signal.
 yake (2.0): Captures positional and contextual keyword evidence.
-technical (2.0): Abbreviations and domain-specific seeds need a hard lift.
+technical (6.0): Abbreviations and domain-specific seeds need a hard lift.
 noun_phrase (1.5): Grammatical validity confirms phrase structure.
 chunk_spread (1.5): Concepts that appear across many chunks are stable.
 freq_norm (1.0): Frequency alone is insufficient; used as a soft tiebreaker.
@@ -34,9 +45,9 @@ from __future__ import annotations
 import math
 import re
 from typing import Dict, List, Optional, Set, Tuple
-from concept_pipeline.technical_terms import DBMS_SEED_TERMS
+from concept_pipeline.technical_terms import GENERIC_SEED_TERMS
 
-_SEED_SET: Set[str] = {s.lower().strip() for s in DBMS_SEED_TERMS}
+_SEED_SET: Set[str] = {s.lower().strip() for s in GENERIC_SEED_TERMS}
 
 # ---------------------------------------------------------------------------
 # Weights (change here to tune the pipeline)
@@ -56,6 +67,16 @@ PENALTIES = {
     "generic":  4.0,
     "noise":    5.0,
 }
+
+# Minimum number of INDEPENDENT signals a candidate must have to pass the
+# signal-agreement gate (applied before scoring).
+MIN_SIGNAL_AGREEMENT = 2
+
+# Maximum number of words in a valid concept phrase
+MAX_PHRASE_WORDS = 5
+
+# Minimum character length for single-word concepts (unless technical/heading/def)
+MIN_SINGLE_WORD_CHARS = 4
 
 # ---------------------------------------------------------------------------
 # Generic English words that should never be concepts
@@ -107,17 +128,23 @@ _GENERIC_WORDS: Set[str] = {
 _NOISE_PHRASE_PATTERNS: List[re.Pattern] = [
     re.compile(r"[\x00-\x1f\x7f-\x9f]"),             # unprintable control chars
     re.compile(r"^[^a-zA-Z]"),                         # starts with non-letter (digits, symbols)
-    re.compile(r"\b(exercise|exercises|summary|references?|chapter|section)\s+for\b", re.IGNORECASE),
-    re.compile(r"\b(summary|references?)\s+of\b", re.IGNORECASE),
+    re.compile(r"\b(exercise|exercises|summary|references?|chapter|section)\b", re.IGNORECASE), # exercise/boilerplate
     re.compile(r"written by", re.IGNORECASE),
     re.compile(r"about the (book|author)", re.IGNORECASE),
     re.compile(r"check more", re.IGNORECASE),
     re.compile(r"listen.*audiobook", re.IGNORECASE),
     re.compile(r"^(fig|figure|table|equation)\s*\d+", re.IGNORECASE),
     re.compile(r"^\d+(\.\d+)*$"),                # pure numbers
+    # Dummy formal grammar strings e.g. "aa ab", "aa ab ba", "aab aaab", "ab ba"
+    re.compile(r"^(?:[a-z]{1,2}\s+)+[a-z]{1,2}$", re.IGNORECASE),
     # OCR artefacts: isolated single letter before/after a space ("c ity", "d ata", "v er")
     re.compile(r"\b[a-z]\b", re.IGNORECASE),
     re.compile(r"^(c\s+ity|d\s+ata|attribute\s+d)$", re.IGNORECASE),
+    # Common OCR split-word fragments (e.g. "ab out", "abstr act", "ac cepting", "ac kno", "sp ecific")
+    re.compile(r"^(ab\s+out|abstr\s+act|ac\s+cepting|ac\s+cording|ac\s+hiev|ac\s+kno|sp\s+ecific|di\s+ffe?r)\b", re.IGNORECASE),
+    re.compile(r"^(ab|ac|sp|tr|ont|sc)\s+[a-z]{2,}", re.IGNORECASE),
+    # Phrases starting with prepositions or conversational connectors ("about the...", "according to...")
+    re.compile(r"^(about|according|achieving|across|above|along|against|among|around|because|before|behind|below|beneath|beside|between|beyond|during|except|inside|into|near|onto|outside|over|through|under|underneath|until|upon|within|without)\s+", re.IGNORECASE),
     # Attribute with single letter/digit suffix ("attribute d", "attribute 1")
     re.compile(r"\b(attribute|relation|table)\s+[a-z\d]$", re.IGNORECASE),
     # Dummy attribute letters / random letter sequences ("abcde", "abcd")
@@ -200,11 +227,19 @@ def compute_chunk_spread(
     This is done once before scoring.
     """
     spread: Dict[str, int] = {p: 0 for p in phrases}
-    for text in texts:
+    total = len(texts)
+    print(f"[scorer] Computing chunk spread for {len(phrases)} candidate phrases...")
+
+    for i, text in enumerate(texts):
         lower = text.lower()
         for phrase in phrases:
             if phrase in lower:
                 spread[phrase] += 1
+        if (i + 1) % 500 == 0 or (i + 1) == total:
+            pct = int((i + 1) / total * 100)
+            print(f"[scorer] Chunk spread: {pct}% ({i+1}/{total}) ...", end="\r", flush=True)
+
+    print(f"\n[scorer] Chunk spread calculation complete")
     return spread
 
 
@@ -235,6 +270,19 @@ def score_candidates(
         words = phrase_lower.split()
         reasons: List[str] = []
 
+        # --- Structure Gate: reject phrases that are too long (> MAX_PHRASE_WORDS) ---
+        if len(words) > MAX_PHRASE_WORDS:
+            reasons.append("too_many_words")
+            scored.append({
+                "candidate": phrase, "normalized": phrase_lower, "frequency": freq,
+                "tfidf_score": 0, "freq_norm": 0, "noun_phrase": False,
+                "yake_score": 0, "heading": False, "definition": False,
+                "chunk_spread": 0, "technical_term": False,
+                "generic_penalty": 0, "noise_penalty": 1.0,
+                "final_score": -100.0, "rejection_reasons": reasons,
+            })
+            continue
+
         # --- Signal scores ---
         s_tfidf = tfidf_scores.get(phrase_lower, tfidf_scores.get(phrase, 0.0))
         s_freq  = _freq_normalize(freq, max_freq)
@@ -257,14 +305,43 @@ def score_candidates(
             generic_pen = 1.0
             reasons.append("generic_term")
 
-        # Single word candidates must be explicit technical terms, headings, or definition terms
+        # --- Single-word gates ---
         if len(words) == 1:
-            if not (s_tech or s_head or s_def):
+            # Block very short single words unless they are explicit technical terms
+            if len(phrase_lower) < MIN_SINGLE_WORD_CHARS and not (s_tech or s_head or s_def):
+                noise_pen = 1.0
+                reasons.append("single_word_too_short")
+            elif not (s_tech or s_head or s_def):
                 noise_pen = 1.0
                 reasons.append("single_word_non_technical")
 
-        # Bonus for compound multi-word technical concepts (2 to 4 words)
-        multi_word_bonus = 2.5 if 2 <= len(words) <= 4 and (s_np or s_head or s_def or s_tech or s_tfidf > 0.05) else 0.0
+        # --- Signal Agreement Gate ---
+        # Count how many independent strong signals support this candidate.
+        # High-evidence anchors (heading, definition, technical) count automatically.
+        # For others, require at least MIN_SIGNAL_AGREEMENT signals.
+        is_anchor = bool(s_head or s_def or s_tech)
+        signal_count = sum([
+            1 if s_tfidf > 0.05 else 0,   # meaningful TF-IDF (not near-zero)
+            1 if s_np else 0,
+            1 if s_yake > 0.05 else 0,    # meaningful positional rank score
+            1 if s_spread > 0.05 else 0,  # appears in multiple chunks
+            1 if s_head else 0,
+            1 if s_def else 0,
+            1 if s_tech else 0,
+        ])
+        if not is_anchor and signal_count < MIN_SIGNAL_AGREEMENT:
+            noise_pen = 1.0
+            reasons.append(f"weak_signal_agreement({signal_count}/{MIN_SIGNAL_AGREEMENT})")
+
+        # --- Multi-word bonus: only for well-supported 2–5 word phrases ---
+        # Requires meaningful TF-IDF AND at least 2 structural signals
+        structural_signals = sum([bool(s_np), bool(s_head), bool(s_def), bool(s_tech), s_tfidf > 0.08])
+        multi_word_bonus = (
+            2.5 if 2 <= len(words) <= 4
+                and s_tfidf > 0.08
+                and structural_signals >= 2
+            else 0.0
+        )
 
         # --- Final score ---
         if noise_pen >= 1.0 or generic_pen >= 1.0:
@@ -298,6 +375,7 @@ def score_candidates(
             "technical_term":   bool(s_tech),
             "generic_penalty":  generic_pen,
             "noise_penalty":    noise_pen,
+            "signal_count":     signal_count,
             "final_score":      round(final_score, 4),
             "rejection_reasons": reasons,
         })

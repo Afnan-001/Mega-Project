@@ -28,7 +28,7 @@ from collections import defaultdict
 from typing import Dict, List
 
 # Only process every Nth chunk (fast enough to run on all, but cap for safety)
-SAMPLE_EVERY    = 3       # use every 3rd chunk
+SAMPLE_EVERY    = 4       # use every 4th chunk (more conservative sampling)
 MAX_PHRASE_LEN  = 4       # max tokens in a keyphrase
 MIN_PHRASE_LEN  = 1       # min tokens
 
@@ -67,7 +67,7 @@ def extract_yake_keywords(
     language: str = "en",           # kept for API compatibility
     max_ngram_size: int = 4,
     dedup_threshold: float = 0.9,   # kept for API compatibility
-    num_keywords: int = 3000,
+    num_keywords: int = 1500,
 ) -> Dict[str, float]:
     """
     Score keyphrases using positional + co-occurrence signals.

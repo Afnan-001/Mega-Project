@@ -15,7 +15,7 @@ load_dotenv()
 
 # Paths & Defaults
 DATA_DIR = MAIN_DIR / "outputs" / "data"
-DEFAULT_INPUT = DATA_DIR / "dbms_chunks.json"
+DEFAULT_INPUT = DATA_DIR / "content_chunks.json"
 DEFAULT_OUTPUT = DATA_DIR / "concepts.json"
 
 
@@ -24,7 +24,7 @@ def extract_concepts_nlp(
     output_file: Path,
     limit: int = 0,
     top_k: int = 1000,
-    min_score: float = 1.0,
+    min_score: float = 3.0,
 ) -> list[str]:
     """Extract key concept terms using traditional NLP algorithms (concept_pipeline)."""
     from concept_pipeline.loader import load_chunks
@@ -80,8 +80,10 @@ def extract_concepts_nlp(
     yake_scores = extract_yake_keywords(texts)
 
     # 9. Aggregate Candidates & Frequencies
+    # Require raw n-grams to appear in at least 3 chunks (raised from 2 for quality)
+    valid_freq_keys = {k for k, v in freq_dict.items() if v >= 3}
     candidate_keys = (
-        set(freq_dict.keys())
+        valid_freq_keys
         | set(np_counts.keys())
         | set(yake_scores.keys())
         | heading_set
@@ -114,8 +116,7 @@ def extract_concepts_nlp(
         total_chunks=total_chunks,
     )
 
-    effective_min_score = 0.01 if top_k > 0 else min_score
-    filtered = filter_candidates(scored, min_score=effective_min_score, top_k=top_k * 3 if top_k > 0 else None)
+    filtered = filter_candidates(scored, min_score=min_score, top_k=top_k * 2 if top_k > 0 else None)
 
     # 11. Normalize & Merge into Display Forms
     candidate_freqs = {c["candidate"]: c["frequency"] for c in filtered}
@@ -167,8 +168,8 @@ def main():
     parser.add_argument(
         "--min-score", "-s",
         type=float,
-        default=1.0,
-        help="Minimum score threshold for candidates (default: 1.0)"
+        default=3.0,
+        help="Minimum score threshold for candidates (default: 3.0)"
     )
     parser.add_argument(
         "--limit", "-l",
