@@ -1,0 +1,443 @@
+[
+    {
+        "concept": "Abstract Syntax"
+    },
+    {
+        "concept": "Abstract Syntax Tree"
+    },
+    {
+        "concept": "Abstraction"
+    },
+    {
+        "concept": "Accepting State"
+    },
+    {
+        "concept": "Address Descriptor"
+    },
+    {
+        "concept": "Annotated Parse Tree"
+    },
+    {
+        "concept": "Anticipated Expression"
+    },
+    {
+        "concept": "Automatic Garbage Collection"
+    },
+    {
+        "concept": "Binary Translation"
+    },
+    {
+        "concept": "Called Procedure"
+    },
+    {
+        "concept": "Calling Procedure"
+    },
+    {
+        "concept": "Canonical LR"
+    },
+    {
+        "concept": "Class Arith"
+    },
+    {
+        "concept": "Class Expr"
+    },
+    {
+        "concept": "Class Token"
+    },
+    {
+        "concept": "Cloned Call Graph"
+    },
+    {
+        "concept": "Code Scheduling"
+    },
+    {
+        "concept": "Common Subexpression"
+    },
+    {
+        "concept": "Compiled Simulation"
+    },
+    {
+        "concept": "Compiler"
+    },
+    {
+        "concept": "Compiler Design"
+    },
+    {
+        "concept": "Compiler Technology"
+    },
+    {
+        "concept": "Compiler Writing"
+    },
+    {
+        "concept": "Concrete Syntax"
+    },
+    {
+        "concept": "Copying Collector"
+    },
+    {
+        "concept": "Cyclic Garbage"
+    },
+    {
+        "concept": "Data Abstraction"
+    },
+    {
+        "concept": "Data Dependence Analysis"
+    },
+    {
+        "concept": "Data Dependence Problem"
+    },
+    {
+        "concept": "Datalog Program"
+    },
+    {
+        "concept": "Datalog Rule"
+    },
+    {
+        "concept": "Dependence Analysis"
+    },
+    {
+        "concept": "Dependence Graph"
+    },
+    {
+        "concept": "Dependency Graph"
+    },
+    {
+        "concept": "Deterministic Finite Automaton"
+    },
+    {
+        "concept": "Distributed Memory Machine"
+    },
+    {
+        "concept": "Dynamic Programming"
+    },
+    {
+        "concept": "Dynamic Programming Algorithm"
+    },
+    {
+        "concept": "Dynamic RAM"
+    },
+    {
+        "concept": "EDB Predicate"
+    },
+    {
+        "concept": "Elimination Algorithm"
+    },
+    {
+        "concept": "Enclosing Construct"
+    },
+    {
+        "concept": "Enclosing Loop"
+    },
+    {
+        "concept": "Error Correction"
+    },
+    {
+        "concept": "Error Detection"
+    },
+    {
+        "concept": "Error Handling"
+    },
+    {
+        "concept": "Euclidean Algorithm"
+    },
+    {
+        "concept": "Evaluation Order"
+    },
+    {
+        "concept": "Executed Iteration Space"
+    },
+    {
+        "concept": "Expression Grammar"
+    },
+    {
+        "concept": "Expression Translator"
+    },
+    {
+        "concept": "Generational Garbage Collection"
+    },
+    {
+        "concept": "Graph Coloring"
+    },
+    {
+        "concept": "Graph Depth"
+    },
+    {
+        "concept": "Handle Pruning"
+    },
+    {
+        "concept": "IDB Predicate"
+    },
+    {
+        "concept": "Incremental Garbage Collection"
+    },
+    {
+        "concept": "Instruction"
+    },
+    {
+        "concept": "Instruction Ordering"
+    },
+    {
+        "concept": "Instruction Pipeline"
+    },
+    {
+        "concept": "Instruction Selection"
+    },
+    {
+        "concept": "Intermediate Code"
+    },
+    {
+        "concept": "Interprocedural Analysis"
+    },
+    {
+        "concept": "Interprocedural Data Flow Analysis"
+    },
+    {
+        "concept": "Intraprocedural Analysis"
+    },
+    {
+        "concept": "Iteration"
+    },
+    {
+        "concept": "Iteration Space"
+    },
+    {
+        "concept": "Jumping Code"
+    },
+    {
+        "concept": "KMP Algorithm"
+    },
+    {
+        "concept": "LALR Parsing Table"
+    },
+    {
+        "concept": "LR Parse"
+    },
+    {
+        "concept": "LR Parser"
+    },
+    {
+        "concept": "LR Parsing"
+    },
+    {
+        "concept": "LR Parsing Table"
+    },
+    {
+        "concept": "Lex Compiler"
+    },
+    {
+        "concept": "Lexical Analysis"
+    },
+    {
+        "concept": "Lexical Analyzer"
+    },
+    {
+        "concept": "List Scheduling"
+    },
+    {
+        "concept": "Manual Memory Management"
+    },
+    {
+        "concept": "Memory Access"
+    },
+    {
+        "concept": "Memory Address"
+    },
+    {
+        "concept": "Memory Management"
+    },
+    {
+        "concept": "Memory Manager"
+    },
+    {
+        "concept": "Memory Usage"
+    },
+    {
+        "concept": "Nesting Depth"
+    },
+    {
+        "concept": "Next Instruction"
+    },
+    {
+        "concept": "Nonterminal Expression"
+    },
+    {
+        "concept": "Optimized Program"
+    },
+    {
+        "concept": "Optimizing Compiler"
+    },
+    {
+        "concept": "Output Dependence"
+    },
+    {
+        "concept": "Parallel Computation"
+    },
+    {
+        "concept": "Parallel Execution"
+    },
+    {
+        "concept": "Parallelizable Loop"
+    },
+    {
+        "concept": "Parameter Passing"
+    },
+    {
+        "concept": "Parse Tree"
+    },
+    {
+        "concept": "Parser Generator"
+    },
+    {
+        "concept": "Parsing Action"
+    },
+    {
+        "concept": "Parsing Algorithm"
+    },
+    {
+        "concept": "Parsing Process"
+    },
+    {
+        "concept": "Parsing Table"
+    },
+    {
+        "concept": "Partial Collection"
+    },
+    {
+        "concept": "Partial Redundancy"
+    },
+    {
+        "concept": "Pipelined Parallelism"
+    },
+    {
+        "concept": "Prioritized Topological Order"
+    },
+    {
+        "concept": "Procedure Call"
+    },
+    {
+        "concept": "Program Analysis"
+    },
+    {
+        "concept": "Program-Dependence Graph"
+    },
+    {
+        "concept": "Purify"
+    },
+    {
+        "concept": "Quicksort"
+    },
+    {
+        "concept": "Register Allocation"
+    },
+    {
+        "concept": "Register Renaming"
+    },
+    {
+        "concept": "Regular Expression"
+    },
+    {
+        "concept": "Resulting Grammar"
+    },
+    {
+        "concept": "Scheduling Constraint"
+    },
+    {
+        "concept": "Semantic Action"
+    },
+    {
+        "concept": "Semantic Analysis"
+    },
+    {
+        "concept": "Simple LR"
+    },
+    {
+        "concept": "Spatial Reuse"
+    },
+    {
+        "concept": "Statement Expression"
+    },
+    {
+        "concept": "Static RAM"
+    },
+    {
+        "concept": "Static Scoping"
+    },
+    {
+        "concept": "Static Storage"
+    },
+    {
+        "concept": "Subset Construction"
+    },
+    {
+        "concept": "Synchronization"
+    },
+    {
+        "concept": "Synchronizing Set"
+    },
+    {
+        "concept": "Synchronizing Token"
+    },
+    {
+        "concept": "Syntactic Analysis"
+    },
+    {
+        "concept": "Syntax Analysis"
+    },
+    {
+        "concept": "Syntax Analyzer"
+    },
+    {
+        "concept": "Syntax Error Handling"
+    },
+    {
+        "concept": "Syntax Tree"
+    },
+    {
+        "concept": "Synthesized Attribute"
+    },
+    {
+        "concept": "Terminal Expression"
+    },
+    {
+        "concept": "Topological Order"
+    },
+    {
+        "concept": "Tracing Algorithm"
+    },
+    {
+        "concept": "Train Algorithm"
+    },
+    {
+        "concept": "Transfer Function"
+    },
+    {
+        "concept": "Transition Diagram"
+    },
+    {
+        "concept": "Transition Function"
+    },
+    {
+        "concept": "Transition Table"
+    },
+    {
+        "concept": "Type Error"
+    },
+    {
+        "concept": "Underlying Grammar"
+    },
+    {
+        "concept": "Virtual Memory"
+    },
+    {
+        "concept": "Yacc Output"
+    },
+    {
+        "concept": "Yacc Parser"
+    },
+    {
+        "concept": "Yacc Semantic Action"
+    },
+    {
+        "concept": "Yacc Source Program"
+    }
+]
