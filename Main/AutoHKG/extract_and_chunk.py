@@ -8,7 +8,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 # Paths
 MAIN_DIR = Path(__file__).resolve().parents[1]
 BOOKS_FOLDER = MAIN_DIR / "books"
-OUTPUT_FILE = MAIN_DIR / "outputs" / "data" / "dbms_chunks.json"
+OUTPUT_FILE = MAIN_DIR / "outputs" / "data" / "content_chunks.json"
 
 
 # ---------------------------
