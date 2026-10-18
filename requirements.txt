@@ -1,3 +1,7 @@
+# Install project dependencies from the repository root with:
+#   python -m pip install -r requirements.txt
+
+# Application and PDF processing
 litellm
 langchain-text-splitters
 networkx
@@ -8,3 +12,15 @@ python-dotenv
 requests
 streamlit
 tqdm
+
+# Traditional NLP concept extraction
+nltk
+scikit-learn
+
+# LLM-backed concept cleaning (Gemini provider)
+google-generativeai
+
+# Local embedding models for chunk embedding and concept mapping
+FlagEmbedding
+sentence-transformers
+torch
