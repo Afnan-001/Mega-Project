@@ -50,6 +50,108 @@ class GeminiKeyManager:
         return new_key
 
 
+class GeminiRateLimiter:
+    """Enforces client-side rate limits (RPM) and spacing to prevent 429 errors on free tiers."""
+
+    RPM_LIMITS = {
+        "gemini-2.5-flash-lite": 10,
+        "gemini-flash-lite-latest": 10,
+        "gemini-3.5-flash-lite": 10,
+        "gemini-3.1-flash-lite": 10,
+    }
+    DEFAULT_RPM = 5  # Safe default: 5 RPM for standard flash models
+
+    def __init__(self):
+        self.request_timestamps: dict[str, list[float]] = {}
+        self.last_call_time: dict[str, float] = {}
+
+    def get_rpm(self, model_name: str) -> int:
+        clean_name = model_name.split("/")[-1].lower()
+        for k, v in self.RPM_LIMITS.items():
+            if k in clean_name:
+                return v
+        return self.DEFAULT_RPM
+
+    def wait_if_needed(self, model_name: str):
+        rpm = self.get_rpm(model_name)
+        min_interval = 60.0 / rpm
+        now = time.time()
+
+        # Clean timestamps older than 60s
+        history = [t for t in self.request_timestamps.get(model_name, []) if now - t < 60.0]
+        self.request_timestamps[model_name] = history
+
+        # Check if 60-second window quota is reached
+        if len(history) >= rpm:
+            sleep_needed = 60.0 - (now - history[0]) + 0.5
+            if sleep_needed > 0:
+                print(f"\n[GeminiRateLimiter] Rate window full ({len(history)}/{rpm} RPM for {model_name}). Sleeping {sleep_needed:.1f}s to maintain rate limit...")
+                time.sleep(sleep_needed)
+                now = time.time()
+                self.request_timestamps[model_name] = [t for t in self.request_timestamps.get(model_name, []) if now - t < 60.0]
+
+        # Ensure minimum spacing between calls
+        last_time = self.last_call_time.get(model_name, 0.0)
+        elapsed = now - last_time
+        if elapsed < min_interval and len(history) > 0:
+            delay = min_interval - elapsed
+            time.sleep(delay)
+
+        self.last_call_time[model_name] = time.time()
+        self.request_timestamps[model_name].append(time.time())
+
+
+class GeminiModelManager:
+    """Manages multi-model fallback chain when a model hits quota or rate limits."""
+
+    DEFAULT_MODELS = [
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-3.1-flash-lite",
+        "gemini-flash-latest",
+        "gemini-flash-lite-latest",
+    ]
+
+    def __init__(self, initial_model: str | None = None):
+        env_models = os.getenv("GEMINI_MODELS", "").strip()
+        if env_models:
+            models = [m.strip() for m in env_models.split(",") if m.strip()]
+        else:
+            models = list(self.DEFAULT_MODELS)
+
+        if initial_model:
+            if initial_model in models:
+                models.remove(initial_model)
+            models.insert(0, initial_model)
+
+        self.models = models
+        self.current_index = 0
+        self.exhausted_models: set[str] = set()
+
+    def get_current_model(self) -> str:
+        return self.models[self.current_index]
+
+    def rotate_model(self) -> str:
+        """Rotate to next available model in fallback chain."""
+        old_model = self.get_current_model()
+        self.exhausted_models.add(old_model)
+
+        for _ in range(len(self.models)):
+            self.current_index = (self.current_index + 1) % len(self.models)
+            candidate = self.models[self.current_index]
+            if candidate not in self.exhausted_models:
+                print(f"\n[GeminiModelManager] Model '{old_model}' rate/quota reached. Switching to fallback model '{candidate}'...")
+                return candidate
+
+        # If all exhausted, reset history and cycle
+        print(f"\n[GeminiModelManager] All {len(self.models)} models reached limits once. Resetting exhaustion list and continuing...")
+        self.exhausted_models.clear()
+        self.current_index = (self.current_index + 1) % len(self.models)
+        return self.models[self.current_index]
+
+
 class OllamaLLM:
     """Ollama local LLM client wrapper (e.g. Qwen2.5 / Llama3)."""
 
@@ -112,7 +214,7 @@ class OllamaLLM:
 
 
 class LLM:
-    """Unified LLM client wrapper supporting Gemini API and local Ollama backend."""
+    """Unified LLM client wrapper supporting Gemini API and local Ollama backend with multi-model failover."""
 
     def __init__(
         self,
@@ -135,18 +237,26 @@ class LLM:
                 temperature=temperature,
             )
         else:
-            target_model = model_name or "gemini-3.6-flash"
-            self.model_name = target_model
+            primary_model = model_name or os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+            self.model_manager = GeminiModelManager(primary_model)
+            self.rate_limiter = GeminiRateLimiter()
             self.key_manager = GeminiKeyManager(keys)
             self._configure_gemini_client()
+
+    @property
+    def model_name(self) -> str:
+        if self.provider == "ollama":
+            return self.backend.model_name
+        return self.model_manager.get_current_model()
 
     def _configure_gemini_client(self):
         current_key = self.key_manager.get_current_key()
         genai.configure(api_key=current_key)
         system_instruction = self.sys_msg if self.sys_msg else None
         generation_config = genai.GenerationConfig(temperature=self.temperature)
+        current_model = self.model_manager.get_current_model()
         self.gemini_model = genai.GenerativeModel(
-            model_name=self.model_name,
+            model_name=current_model,
             generation_config=generation_config,
             system_instruction=system_instruction,
         )
@@ -155,34 +265,72 @@ class LLM:
         if self.provider == "ollama":
             return self.backend.get_response(usr_msg, max_retries=max_retries or 3)
 
+        num_keys = max(1, len(self.key_manager.keys))
+        num_models = len(self.model_manager.models)
         if max_retries is None:
-            max_retries = len(self.key_manager.keys) * 2
+            max_retries = num_keys * num_models * 2
+
+        key_rotations_on_current_model = 0
 
         for attempt in range(max_retries):
+            current_model = self.model_manager.get_current_model()
+            # Enforce RPM limits before dispatching request
+            self.rate_limiter.wait_if_needed(current_model)
+
             try:
                 response = self.gemini_model.generate_content(usr_msg)
                 if response and response.text:
                     return response.text.strip()
-                raise ValueError("Empty response received from Gemini model.")
+                raise ValueError(f"Empty response received from Gemini model {current_model}.")
             except Exception as e:
                 err_str = str(e).lower()
-                is_quota_err = any(
+                is_unavailable = any(
                     term in err_str
-                    for term in ["429", "quota", "resource_exhausted", "rate_limit", "exhausted", "limit", "invalid_api_key", "403"]
+                    for term in ["404", "not found", "no longer available", "not available", "unsupported"]
                 )
-                if is_quota_err and len(self.key_manager.keys) > 1:
-                    print(f"[LLM] Key quota/rate limit error encountered: {e}")
-                    self.key_manager.rotate_key()
+                is_quota_or_rate = any(
+                    term in err_str
+                    for term in ["429", "quota", "resource_exhausted", "rate_limit", "limit", "exhausted", "per-day", "rpd"]
+                )
+
+                if is_unavailable:
+                    print(f"\n[LLM] Model '{current_model}' unavailable on this API ({e}). Switching to next model...")
+                    self.model_manager.rotate_model()
                     self._configure_gemini_client()
+                    key_rotations_on_current_model = 0
                     time.sleep(0.5)
+                elif is_quota_or_rate:
+                    # Check if this is a per-day quota exhaustion (RPD) or repeated rate-limit
+                    is_daily_limit = any(term in err_str for term in ["per-day", "daily", "rpd", "day"])
+
+                    if is_daily_limit or key_rotations_on_current_model >= num_keys:
+                        # Current model is exhausted across keys or hit daily ceiling -> switch to fallback model
+                        print(f"\n[LLM] Model '{current_model}' quota exhausted ({e}). Switching to next model...")
+                        self.model_manager.rotate_model()
+                        self._configure_gemini_client()
+                        key_rotations_on_current_model = 0
+                        time.sleep(1.0)
+                    elif num_keys > 1:
+                        # Try rotating API key first for this model
+                        print(f"\n[LLM] Rate/quota limit on key for {current_model}. Rotating API key...")
+                        self.key_manager.rotate_key()
+                        self._configure_gemini_client()
+                        key_rotations_on_current_model += 1
+                        time.sleep(1.0)
+                    else:
+                        # Single key and hit limit -> rotate model
+                        print(f"\n[LLM] Limit encountered on '{current_model}' with single key ({e}). Switching to next model...")
+                        self.model_manager.rotate_model()
+                        self._configure_gemini_client()
+                        time.sleep(1.0)
                 else:
                     if attempt < max_retries - 1:
-                        print(f"[LLM] Attempt {attempt + 1}/{max_retries} failed: {e}. Retrying...")
-                        time.sleep(1)
+                        print(f"[LLM] Attempt {attempt + 1}/{max_retries} failed: {e}. Retrying in 2s...")
+                        time.sleep(2.0)
                     else:
                         raise e
 
-        raise RuntimeError("Failed to generate response after rotating through all Gemini API keys.")
+        raise RuntimeError("Failed to generate response after rotating through all Gemini models and API keys.")
 
 
 if __name__ == "__main__":
