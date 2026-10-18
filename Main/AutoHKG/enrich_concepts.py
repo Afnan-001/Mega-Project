@@ -16,7 +16,7 @@ if str(MAIN_DIR) not in sys.path:
 from llm import LLM
 DATA_DIR = MAIN_DIR / "outputs" / "data"
 
-INPUT_FILE = DATA_DIR / "merged_concepts.json"
+INPUT_FILE = DATA_DIR / "mapped_concepts.json"
 CHUNK_MAP_FILE = DATA_DIR / "concept_chunk_map.json"
 CHUNKS_FILE = DATA_DIR / "content_chunks.json"
 OUTPUT_FILE = DATA_DIR / "enriched_concepts.json"
@@ -471,10 +471,12 @@ def main():
 
     chunk_lookup = build_chunk_lookup(chunks)
 
+    if isinstance(concepts, dict) and "concepts" in concepts:
+        concepts = concepts["concepts"]
     all_concept_names = [
-        c["concept"]
+        c["concept"] if isinstance(c, dict) else c
         for c in concepts
-        if isinstance(c, dict) and c.get("concept")
+        if (isinstance(c, dict) and c.get("concept")) or isinstance(c, str)
     ]
     all_concepts_set = set(all_concept_names)
 
@@ -502,10 +504,11 @@ def main():
 
     start_time = time.time()
     for i, concept in enumerate(concepts):
-        if not isinstance(concept, dict) or not concept.get("concept"):
+        concept_name = concept["concept"] if isinstance(concept, dict) else concept
+        if not isinstance(concept_name, str) or not concept_name.strip():
             continue
-
-        concept_name = concept["concept"]
+        concept_name = concept_name.strip()
+        concept_obj = {"concept": concept_name}
 
         if concept_name in enriched_dict:
             print(f"[{i + 1}/{len(concepts)}] Skipped (already done): {concept_name}")
@@ -515,7 +518,7 @@ def main():
         print(f"[{i + 1}/{len(concepts)}] Enriching: {concept_name} ...", end="", flush=True)
 
         updated = enrich_concept(
-            concept_obj=concept,
+            concept_obj=concept_obj,
             all_concepts=all_concept_names,
             all_concepts_set=all_concepts_set,
             concept_chunk_map=concept_chunk_map,

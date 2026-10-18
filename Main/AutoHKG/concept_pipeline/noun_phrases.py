@@ -1,147 +1,262 @@
+
 """
-noun_phrases.py — Fast NP extraction using NLTK POS tagging + regex chunker.
+noun_phrases.py — Lightweight noun-phrase extraction using NLTK POS tagging
+and regex chunking.
 
-spaCy's noun_chunks requires the full dependency parser which is very slow
-on large corpora. Instead we use:
-  1. NLTK's averaged_perceptron_tagger for POS tagging (fast, no parser)
-  2. NLTK's RegexpParser with a grammar that captures NP patterns:
-       NP: {<DT>? <JJ>* <NN.*>+}   — optional determiner, adjectives, nouns
-       NP: {<NNP>+}                 — proper noun sequences
-  3. Sampling: only every SAMPLE_EVERY-th chunk for corpora > SAMPLE_THRESHOLD
-
-This runs in ~10-30 seconds on a 4000-chunk corpus vs 10+ minutes for spaCy.
+Improvements:
+- Processes the full corpus by default.
+- Makes sampling and token limits configurable.
+- Avoids the Punkt tokenizer resource dependency.
+- Reports failed chunks instead of silently discarding errors.
+- Improves phrase normalization and filtering.
+- Preserves the original extract_noun_phrases(texts, batch_size=0) interface.
 """
 
 from __future__ import annotations
 
-from typing import Dict, List
+import logging
+from typing import Dict, List, Optional
 
+logger = logging.getLogger(__name__)
 
-SAMPLE_THRESHOLD = 500    # if more chunks than this, sample
-SAMPLE_EVERY     = 2      # use every 2nd chunk (50% sample)
-MAX_TOKENS       = 400    # max tokens per chunk to POS-tag
+# None means no truncation.
+MAX_TOKENS: Optional[int] = None
 
-
-# NP grammar: (optional DT) + (any JJ/VBG/VBN) + (one or more NN*)
 _NP_GRAMMAR = r"""
     NP: {<DT>?<JJ.*|VBG|VBN>*<NN.*>+}
         {<NNP>+}
 """
 
-# Single words that are not meaningful standalone concepts
+# Generic single-word terms that are rarely useful as standalone concepts.
 _BLOCK = {
     "chapter", "section", "figure", "table", "page", "example",
     "exercise", "problem", "note", "part", "unit", "book",
     "author", "publisher", "edition", "year", "method", "way",
     "use", "form", "type", "kind", "set", "list", "number",
-    "system", "model", "data", "information", "concept",
     "result", "value", "case", "step", "level", "order",
     "fact", "term", "group", "class", "time", "end",
-    "user", "application", "server", "file", "line",
+    "user", "file", "line",
 }
 
-# Determiners to strip from the start of NPs
-_DET = {"a", "an", "the", "this", "that", "these", "those", "each", "every"}
+_DET = {
+    "a", "an", "the", "this", "that", "these", "those",
+    "each", "every",
+}
 
 
-def _ensure_nltk():
-    """Download required NLTK data if not present."""
-    import nltk  # noqa: PLC0415
-    resources = {
-        "averaged_perceptron_tagger": "taggers/averaged_perceptron_tagger",
-        "averaged_perceptron_tagger_eng": "taggers/averaged_perceptron_tagger_eng",
-        "punkt": "tokenizers/punkt",
-        "punkt_tab": "tokenizers/punkt_tab",
-    }
-    for res_name, res_path in resources.items():
+def _ensure_nltk() -> None:
+    """Ensure an English POS tagger is available."""
+    import nltk
+
+    # Support current and older NLTK resource names.
+    resources = (
+        ("averaged_perceptron_tagger_eng",
+         "taggers/averaged_perceptron_tagger_eng"),
+        ("averaged_perceptron_tagger",
+         "taggers/averaged_perceptron_tagger"),
+    )
+
+    available = False
+
+    for name, path in resources:
         try:
-            nltk.data.find(res_path)
+            nltk.data.find(path)
+            available = True
+            break
         except LookupError:
+            continue
+
+    if not available:
+        downloaded = False
+
+        for name, _ in resources:
             try:
-                nltk.download(res_name, quiet=True)
+                if nltk.download(name, quiet=True):
+                    downloaded = True
             except Exception:
-                pass
+                logger.warning(
+                    "Could not download NLTK resource %s.", name
+                )
 
+        if not downloaded:
+            raise RuntimeError(
+                "Could not download the NLTK POS tagger. "
+                "Install the required NLTK English tagger resource "
+                "and retry."
+            )
 
-def _extract_nps_from_text(text: str, chunker) -> List[str]:
-    """Extract NPs from a single text string using NLTK."""
-    import nltk  # noqa: PLC0415
-
+    # Verify that the installed NLTK version can actually tag words.
     try:
-        tokens = nltk.word_tokenize(text)[:MAX_TOKENS]
-        tagged = nltk.pos_tag(tokens)
-        tree   = chunker.parse(tagged)
+        nltk.pos_tag(["database"])
+    except LookupError as exc:
+        raise RuntimeError(
+            "The NLTK POS tagger resource is unavailable or incompatible. "
+            "Install the English POS tagger required by your NLTK version."
+        ) from exc
 
-        nps = []
-        for subtree in tree.subtrees(filter=lambda t: t.label() == "NP"):
-            words = [w.lower() for w, _ in subtree.leaves()]
 
-            # Strip leading determiners
-            while words and words[0] in _DET:
-                words = words[1:]
+def _extract_nps_from_text(
+    text: str,
+    chunker,
+    max_tokens: Optional[int] = None,
+) -> List[str]:
+    """Extract noun phrases from a single text chunk."""
+    import nltk
+    from nltk.tokenize import TreebankWordTokenizer
 
-            if not words:
-                continue
-
-            phrase = " ".join(words)
-            n = len(words)
-
-            if n < 1 or n > 6:
-                continue
-            if n == 1 and phrase in _BLOCK:
-                continue
-            if not any(c.isalpha() for c in phrase):
-                continue
-
-            nps.append(phrase)
-
-        return nps
-
-    except Exception:
+    if not isinstance(text, str) or not text.strip():
         return []
 
+    # This tokenizer does not require Punkt or punkt_tab downloads.
+    tokens = TreebankWordTokenizer().tokenize(text)
 
-def extract_noun_phrases(texts: List[str], batch_size: int = 0) -> Dict[str, int]:
+    if max_tokens is not None:
+        if max_tokens < 1:
+            raise ValueError("max_tokens must be positive or None.")
+        tokens = tokens[:max_tokens]
+
+    if not tokens:
+        return []
+
+    tagged = nltk.pos_tag(tokens)
+    tree = chunker.parse(tagged)
+
+    phrases = []
+
+    for subtree in tree.subtrees(
+        filter=lambda node: node.label() == "NP"
+    ):
+        words = [
+            word.lower()
+            for word, _ in subtree.leaves()
+        ]
+
+        # Remove leading determiners.
+        while words and words[0] in _DET:
+            words.pop(0)
+
+        if not words:
+            continue
+
+        # Remove surrounding punctuation from individual tokens.
+        # Keep internal punctuation such as hyphens when present.
+        phrase = " ".join(words).strip(" \t\n.,;:!?\"'()[]{}")
+
+        if not phrase or not any(char.isalpha() for char in phrase):
+            continue
+
+        words = phrase.split()
+        word_count = len(words)
+
+        if word_count > 6:
+            continue
+
+        if word_count == 1 and phrase in _BLOCK:
+            continue
+
+        phrases.append(phrase)
+
+    return phrases
+
+
+def extract_noun_phrases(
+    texts: List[str],
+    batch_size: int = 0,
+    *,
+    sample_every: int = 1,
+    max_tokens: Optional[int] = MAX_TOKENS,
+    strict: bool = False,
+) -> Dict[str, int]:
     """
-    Extract noun-phrase candidates from the corpus using NLTK.
+    Extract noun-phrase candidates from a corpus.
 
-    For large corpora, samples every SAMPLE_EVERY-th chunk.
+    Parameters
+    ----------
+    texts:
+        List of text chunks.
+    batch_size:
+        Progress-reporting interval in chunks. Zero disables periodic
+        progress reports; final statistics are still printed.
+    sample_every:
+        Process every Nth chunk. Defaults to 1 (all chunks).
+    max_tokens:
+        Maximum tokens per chunk. None processes the entire chunk.
+    strict:
+        If True, stop and raise when a chunk fails. Otherwise, log
+        failures and continue processing the remaining chunks.
 
     Returns
     -------
-    dict[str, int]
-        lowercased noun phrase → occurrence count
+    Dict[str, int]
+        Lowercased noun phrase -> extracted occurrence count.
     """
+    if sample_every < 1:
+        raise ValueError("sample_every must be at least 1.")
+
+    if batch_size < 0:
+        raise ValueError("batch_size cannot be negative.")
+
+    if max_tokens is not None and max_tokens < 1:
+        raise ValueError("max_tokens must be positive or None.")
+
     try:
-        import nltk  # noqa: PLC0415
-        from nltk.chunk import RegexpParser  # noqa: PLC0415
-    except ImportError:
-        print("[noun_phrases] NLTK not installed; skipping NP extraction")
-        return {}
+        import nltk  # noqa: F401
+        from nltk.chunk import RegexpParser
+    except ImportError as exc:
+        raise RuntimeError(
+            "NLTK is not installed. Install it with: pip install nltk"
+        ) from exc
 
     _ensure_nltk()
 
     total = len(texts)
+    sampled = texts[::sample_every]
+    chunker = RegexpParser(_NP_GRAMMAR)
 
-    # Smart sampling
-    if total > SAMPLE_THRESHOLD:
-        sampled = texts[::SAMPLE_EVERY]
-        print(f"[noun_phrases] Corpus={total} chunks — sampling every "
-              f"{SAMPLE_EVERY}nd chunk ({len(sampled)} chunks)")
-    else:
-        sampled = texts
+    if sample_every > 1:
+        print(
+            f"[noun_phrases] Processing {len(sampled)}/{total} chunks "
+            f"(every {sample_every}th chunk)."
+        )
 
-    chunker   = RegexpParser(_NP_GRAMMAR)
     np_counts: Dict[str, int] = {}
-    n         = len(sampled)
+    failures = 0
+    n = len(sampled)
 
-    for i, text in enumerate(sampled):
-        for phrase in _extract_nps_from_text(text, chunker):
-            np_counts[phrase] = np_counts.get(phrase, 0) + 1
+    for i, text in enumerate(sampled, start=1):
+        try:
+            phrases = _extract_nps_from_text(
+                text, chunker, max_tokens=max_tokens
+            )
 
-        if (i + 1) % 100 == 0 or (i + 1) == n:
-            pct = int((i + 1) / n * 100)
-            print(f"[noun_phrases] {pct}% ({i+1}/{n}) ...", end="\r")
+            for phrase in phrases:
+                np_counts[phrase] = np_counts.get(phrase, 0) + 1
 
-    print(f"\n[noun_phrases] Extracted {len(np_counts)} unique noun phrases")
+        except Exception as exc:
+            failures += 1
+
+            logger.warning(
+                "NP extraction failed for sampled chunk %d/%d: %s",
+                i,
+                n,
+                exc,
+            )
+
+            if strict:
+                raise RuntimeError(
+                    f"NP extraction failed at sampled chunk {i}/{n}."
+                ) from exc
+
+        if batch_size and i % batch_size == 0:
+            print(
+                f"[noun_phrases] Processed {i}/{n} chunks "
+                f"({i / n:.0%})."
+            )
+
+    print(
+        f"[noun_phrases] Completed: {n} chunks processed, "
+        f"{len(np_counts)} unique phrases, "
+        f"{failures} failed chunks."
+    )
+
     return np_counts

@@ -28,7 +28,7 @@ from collections import defaultdict
 from typing import Dict, List
 
 # Only process every Nth chunk (fast enough to run on all, but cap for safety)
-SAMPLE_EVERY    = 4       # use every 4th chunk (more conservative sampling)
+SAMPLE_EVERY    = 1       # use every 4th chunk (more conservative sampling)
 MAX_PHRASE_LEN  = 4       # max tokens in a keyphrase
 MIN_PHRASE_LEN  = 1       # min tokens
 

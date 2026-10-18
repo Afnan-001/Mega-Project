@@ -23,7 +23,7 @@ DEFAULT_EMBEDDINGS = DATA_DIR / "chunk_embeddings.npy"
 
 OUTPUT_MAP = DATA_DIR / "concept_chunk_map.json"
 OUTPUT_SCORES = DATA_DIR / "concept_chunk_scores.json"
-OUTPUT_GROUNDED_CONCEPTS = DATA_DIR / "merged_concepts.json"
+OUTPUT_GROUNDED_CONCEPTS = DATA_DIR / "mapped_concepts.json"
 
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3")
 
@@ -202,7 +202,7 @@ def map_and_prune_concepts(
 
         concept_chunk_map[concept] = mapped_chunk_ids
         concept_chunk_scores[concept] = mapped_scores
-        grounded_concepts.append({"concept": concept})
+        grounded_concepts.append(concept)
 
     # Save Output Files
     OUTPUT_MAP.parent.mkdir(parents=True, exist_ok=True)
@@ -214,7 +214,7 @@ def map_and_prune_concepts(
         json.dump(concept_chunk_scores, f, indent=4, ensure_ascii=False)
 
     with open(OUTPUT_GROUNDED_CONCEPTS, "w", encoding="utf-8") as f:
-        json.dump(grounded_concepts, f, indent=4, ensure_ascii=False)
+        json.dump({"concepts": grounded_concepts}, f, indent=4, ensure_ascii=False)
 
     print("=" * 60)
     print("  CONCEPT-TO-CHUNK ADAPTIVE MAPPING & PRUNING SUMMARY")
