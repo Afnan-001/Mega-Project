@@ -449,18 +449,22 @@ def enrich_concept(concept_obj, all_concepts, all_concepts_set, concept_chunk_ma
 def main():
     parser = argparse.ArgumentParser(description="Enrich Concepts using LLM (Ollama or Gemini)")
     parser.add_argument("--provider", type=str, default="ollama", choices=["ollama", "gemini"], help="LLM Provider (ollama or gemini)")
-    parser.add_argument("--model", type=str, default="qwen2.5:7b-instruct-q4_K_M", help="Model name")
+    parser.add_argument("--model", type=str, default=None, help="Model name (defaults to gemini-3.8-flash for Gemini, qwen2.5:7b-instruct-q4_K_M for Ollama)")
     parser.add_argument("--sleep", type=float, default=None, help="Seconds to sleep between calls")
     args = parser.parse_args()
 
+    model_name = args.model
+    if not model_name:
+        model_name = os.getenv("GEMINI_MODEL", "gemini-3.8-flash") if args.provider == "gemini" else os.getenv("OLLAMA_MODEL", "qwen2.5:7b-instruct-q4_K_M")
+
     sleep_time = args.sleep
     if sleep_time is None:
-        sleep_time = 0.5 if args.provider == "ollama" else 4.1
+        sleep_time = 0.5 if args.provider == "ollama" else 1.0
 
     print("============================================================")
     print("  Source-Grounded Concept Hierarchy & Prerequisite Enricher")
     print("============================================================")
-    print(f"[PROVIDER] {args.provider.upper()} (Model: {args.model})")
+    print(f"[PROVIDER] {args.provider.upper()} (Model: {model_name})")
     print(f"[SLEEP]    {sleep_time}s between LLM calls")
     print(f"[INPUT]    {INPUT_FILE}")
     print(f"[OUTPUT]   {OUTPUT_FILE}")
@@ -482,7 +486,7 @@ def main():
 
     llm = LLM(
         sys_msg=SYS_PROMPT,
-        model_name=args.model,
+        model_name=model_name,
         temperature=0.0,
         provider=args.provider
     )
