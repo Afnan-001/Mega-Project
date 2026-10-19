@@ -24,3 +24,13 @@ google-generativeai
 FlagEmbedding
 sentence-transformers
 torch
+
+# FastAPI Server, Async MongoDB ODM, Auth & Security
+fastapi
+uvicorn[standard]
+motor
+beanie
+pyjwt
+bcrypt
+python-multipart
+pydantic-settings
