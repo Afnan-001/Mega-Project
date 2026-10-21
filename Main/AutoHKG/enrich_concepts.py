@@ -1,12 +1,16 @@
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Force UTF-8 stdout encoding on Windows
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
+
+load_dotenv()
 
 # Add MAIN_DIR to sys.path so `llm.py` can be imported
 MAIN_DIR = Path(__file__).resolve().parents[1]
@@ -108,18 +112,37 @@ def load_json(path):
 
 
 def safe_parse_json(text):
+    if not text:
+        return None
     try:
         text = text.strip()
-        if text.startswith("```"):
-            lines = text.splitlines()
-            if lines[0].startswith("```"):
-                lines = lines[1:]
-            if lines and lines[-1].strip() == "```":
-                lines = lines[:-1]
-            text = "\n".join(lines).strip()
         return json.loads(text)
     except Exception:
-        return None
+        pass
+
+    try:
+        if "```" in text:
+            first_idx = text.find("```")
+            last_idx = text.rfind("```")
+            if first_idx != -1 and last_idx != -1 and last_idx > first_idx:
+                fence_content = text[first_idx:last_idx]
+                lines = fence_content.splitlines()
+                if lines and lines[0].startswith("```"):
+                    lines = lines[1:]
+                clean_text = "\n".join(lines).strip()
+                return json.loads(clean_text)
+    except Exception:
+        pass
+
+    try:
+        start = text.find("{")
+        end = text.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            return json.loads(text[start : end + 1])
+    except Exception:
+        pass
+
+    return None
 
 
 def build_chunk_lookup(chunks):
@@ -447,10 +470,10 @@ def enrich_concept(concept_obj, all_concepts, all_concepts_set, concept_chunk_ma
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Enrich Concepts using LLM (Ollama or Gemini)")
-    parser.add_argument("--provider", type=str, default="ollama", choices=["ollama", "gemini"], help="LLM Provider (ollama or gemini)")
-    parser.add_argument("--model", type=str, default=None, help="Model name (defaults to gemini-3.8-flash for Gemini, qwen2.5:7b-instruct-q4_K_M for Ollama)")
-    parser.add_argument("--sleep", type=float, default=None, help="Seconds to sleep between calls")
+    parser = argparse.ArgumentParser(description="Enrich Concepts using LLM (Gemini or Ollama)")
+    parser.add_argument("--provider", type=str, default=os.getenv("LLM_PROVIDER", "gemini"), choices=["gemini", "ollama"], help="LLM Provider (gemini or ollama)")
+    parser.add_argument("--model", type=str, default=None, help="Model name (defaults to GEMINI_MODEL or gemini-3.8-flash for Gemini)")
+    parser.add_argument("--sleep", type=float, default=None, help="Seconds to sleep between calls (client rate limiter maintains free-tier RPM)")
     args = parser.parse_args()
 
     model_name = args.model
@@ -519,7 +542,7 @@ def main():
             continue
 
         t0 = time.time()
-        print(f"[{i + 1}/{len(concepts)}] Enriching: {concept_name} ...", end="", flush=True)
+        print(f"[{i + 1}/{len(concepts)}] Enriching: {concept_name} [{llm.model_name}] ...", end="", flush=True)
 
         updated = enrich_concept(
             concept_obj=concept_obj,
