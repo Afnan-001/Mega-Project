@@ -7,59 +7,100 @@ import {
   ArrowRight, 
   Lock, 
   Mail, 
+  User,
   CheckCircle2, 
   Cpu, 
   FileText, 
   Share2,
   Eye,
-  EyeOff
+  EyeOff,
+  Server
 } from 'lucide-react';
 import { useAuth, demoAccounts } from '../context/AuthContext';
 import '../styles/login.css';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, register, serverOnline, isCheckingServer, authError } = useAuth();
+  const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
   const [selectedRole, setSelectedRole] = useState('teacher'); // 'teacher' | 'student'
-  const [email, setEmail] = useState('alex.mercer@university.edu');
-  const [password, setPassword] = useState('••••••••••••');
+  const [fullName, setFullName] = useState('Dr. Sarah Connor');
+  const [email, setEmail] = useState('teacher@university.edu');
+  const [password, setPassword] = useState('StrongPassword123!');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [localError, setLocalError] = useState('');
 
   const handleRoleChange = (role) => {
     setSelectedRole(role);
-    setErrorMessage('');
+    setLocalError('');
     if (role === 'teacher') {
-      setEmail('alex.mercer@university.edu');
-      setPassword('••••••••••••');
+      setFullName('Dr. Sarah Connor');
+      setEmail('teacher@university.edu');
+      setPassword('StrongPassword123!');
     } else {
-      setEmail('sarah.chen@student.edu');
-      setPassword('••••••••••••');
+      setFullName('Sarah Chen');
+      setEmail('student@university.edu');
+      setPassword('StrongPassword123!');
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setLocalError('');
+
     if (!email.trim()) {
-      setErrorMessage('Please enter an email address.');
+      setLocalError('Please enter an academic email address.');
+      return;
+    }
+    if (!password.trim()) {
+      setLocalError('Please enter a password.');
       return;
     }
 
     setIsLoading(true);
-    setTimeout(() => {
-      login(selectedRole, { email });
+    try {
+      if (authMode === 'register') {
+        if (!fullName.trim()) {
+          setLocalError('Please provide your full name.');
+          setIsLoading(false);
+          return;
+        }
+        await register({
+          email: email.trim(),
+          password: password,
+          full_name: fullName.trim(),
+          role: selectedRole,
+        });
+      } else {
+        await login(selectedRole, { 
+          email: email.trim(),
+          password: password 
+        });
+      }
+    } catch (err) {
+      setLocalError(err.message || 'Authentication failed. Please verify credentials.');
+    } finally {
       setIsLoading(false);
-    }, 500);
+    }
   };
 
-  const handleQuickDemoLogin = (role) => {
+  const handleQuickDemoLogin = async (role) => {
     setSelectedRole(role);
+    setLocalError('');
     setIsLoading(true);
-    setTimeout(() => {
-      login(role, { email: demoAccounts[role].email });
+    try {
+      const demo = demoAccounts[role];
+      await login(role, { 
+        email: demo.email,
+        password: demo.password,
+        name: demo.name 
+      });
+    } catch (err) {
+      setLocalError(err.message || 'Demo login failed');
+    } finally {
       setIsLoading(false);
-    }, 400);
+    }
   };
 
   return (
@@ -82,7 +123,7 @@ export default function LoginPage() {
             <h3>Knowledge Graph Engineering for Higher Education</h3>
             <p>
               Transform course textbooks, lecture PDFs, and curriculum syllabi into interactive 
-              semantic graphs powered by AutoHKG.
+              semantic graphs powered by AutoHKG and Cognitive-RAG.
             </p>
 
             <div className="features-list">
@@ -92,7 +133,7 @@ export default function LoginPage() {
                 </div>
                 <div>
                   <strong>Role-Based Access Control</strong>
-                  <span>Dedicated, authenticated workspaces for faculty & enrolled students.</span>
+                  <span>FastAPI JWT security with dedicated workspaces for faculty & students.</span>
                 </div>
               </div>
 
@@ -102,7 +143,7 @@ export default function LoginPage() {
                 </div>
                 <div>
                   <strong>Teacher PDF Ingestion Engine</strong>
-                  <span>Instant parsing, chunking, and concept hierarchy extraction.</span>
+                  <span>7-stage AutoHKG pipeline with live progress tracking & chunk mapping.</span>
                 </div>
               </div>
 
@@ -111,17 +152,24 @@ export default function LoginPage() {
                   <Share2 size={18} className="text-purple" />
                 </div>
                 <div>
-                  <strong>Interactive Student Graphs</strong>
-                  <span>Self-paced curriculum navigation with AI tutor citations.</span>
+                  <strong>Cognitive-RAG Adaptive Learning</strong>
+                  <span>Dynamic MCQs, Bayesian Knowledge Tracing (BKT), and prerequisite mastery.</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="brand-footer-stat">
-            <div className="status-live-pill">
-              <span className="live-dot"></span>
-              <span>Secure Authentication & AutoHKG Ready</span>
+            <div className={`status-live-pill ${serverOnline ? 'online' : 'offline'}`}>
+              <span className={`live-dot ${serverOnline ? 'dot-green' : 'dot-amber'}`}></span>
+              <Server size={14} />
+              <span>
+                {isCheckingServer 
+                  ? 'Connecting to backend...' 
+                  : serverOnline 
+                  ? 'FastAPI Server Connected (:8000)' 
+                  : 'Backend Offline (Demo Fallback Ready)'}
+              </span>
             </div>
           </div>
         </div>
@@ -130,8 +178,52 @@ export default function LoginPage() {
         <div className="login-form-panel">
           <div className="form-header">
             <span className="auth-subtitle">Portal Authentication</span>
-            <h2>Sign in to your account</h2>
+            <h2>{authMode === 'login' ? 'Sign in to your account' : 'Create a new account'}</h2>
             <p>Select your university academic role to access your dashboard</p>
+          </div>
+
+          {/* Mode Switcher: Sign In vs Register */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+            <button
+              type="button"
+              className={`btn-secondary ${authMode === 'login' ? 'active-tab-btn' : ''}`}
+              style={{
+                flex: 1,
+                padding: '8px 14px',
+                borderRadius: '8px',
+                border: authMode === 'login' ? '1px solid #6366f1' : '1px solid rgba(255,255,255,0.1)',
+                background: authMode === 'login' ? 'rgba(99,102,241,0.15)' : 'transparent',
+                color: authMode === 'login' ? '#fff' : '#94a3b8',
+                cursor: 'pointer',
+                fontWeight: 600,
+              }}
+              onClick={() => {
+                setAuthMode('login');
+                setLocalError('');
+              }}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              className={`btn-secondary ${authMode === 'register' ? 'active-tab-btn' : ''}`}
+              style={{
+                flex: 1,
+                padding: '8px 14px',
+                borderRadius: '8px',
+                border: authMode === 'register' ? '1px solid #6366f1' : '1px solid rgba(255,255,255,0.1)',
+                background: authMode === 'register' ? 'rgba(99,102,241,0.15)' : 'transparent',
+                color: authMode === 'register' ? '#fff' : '#94a3b8',
+                cursor: 'pointer',
+                fontWeight: 600,
+              }}
+              onClick={() => {
+                setAuthMode('register');
+                setLocalError('');
+              }}
+            >
+              Register New Account
+            </button>
           </div>
 
           {/* Role Selection Tabs */}
@@ -144,7 +236,7 @@ export default function LoginPage() {
               <ShieldCheck size={18} />
               <div className="role-btn-text">
                 <span className="role-name">Faculty / Teacher</span>
-                <span className="role-desc">Upload course PDFs & manage syllabus</span>
+                <span className="role-desc">Upload course PDFs & run AutoHKG</span>
               </div>
               {selectedRole === 'teacher' && <CheckCircle2 size={16} className="role-check-icon" />}
             </button>
@@ -157,7 +249,7 @@ export default function LoginPage() {
               <GraduationCap size={18} />
               <div className="role-btn-text">
                 <span className="role-name">Student</span>
-                <span className="role-desc">Explore course materials & graphs</span>
+                <span className="role-desc">Interactive learning paths & quizzes</span>
               </div>
               {selectedRole === 'student' && <CheckCircle2 size={16} className="role-check-icon" />}
             </button>
@@ -167,7 +259,7 @@ export default function LoginPage() {
           <div className="quick-access-banner">
             <div className="quick-banner-title">
               <Sparkles size={14} className="text-amber" />
-              <span>One-Click Demo Access</span>
+              <span>One-Click Instant Access</span>
             </div>
             <div className="quick-buttons-row">
               <button 
@@ -189,14 +281,30 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {errorMessage && (
+          {(localError || authError) && (
             <div className="auth-error-alert animate-fade-in">
-              <span>{errorMessage}</span>
+              <span>{localError || authError}</span>
             </div>
           )}
 
           {/* Credentials Form */}
           <form onSubmit={handleFormSubmit} className="credentials-form">
+            {authMode === 'register' && (
+              <div className="input-group">
+                <label>Full Name</label>
+                <div className="input-field-wrap">
+                  <User size={16} className="input-icon" />
+                  <input 
+                    type="text" 
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="e.g. Dr. Sarah Connor"
+                    required
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="input-group">
               <label>Academic Email</label>
               <div className="input-field-wrap">
@@ -214,9 +322,11 @@ export default function LoginPage() {
             <div className="input-group">
               <div className="password-label-row">
                 <label>Password</label>
-                <a href="#forgot" onClick={(e) => e.preventDefault()} className="forgot-link">
-                  Forgot password?
-                </a>
+                {authMode === 'login' && (
+                  <a href="#forgot" onClick={(e) => e.preventDefault()} className="forgot-link">
+                    Forgot password?
+                  </a>
+                )}
               </div>
               <div className="input-field-wrap">
                 <Lock size={16} className="input-icon" />
@@ -256,11 +366,15 @@ export default function LoginPage() {
               {isLoading ? (
                 <>
                   <span className="spinner-border"></span>
-                  <span>Verifying credentials...</span>
+                  <span>Authenticating with server...</span>
                 </>
               ) : (
                 <>
-                  <span>Sign In to {selectedRole === 'teacher' ? 'Teacher Dashboard' : 'Student Dashboard'}</span>
+                  <span>
+                    {authMode === 'register' 
+                      ? `Register as ${selectedRole === 'teacher' ? 'Faculty' : 'Student'}`
+                      : `Sign In to ${selectedRole === 'teacher' ? 'Teacher Dashboard' : 'Student Dashboard'}`}
+                  </span>
                   <ArrowRight size={18} />
                 </>
               )}
@@ -270,7 +384,7 @@ export default function LoginPage() {
           <div className="role-policy-footnote">
             <ShieldCheck size={14} className="text-muted" />
             <span>
-              Role-based routing active. Non-faculty accounts are restricted from course PDF upload endpoints.
+              FastAPI RBAC active. Non-faculty accounts are restricted from course PDF upload endpoints.
             </span>
           </div>
         </div>
