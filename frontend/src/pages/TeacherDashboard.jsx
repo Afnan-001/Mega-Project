@@ -21,6 +21,8 @@ import CourseUploadModal from '../components/teacher/CourseUploadModal';
 import ContentChunksView from '../components/teacher/ContentChunksView';
 import MappedConceptsView from '../components/teacher/MappedConceptsView';
 import ConceptChunkMapView from '../components/teacher/ConceptChunkMapView';
+import PipelineProgressModal from '../components/teacher/PipelineProgressModal';
+import { teacherApi } from '../services/api';
 
 export default function TeacherDashboard({ 
   courses, 
@@ -34,6 +36,12 @@ export default function TeacherDashboard({
 }) {
   const [selectedMaterialPreview, setSelectedMaterialPreview] = useState(null);
   const [jumpToConcept, setJumpToConcept] = useState(null);
+  const [pipelineModal, setPipelineModal] = useState({
+    isOpen: false,
+    taskId: null,
+    courseId: null,
+    courseTitle: '',
+  });
 
   // Dynamic calculations
   const totalPdfs = materials.length;
@@ -47,6 +55,29 @@ export default function TeacherDashboard({
       newItems.forEach((item) => onAddMaterial(item));
     } else if (newItems) {
       onAddMaterial(newItems);
+    }
+  };
+
+  const handleLaunchPipeline = async (targetCourseId = null, targetTitle = null) => {
+    const courseId = targetCourseId || courses[0]?.id || 'course_default';
+    const courseTitle = targetTitle || courses[0]?.name || 'Course Content';
+
+    try {
+      const res = await teacherApi.startPipeline(courseId);
+      setPipelineModal({
+        isOpen: true,
+        taskId: res.task_id || 'task_' + Date.now(),
+        courseId,
+        courseTitle,
+      });
+    } catch (err) {
+      console.warn('Backend pipeline offline, opening simulation monitor:', err.message);
+      setPipelineModal({
+        isOpen: true,
+        taskId: 'task_' + Date.now(),
+        courseId,
+        courseTitle,
+      });
     }
   };
 
@@ -224,7 +255,10 @@ export default function TeacherDashboard({
 
           {/* AutoHKG Pipeline Visualizer */}
           <section className="pipeline-section-wrapper">
-            <ExtractionPipelinePreview />
+            <ExtractionPipelinePreview 
+              onLaunchPipeline={() => handleLaunchPipeline()}
+              activeTaskId={pipelineModal.taskId}
+            />
           </section>
         </>
       )}
@@ -249,6 +283,7 @@ export default function TeacherDashboard({
             <PdfDropzone 
               courses={courses}
               onUploadComplete={handleBatchUploadComplete}
+              onOpenPipelineModal={(info) => setPipelineModal({ isOpen: true, ...info })}
             />
           </div>
         </section>
@@ -277,6 +312,24 @@ export default function TeacherDashboard({
         onUploadComplete={(newItems) => {
           handleBatchUploadComplete(newItems);
           setIsUploadModalOpen(false);
+        }}
+        onOpenPipelineModal={(info) => {
+          setIsUploadModalOpen(false);
+          setPipelineModal({ isOpen: true, ...info });
+        }}
+      />
+
+      {/* AutoHKG Real-Time Pipeline Progress Modal */}
+      <PipelineProgressModal 
+        isOpen={pipelineModal.isOpen}
+        onClose={() => setPipelineModal((prev) => ({ ...prev, isOpen: false }))}
+        taskId={pipelineModal.taskId}
+        courseId={pipelineModal.courseId}
+        courseTitle={pipelineModal.courseTitle}
+        onPipelineComplete={() => {
+          if (setActiveTab) {
+            setActiveTab('mapped-concepts');
+          }
         }}
       />
 

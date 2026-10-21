@@ -2,7 +2,7 @@ import React from 'react';
 import { X, Sparkles, BookOpen } from 'lucide-react';
 import PdfDropzone from './PdfDropzone';
 
-export default function CourseUploadModal({ isOpen, onClose, courses, onUploadComplete }) {
+export default function CourseUploadModal({ isOpen, onClose, courses, onUploadComplete, onOpenPipelineModal }) {
   if (!isOpen) return null;
 
   return (
@@ -33,6 +33,7 @@ export default function CourseUploadModal({ isOpen, onClose, courses, onUploadCo
               onUploadComplete(newMat);
             }}
             onClose={onClose}
+            onOpenPipelineModal={onOpenPipelineModal}
           />
         </div>
       </div>

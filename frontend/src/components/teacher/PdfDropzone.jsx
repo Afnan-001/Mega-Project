@@ -15,8 +15,9 @@ import {
   Plus,
   Trash2
 } from 'lucide-react';
+import { teacherApi } from '../../services/api';
 
-export default function PdfDropzone({ courses, onUploadComplete, onClose }) {
+export default function PdfDropzone({ courses, onUploadComplete, onClose, onOpenPipelineModal }) {
   const [dragActive, setDragActive] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(courses[0]?.id || '');
   const [moduleName, setModuleName] = useState('');
@@ -123,7 +124,7 @@ export default function PdfDropzone({ courses, onUploadComplete, onClose }) {
   };
 
   // Submit and process all queued files with individual progress bars
-  const handleSubmitBatch = (e) => {
+  const handleSubmitBatch = async (e) => {
     e.preventDefault();
     if (fileQueue.length === 0) {
       setErrorMessage('Please select or drop at least one PDF file.');
@@ -137,6 +138,33 @@ export default function PdfDropzone({ courses, onUploadComplete, onClose }) {
     const totalFiles = fileQueue.length;
     let completedCount = 0;
     const finishedMaterials = [];
+
+    // Attempt real API upload for first file to trigger real pipeline if possible
+    let apiTaskId = null;
+    let apiCourseId = selectedCourse;
+    try {
+      const primaryFile = fileQueue[0];
+      if (primaryFile && primaryFile.file) {
+        const uploadRes = await teacherApi.uploadPdf(
+          primaryFile.file, 
+          primaryFile.title || primaryFile.name, 
+          moduleName || 'Curriculum Ingestion'
+        );
+        apiCourseId = uploadRes.id || uploadRes.course_id || selectedCourse;
+        const pipelineRes = await teacherApi.startPipeline(apiCourseId);
+        apiTaskId = pipelineRes.task_id;
+        
+        if (onOpenPipelineModal && apiTaskId) {
+          onOpenPipelineModal({
+            taskId: apiTaskId,
+            courseId: apiCourseId,
+            courseTitle: primaryFile.title || primaryFile.name
+          });
+        }
+      }
+    } catch (apiErr) {
+      console.warn('Teacher API upload skipped or running in offline mode:', apiErr.message);
+    }
 
     // Process files with staggered progress for realistic feedback
     fileQueue.forEach((fileItem, index) => {
