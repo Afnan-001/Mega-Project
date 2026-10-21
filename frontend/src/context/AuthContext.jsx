@@ -119,28 +119,12 @@ export function AuthProvider({ children }) {
       setServerOnline(true);
       return loggedInUser;
     } catch (apiError) {
-      console.warn('Backend login attempt returned error/offline:', apiError.message);
-
-      // If backend explicitly rejected invalid credentials (400 / 401), pass error back
-      if (apiError.status === 400 || apiError.status === 401) {
-        setAuthError(apiError.message || 'Invalid email or password.');
-        throw apiError;
-      }
-
-      // If backend is unreachable or in development/offline mode, permit demo fallback
-      const fallbackUser = {
-        ...demo,
-        email: emailToUse,
-        name: credentials.name || demo.name,
-        role: role,
-        token: 'demo-token-' + Date.now(),
-        isDemoSession: true,
-      };
-
-      setStoredToken(fallbackUser.token);
-      setStoredUser(fallbackUser);
-      setUser(fallbackUser);
-      return fallbackUser;
+      console.warn('Backend login error:', apiError.message);
+      const friendlyMsg = apiError.status === 400 || apiError.status === 401
+        ? (apiError.message || 'Invalid email or password.')
+        : `Cannot connect to FastAPI server (:8000). Please start the backend. (${apiError.message})`;
+      setAuthError(friendlyMsg);
+      throw new Error(friendlyMsg);
     }
   };
 
