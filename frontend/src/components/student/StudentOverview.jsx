@@ -38,86 +38,31 @@ export default function StudentOverview({ materials, courses, onSwitchToTeacher 
   const selectedCourseMaterials = materials.filter(m => m.courseId === activeCourseTab);
   const currentCourse = courses.find(c => c.id === activeCourseTab) || courses[0];
 
+  const [errorMessage, setErrorMessage] = useState(null);
+
   // Fetch topological prerequisite learning path and mastery heatmap
   useEffect(() => {
     async function loadStudentData() {
       setIsLoadingPath(true);
+      setErrorMessage(null);
       try {
         const pathRes = await studentApi.getLearningPath(activeCourseTab);
-        if (pathRes && pathRes.path) {
+        if (pathRes && Array.isArray(pathRes.path)) {
           setLearningPath(pathRes.path);
         } else {
-          throw new Error('No path data');
+          setLearningPath([]);
         }
       } catch (err) {
-        // Fallback default learning path with BKT statuses
-        setLearningPath([
-          {
-            concept_name: 'Lexical Analysis',
-            node_type: 'fine_grained_concept',
-            coarse_grained_category: ['Compiler Front End'],
-            prerequisites: [],
-            mastery_percentage: 88.5,
-            status: 'Mastered'
-          },
-          {
-            concept_name: 'Regular Expressions & Automata',
-            node_type: 'fine_grained_concept',
-            coarse_grained_category: ['Compiler Front End'],
-            prerequisites: ['Lexical Analysis'],
-            mastery_percentage: 72.0,
-            status: 'In Progress'
-          },
-          {
-            concept_name: 'Syntax Analysis & Parsing',
-            node_type: 'fine_grained_concept',
-            coarse_grained_category: ['Compiler Front End'],
-            prerequisites: ['Regular Expressions & Automata'],
-            mastery_percentage: 15.0,
-            status: 'Ready to Learn'
-          },
-          {
-            concept_name: 'Context-Free Grammars',
-            node_type: 'fine_grained_concept',
-            coarse_grained_category: ['Grammar Theory'],
-            prerequisites: ['Syntax Analysis & Parsing'],
-            mastery_percentage: 10.0,
-            status: 'Locked'
-          },
-          {
-            concept_name: 'LR Parsing Tables',
-            node_type: 'fine_grained_concept',
-            coarse_grained_category: ['Parsing Algorithms'],
-            prerequisites: ['Context-Free Grammars'],
-            mastery_percentage: 10.0,
-            status: 'Locked'
-          },
-          {
-            concept_name: 'Semantic Analysis & Type Checking',
-            node_type: 'fine_grained_concept',
-            coarse_grained_category: ['Compiler Middle End'],
-            prerequisites: ['Syntax Analysis & Parsing'],
-            mastery_percentage: 10.0,
-            status: 'Locked'
-          }
-        ]);
+        setLearningPath([]);
+        setErrorMessage(err.message || 'Failed to fetch learning path from FastAPI server.');
       }
 
-      // Fetch mastery
+      // Fetch mastery heatmap from FastAPI
       try {
         const heatRes = await studentApi.getMasteryHeatmap(activeCourseTab);
-        if (heatRes) {
-          setMasteryData(heatRes);
-        }
+        setMasteryData(heatRes || null);
       } catch (err) {
-        setMasteryData({
-          overall_mastery_percentage: 45.2,
-          concepts: [
-            { concept_name: 'Lexical Analysis', mastery_percentage: 88.5, status: 'Mastered' },
-            { concept_name: 'Regular Expressions & Automata', mastery_percentage: 72.0, status: 'In Progress' },
-            { concept_name: 'Syntax Analysis & Parsing', mastery_percentage: 15.0, status: 'Ready to Learn' },
-          ]
-        });
+        setMasteryData(null);
       } finally {
         setIsLoadingPath(false);
       }
@@ -292,16 +237,36 @@ export default function StudentOverview({ materials, courses, onSwitchToTeacher 
             </button>
           </div>
 
-          <div className="learning-path-timeline" style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px'
-          }}>
-            {learningPath.map((node, index) => {
-              const isMastered = node.status === 'Mastered';
-              const isInProgress = node.status === 'In Progress';
-              const isReady = node.status === 'Ready to Learn';
-              const isLocked = node.status === 'Locked';
+          {learningPath.length === 0 ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '48px 24px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '12px',
+              border: '1px dashed rgba(255, 255, 255, 0.1)',
+              color: '#94a3b8'
+            }}>
+              <Layers size={36} style={{ margin: '0 auto 12px', color: '#6366f1', opacity: 0.8 }} />
+              <h4 style={{ color: '#f1f5f9', margin: '0 0 6px', fontSize: '16px' }}>
+                No Knowledge Graph Generated Yet for this Course
+              </h4>
+              <p style={{ margin: '0 auto 16px', maxWidth: '480px', fontSize: '13px', lineHeight: 1.5 }}>
+                {errorMessage 
+                  ? `Backend status: ${errorMessage}`
+                  : 'The topological learning path is generated dynamically by the FastAPI AutoHKG pipeline once course textbook materials are processed.'}
+              </p>
+            </div>
+          ) : (
+            <div className="learning-path-timeline" style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px'
+            }}>
+              {learningPath.map((node, index) => {
+                const isMastered = node.status === 'Mastered';
+                const isInProgress = node.status === 'In Progress';
+                const isReady = node.status === 'Ready to Learn';
+                const isLocked = node.status === 'Locked';
 
               let badgeBg = 'rgba(255, 255, 255, 0.05)';
               let badgeColor = '#94a3b8';
@@ -437,8 +402,9 @@ export default function StudentOverview({ materials, courses, onSwitchToTeacher 
               );
             })}
           </div>
-        </div>
-      )}
+        )}
+      </div>
+    )}
 
       {/* View 2: Course Content Materials */}
       {activeTab === 'materials' && (

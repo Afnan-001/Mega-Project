@@ -41,24 +41,9 @@ export default function CognitiveRagQuizModal({
       const data = await studentApi.getNextQuestion(courseId, targetConcept);
       setQuestionData(data);
     } catch (err) {
-      console.warn('Backend quiz question generation offline, using adaptive fallback:', err.message);
-      // Adaptive fallback question generator
-      const activeConcept = targetConcept || 'Lexical Analysis';
-      setQuestionData({
-        question_id: 'q_' + Date.now(),
-        course_id: courseId,
-        concept_name: activeConcept,
-        question_text: `In the context of ${activeConcept}, which of the following statements represents the primary function described in the course materials?`,
-        options: [
-          `Transforms raw input character streams into structured semantic units or tokens`,
-          `Executes direct machine-code register allocation in real-time execution`,
-          `Resolves type hierarchies without evaluating syntactic constraints`,
-          `Manages memory garbage collection across global runtime scopes`
-        ],
-        evidence_chunk_ids: ['chunk_sec1_p12', 'chunk_sec2_p15'],
-        _fallback_correct: `Transforms raw input character streams into structured semantic units or tokens`,
-        _fallback_explanation: `According to the textbook chapter on ${activeConcept}, this phase scans raw characters and converts valid lexemes into tokens for downstream processing.`
-      });
+      console.warn('Backend quiz question generation error:', err.message);
+      setQuestionData(null);
+      setErrorMsg(err.message || 'Unable to retrieve quiz question from FastAPI backend.');
     } finally {
       setIsLoadingQuestion(false);
     }
@@ -81,9 +66,9 @@ export default function CognitiveRagQuizModal({
         concept_name: questionData.concept_name,
         question_id: questionData.question_id,
         selected_option: selectedOption,
-        correct_option: questionData._fallback_correct || selectedOption,
+        correct_option: selectedOption,
         question_text: questionData.question_text,
-        explanation: questionData._fallback_explanation || 'Answer verified against textbook knowledge graph.',
+        explanation: 'Answer evaluated by Cognitive-RAG knowledge graph.',
         options: questionData.options,
       };
 
@@ -93,22 +78,8 @@ export default function CognitiveRagQuizModal({
         onMasteryUpdated(res);
       }
     } catch (err) {
-      console.warn('Quiz answer submission offline fallback:', err.message);
-      const isCorrect = selectedOption === questionData._fallback_correct;
-      const prior = 30.0;
-      const updated = isCorrect ? 58.5 : 22.0;
-      const fallbackResult = {
-        is_correct: isCorrect,
-        correct_option: questionData._fallback_correct,
-        explanation: questionData._fallback_explanation,
-        prior_mastery: prior,
-        updated_mastery: updated,
-        next_recommended_concept: questionData.concept_name
-      };
-      setResultData(fallbackResult);
-      if (onMasteryUpdated) {
-        onMasteryUpdated(fallbackResult);
-      }
+      console.warn('Quiz answer submission error:', err.message);
+      setErrorMsg(err.message || 'Failed to submit quiz answer to server.');
     } finally {
       setIsSubmitting(false);
     }

@@ -129,25 +129,17 @@ export default function PipelineProgressModal({
           clearInterval(pollIntervalRef.current);
         }
       } catch (err) {
-        console.warn('Pipeline status polling fallback (offline or simulated):', err.message);
-        // Fallback simulation when backend is in dev mode without long runner
-        setPipelineState((prev) => {
-          if (prev.progressPercentage >= 100) return prev;
-          const nextProg = Math.min(100, prev.progressPercentage + 15);
-          const stageIdx = Math.min(PIPELINE_STAGES.length - 1, Math.floor((nextProg / 100) * PIPELINE_STAGES.length));
-          const nextStage = nextProg >= 100 ? 'COMPLETED' : PIPELINE_STAGES[stageIdx].key;
-          
-          return {
-            ...prev,
-            status: nextProg >= 100 ? 'completed' : 'running',
-            progressPercentage: nextProg,
-            currentStage: nextStage,
-            logs: [
-              ...prev.logs,
-              `[AutoHKG Stage] Executing ${PIPELINE_STAGES[stageIdx]?.label || 'pipeline'} (${nextProg}% complete)`,
-            ],
-          };
-        });
+        console.warn('Pipeline status polling error:', err.message);
+        setPipelineState((prev) => ({
+          ...prev,
+          status: 'failed',
+          errorMessage: err.message || 'Lost connection to backend pipeline server.',
+          logs: [
+            ...prev.logs,
+            `[Server Error] Failed to poll status from backend: ${err.message}`,
+          ],
+        }));
+        clearInterval(pollIntervalRef.current);
       }
     }
 
