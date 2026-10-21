@@ -54,12 +54,16 @@ class GeminiRateLimiter:
     """Enforces client-side rate limits (RPM) and spacing to prevent 429 errors on free tiers."""
 
     RPM_LIMITS = {
-        "gemini-2.5-flash-lite": 10,
-        "gemini-flash-lite-latest": 10,
+        "gemini-3.8-flash": 10,
+        "gemini-3.7-flash": 10,
+        "gemini-3.5-flash": 10,
         "gemini-3.5-flash-lite": 10,
         "gemini-3.1-flash-lite": 10,
+        "gemini-flash-latest": 10,
+        "gemini-flash-lite-latest": 10,
+        "gemini-2.5-flash-lite": 10,
     }
-    DEFAULT_RPM = 5  # Safe default: 5 RPM for standard flash models
+    DEFAULT_RPM = 10  # Free-tier safe default RPM across Gemini flash models
 
     def __init__(self):
         self.request_timestamps: dict[str, list[float]] = {}
@@ -85,7 +89,7 @@ class GeminiRateLimiter:
         if len(history) >= rpm:
             sleep_needed = 60.0 - (now - history[0]) + 0.5
             if sleep_needed > 0:
-                print(f"\n[GeminiRateLimiter] Rate window full ({len(history)}/{rpm} RPM for {model_name}). Sleeping {sleep_needed:.1f}s to maintain rate limit...")
+                print(f"\n[GeminiRateLimiter] Rate window full ({len(history)}/{rpm} RPM for {model_name}). Sleeping {sleep_needed:.1f}s to stay within free tier limits...")
                 time.sleep(sleep_needed)
                 now = time.time()
                 self.request_timestamps[model_name] = [t for t in self.request_timestamps.get(model_name, []) if now - t < 60.0]
@@ -112,6 +116,7 @@ class GeminiModelManager:
         "gemini-3.1-flash-lite",
         "gemini-flash-latest",
         "gemini-flash-lite-latest",
+        "gemini-2.5-flash-lite",
     ]
 
     def __init__(self, initial_model: str | None = None):
@@ -142,11 +147,11 @@ class GeminiModelManager:
             self.current_index = (self.current_index + 1) % len(self.models)
             candidate = self.models[self.current_index]
             if candidate not in self.exhausted_models:
-                print(f"\n[GeminiModelManager] Model '{old_model}' rate/quota reached. Switching to fallback model '{candidate}'...")
+                print(f"\n[GeminiModelManager] Model '{old_model}' free tier limit reached. Switching to fallback model '{candidate}'...")
                 return candidate
 
         # If all exhausted, reset history and cycle
-        print(f"\n[GeminiModelManager] All {len(self.models)} models reached limits once. Resetting exhaustion list and continuing...")
+        print(f"\n[GeminiModelManager] All {len(self.models)} Gemini models exhausted once on current key. Resetting cycle...")
         self.exhausted_models.clear()
         self.current_index = (self.current_index + 1) % len(self.models)
         return self.models[self.current_index]
@@ -251,7 +256,7 @@ class LLM:
 
     def _configure_gemini_client(self):
         current_key = self.key_manager.get_current_key()
-        genai.configure(api_key=current_key)
+        genai.configure(api_key=current_key, transport="rest")
         system_instruction = self.sys_msg if self.sys_msg else None
         generation_config = genai.GenerationConfig(temperature=self.temperature)
         current_model = self.model_manager.get_current_model()
@@ -300,29 +305,14 @@ class LLM:
                     key_rotations_on_current_model = 0
                     time.sleep(0.5)
                 elif is_quota_or_rate:
-                    # Check if this is a per-day quota exhaustion (RPD) or repeated rate-limit
-                    is_daily_limit = any(term in err_str for term in ["per-day", "daily", "rpd", "day"])
-
-                    if is_daily_limit or key_rotations_on_current_model >= num_keys:
-                        # Current model is exhausted across keys or hit daily ceiling -> switch to fallback model
-                        print(f"\n[LLM] Model '{current_model}' quota exhausted ({e}). Switching to next model...")
-                        self.model_manager.rotate_model()
-                        self._configure_gemini_client()
-                        key_rotations_on_current_model = 0
-                        time.sleep(1.0)
-                    elif num_keys > 1:
-                        # Try rotating API key first for this model
-                        print(f"\n[LLM] Rate/quota limit on key for {current_model}. Rotating API key...")
+                    old_model = current_model
+                    new_model = self.model_manager.rotate_model()
+                    # If all models completed a pass, rotate to next key
+                    if len(self.model_manager.exhausted_models) == 0 and len(self.key_manager.keys) > 1:
                         self.key_manager.rotate_key()
-                        self._configure_gemini_client()
-                        key_rotations_on_current_model += 1
-                        time.sleep(1.0)
-                    else:
-                        # Single key and hit limit -> rotate model
-                        print(f"\n[LLM] Limit encountered on '{current_model}' with single key ({e}). Switching to next model...")
-                        self.model_manager.rotate_model()
-                        self._configure_gemini_client()
-                        time.sleep(1.0)
+                    print(f"\n[LLM] Free tier limit reached on '{old_model}' ({e}). Switched to fallback model '{new_model}'...")
+                    self._configure_gemini_client()
+                    time.sleep(1.0)
                 else:
                     if attempt < max_retries - 1:
                         print(f"[LLM] Attempt {attempt + 1}/{max_retries} failed: {e}. Retrying in 2s...")
