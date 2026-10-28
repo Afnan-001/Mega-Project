@@ -28,59 +28,33 @@ OUTPUT_FILE = DATA_DIR / "enriched_concepts.json"
 # ----------------------------
 # Config Defaults
 # ----------------------------
-TOP_EVIDENCE_CHUNKS = 4
-MAX_CHARS_PER_CHUNK = 750
+TOP_EVIDENCE_CHUNKS = 3
+MAX_CHARS_PER_CHUNK = 480
 MIN_EDGE_CONFIDENCE = 0.60
 
 SYS_PROMPT = (
-    "You are a domain-agnostic educational Knowledge Graph expert. "
-    "You build source-grounded educational concept hierarchies using only the provided textbook chunks."
+    "You are an educational Knowledge Graph expert. "
+    "You build source-grounded concept hierarchies using only provided textbook chunks."
 )
 
-PROMPT = """
-You are building a source-grounded educational Knowledge Graph for arbitrary educational subject domains.
+PROMPT = """You are building a source-grounded educational Knowledge Graph.
+Structure:
+Coarse-Grained Category Node -> CONTAINS -> Fine-Grained Concept Node
 
-The graph should follow this structure:
-
-Coarse-Grained Category Node
-    → CONTAINS
-Fine-Grained Concept Node
-
-The CURRENT CONCEPT is the fine-grained concept.
-
-Your task is to identify:
-1. One coarse-grained category for the current concept.
-2. Strong prerequisite concepts required before learning the current concept.
-
-STRICT RULES:
-1. Use ONLY concepts from the provided ALL CONCEPTS list.
-2. Use ONLY the provided SOURCE CHUNKS as evidence.
-3. Do NOT use outside knowledge.
-4. Do NOT hallucinate or create new concepts.
-5. The current concept itself must NOT be used as its own category or prerequisite.
-6. Every category/prerequisite relationship must cite a valid source chunk ID.
-7. Every relationship must include a short supporting evidence text from the source chunks.
-8. If source evidence is weak or missing, do NOT create that relationship.
-9. Confidence must be between 0.0 and 1.0.
-10. Return ONLY valid JSON. No explanation.
-
----
-
-CURRENT CONCEPT:
-{concept}
-
-ALL CONCEPTS:
-{all_concepts}
-
----
+CURRENT CONCEPT: {concept}
+CANDIDATE CONCEPTS: {all_concepts}
 
 SOURCE CHUNKS:
 {source_chunks}
 
----
+TASK:
+1. Identify 1 coarse-grained category (that CONTAINS the current concept) from CANDIDATE CONCEPTS using ONLY the provided SOURCE CHUNKS.
+2. Identify strong prerequisite concepts from CANDIDATE CONCEPTS using ONLY the provided SOURCE CHUNKS.
+3. Every category or prerequisite relationship MUST cite a valid evidence chunk ID and short supporting evidence text.
+4. If source evidence is weak or missing, do NOT create that relationship.
+5. Return ONLY valid JSON. No explanations.
 
 OUTPUT JSON ONLY:
-
 {{
   "concept": "{concept}",
   "node_type": "fine_grained_concept",
@@ -98,8 +72,7 @@ OUTPUT JSON ONLY:
       "evidence_text": ""
     }}
   ]
-}}
-"""
+}}"""
 
 
 def load_json(path):
@@ -164,7 +137,7 @@ def format_source_chunks(concept_name, concept_chunk_map, chunk_lookup):
             continue
 
         selected_chunk_ids.append(cid)
-        text = text.replace("\n", " ").strip()
+        text = " ".join(text.split()).strip()
         text = text[:MAX_CHARS_PER_CHUNK]
         blocks.append(f"[{cid}]\n{text}")
 
@@ -192,47 +165,61 @@ def get_candidate_concepts(
     concept_chunk_map,
     selected_chunk_ids,
     source_chunks_text,
-    page_proximity_window=10
+    chunk_to_concepts=None,
+    concept_to_pages=None,
+    page_proximity_window=3,
+    max_candidates=10,
 ):
     candidate_pool = set()
 
-    # Signal 1: Co-occurrence in source chunk text
+    # 1. Exact Chunk Co-Occurrence: concepts that share the exact evidence chunks (highest relevance)
+    if chunk_to_concepts:
+        for cid in selected_chunk_ids:
+            for other in chunk_to_concepts.get(cid, set()):
+                if other != concept_name and other in all_concepts_set:
+                    candidate_pool.add(other)
+
+    # 2. Text Mention: concepts appearing in the formatted chunk text
     source_text_lower = source_chunks_text.lower()
     for c in all_concept_names:
-        if c == concept_name:
+        if c == concept_name or c in candidate_pool:
             continue
-        if c.lower() in source_text_lower:
+        if len(c) >= 3 and c.lower() in source_text_lower:
             candidate_pool.add(c)
 
-    # Signal 2: Section / Page Proximity
-    target_pages = [
-        parse_chunk_page(cid)
-        for cid in selected_chunk_ids
-        if parse_chunk_page(cid) is not None
-    ]
+    # 3. Page Proximity (within +- page_proximity_window pages) if pool is small
+    if len(candidate_pool) < max_candidates:
+        target_pages = [
+            parse_chunk_page(cid)
+            for cid in selected_chunk_ids
+            if parse_chunk_page(cid) is not None
+        ]
 
-    if target_pages:
-        min_page = min(target_pages) - page_proximity_window
-        max_page = max(target_pages) + page_proximity_window
+        if target_pages:
+            min_page = min(target_pages) - page_proximity_window
+            max_page = max(target_pages) + page_proximity_window
 
-        for other_concept, mapped_chunks in concept_chunk_map.items():
-            if other_concept == concept_name or other_concept not in all_concepts_set:
-                continue
+            if concept_to_pages:
+                for other, pages in concept_to_pages.items():
+                    if other == concept_name or other in candidate_pool:
+                        continue
+                    if any(min_page <= p <= max_page for p in pages):
+                        candidate_pool.add(other)
+                        if len(candidate_pool) >= max_candidates:
+                            break
+            else:
+                for other_concept, mapped_chunks in concept_chunk_map.items():
+                    if other_concept == concept_name or other_concept in candidate_pool or other_concept not in all_concepts_set:
+                        continue
+                    for cid in mapped_chunks[:5]:
+                        page = parse_chunk_page(cid)
+                        if page is not None and min_page <= page <= max_page:
+                            candidate_pool.add(other_concept)
+                            break
+                    if len(candidate_pool) >= max_candidates:
+                        break
 
-            for cid in mapped_chunks[:5]:
-                page = parse_chunk_page(cid)
-                if page is not None and min_page <= page <= max_page:
-                    candidate_pool.add(other_concept)
-                    break
-
-    if len(candidate_pool) < 10:
-        for c in all_concept_names:
-            if c != concept_name:
-                candidate_pool.add(c)
-            if len(candidate_pool) >= 30:
-                break
-
-    return sorted(list(candidate_pool))
+    return sorted(list(candidate_pool))[:max_candidates]
 
 
 def verify_citation_grounding(evidence_text, evidence_chunk, chunk_lookup):
@@ -399,7 +386,16 @@ def validate_enrichment(updated, concept_name, all_concepts_set, valid_chunk_ids
     }
 
 
-def enrich_concept(concept_obj, all_concepts, all_concepts_set, concept_chunk_map, chunk_lookup, llm):
+def enrich_concept(
+    concept_obj,
+    all_concepts,
+    all_concepts_set,
+    concept_chunk_map,
+    chunk_lookup,
+    llm,
+    chunk_to_concepts=None,
+    concept_to_pages=None,
+):
     concept_name = concept_obj["concept"]
 
     source_chunks, valid_chunk_ids = format_source_chunks(
@@ -427,8 +423,24 @@ def enrich_concept(concept_obj, all_concepts, all_concepts_set, concept_chunk_ma
         concept_chunk_map=concept_chunk_map,
         selected_chunk_ids=valid_chunk_ids,
         source_chunks_text=source_chunks,
-        page_proximity_window=10
+        chunk_to_concepts=chunk_to_concepts,
+        concept_to_pages=concept_to_pages,
+        page_proximity_window=3,
+        max_candidates=10,
     )
+
+    # Optimization: If 0 candidate concepts co-occur or exist nearby, no grounded edge can form.
+    # Return immediately offline without spending LLM tokens.
+    if not candidate_concepts:
+        return {
+            "concept": concept_name,
+            "node_type": "fine_grained_concept",
+            "coarse_grained_category": [],
+            "parent_concept": [],
+            "category_edge": None,
+            "prerequisites": [],
+            "prerequisite_edges": []
+        }
 
     for attempt in range(3):
         try:
@@ -507,6 +519,21 @@ def main():
     ]
     all_concepts_set = set(all_concept_names)
 
+    # Pre-build inverted chunk-to-concepts and concept-to-pages indices for fast context optimization
+    chunk_to_concepts = {}
+    concept_to_pages = {}
+    for c, cids in concept_chunk_map.items():
+        if c in all_concepts_set:
+            pages = set()
+            for cid in cids:
+                if cid not in chunk_to_concepts:
+                    chunk_to_concepts[cid] = set()
+                chunk_to_concepts[cid].add(c)
+                p = parse_chunk_page(cid)
+                if p is not None:
+                    pages.add(p)
+            concept_to_pages[c] = pages
+
     llm = LLM(
         sys_msg=SYS_PROMPT,
         model_name=model_name,
@@ -550,7 +577,9 @@ def main():
             all_concepts_set=all_concepts_set,
             concept_chunk_map=concept_chunk_map,
             chunk_lookup=chunk_lookup,
-            llm=llm
+            llm=llm,
+            chunk_to_concepts=chunk_to_concepts,
+            concept_to_pages=concept_to_pages,
         )
 
         dt = time.time() - t0
