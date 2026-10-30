@@ -9,17 +9,19 @@ import {
   HelpCircle,
   UploadCloud,
   ChevronRight,
-  Database
+  Database,
+  Network
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab, currentRole, onOpenUploadModal }) {
-  // Strict 5 Faculty Workspace Sections requested by user
+  // Faculty Workspace Navigation Sections
   const teacherMenuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'course-content', label: 'Course Content', icon: FileText, badge: 'PDF' },
     { id: 'content-chunks', label: 'Content Chunks', icon: Database, badge: 'JSON' },
     { id: 'mapped-concepts', label: 'Mapped Concepts', icon: Share2, badge: 'JSON' },
     { id: 'concept-chunk-map', label: 'Concept Chunk Map', icon: GitMerge, badge: 'JSON' },
+    { id: 'knowledge-graph', label: 'View Knowledge Graph', icon: Network, badge: 'GRAPH' },
   ];
 
   const studentMenuItems = [

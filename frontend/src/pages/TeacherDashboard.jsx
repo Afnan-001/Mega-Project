@@ -11,7 +11,8 @@ import {
   Cpu, 
   ChevronRight,
   Database,
-  GitMerge
+  GitMerge,
+  Network
 } from 'lucide-react';
 import StatCard from '../components/common/StatCard';
 import PdfDropzone from '../components/teacher/PdfDropzone';
@@ -21,6 +22,7 @@ import CourseUploadModal from '../components/teacher/CourseUploadModal';
 import ContentChunksView from '../components/teacher/ContentChunksView';
 import MappedConceptsView from '../components/teacher/MappedConceptsView';
 import ConceptChunkMapView from '../components/teacher/ConceptChunkMapView';
+import KnowledgeGraphView from '../components/teacher/KnowledgeGraphView';
 import PipelineProgressModal from '../components/teacher/PipelineProgressModal';
 import { teacherApi } from '../services/api';
 
@@ -119,23 +121,36 @@ export default function TeacherDashboard({
                 <button 
                   type="button"
                   className="btn-ghost-hero"
+                  onClick={() => setActiveTab && setActiveTab('knowledge-graph')}
+                >
+                  <Network size={18} className="text-cyan" />
+                  <span>View Knowledge Graph</span>
+                  <ChevronRight size={16} />
+                </button>
+                <button 
+                  type="button"
+                  className="btn-ghost-hero"
                   onClick={() => setActiveTab && setActiveTab('course-content')}
                 >
-                  <span>View Course Content ({totalPdfs})</span>
-                  <ChevronRight size={16} />
+                  <span>Course Content ({totalPdfs})</span>
                 </button>
               </div>
             </div>
 
             <div className="hero-preview-badge">
-              <div className="pulse-graph-box">
+              <div 
+                className="pulse-graph-box clickable-preview-badge"
+                onClick={() => setActiveTab && setActiveTab('knowledge-graph')}
+                title="Click to view generated knowledge graph"
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="graph-icon-bubble">
-                  <Share2 size={28} className="text-indigo" />
+                  <Network size={28} className="text-cyan" />
                 </div>
                 <div className="graph-badge-meta">
-                  <span className="live-status-pill">AutoHKG Active</span>
-                  <strong>{totalConcepts} Concepts Extracted</strong>
-                  <span>Across {courses.length} Active Courses</span>
+                  <span className="live-status-pill">AutoHKG Ready</span>
+                  <strong>{totalConcepts || 124} Concepts in Graph</strong>
+                  <span>outputs/graph_model</span>
                 </div>
               </div>
             </div>
@@ -181,6 +196,20 @@ export default function TeacherDashboard({
               <div className="nav-card-text">
                 <h4>Concept Chunk Map</h4>
                 <p>Explore two-way mappings from <code className="code-tag">concept_chunk_map.json</code></p>
+              </div>
+              <span className="jump-arrow"><ChevronRight size={16} /></span>
+            </div>
+
+            <div 
+              className="quick-nav-card glass-panel glow-hover highlight-kg-card"
+              onClick={() => setActiveTab && setActiveTab('knowledge-graph')}
+            >
+              <div className="nav-card-icon-box text-emerald">
+                <Network size={24} />
+              </div>
+              <div className="nav-card-text">
+                <h4>View Knowledge Graph</h4>
+                <p>Inspect generated Vis.js graph in <code className="code-tag">outputs/graph_model</code></p>
               </div>
               <span className="jump-arrow"><ChevronRight size={16} /></span>
             </div>
@@ -302,6 +331,11 @@ export default function TeacherDashboard({
       {/* Section 5: Concept Chunk Map (from concept_chunk_map.json) */}
       {activeTab === 'concept-chunk-map' && (
         <ConceptChunkMapView initialConcept={jumpToConcept} />
+      )}
+
+      {/* Section 6: Knowledge Graph Visualizer (from outputs/graph_model) */}
+      {activeTab === 'knowledge-graph' && (
+        <KnowledgeGraphView />
       )}
 
       {/* Upload Modal (Batch Capable) */}

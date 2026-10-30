@@ -3,7 +3,9 @@ server/routers/graph.py — Graph export and concept ego-network neighborhood qu
 """
 from __future__ import annotations
 
+from pathlib import Path
 from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi.responses import HTMLResponse
 
 from server.core.dependencies import get_current_user
 from server.models.knowledge import (
@@ -15,6 +17,65 @@ from server.models.schemas import ConceptNeighborhoodResponse
 from server.models.user import UserDocument
 
 router = APIRouter(prefix="/api/v1/graph", tags=["Knowledge Graph"])
+
+SERVER_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = SERVER_DIR.parent
+
+CANDIDATE_HTML_PATHS = [
+    ROOT_DIR / "outputs" / "graph_model" / "knowledge_graph.html",
+    ROOT_DIR / "Main" / "outputs" / "graph_model" / "knowledge_graph.html",
+    ROOT_DIR / "Main" / "outputs" / "data" / "knowledge_graph.html",
+]
+
+CANDIDATE_UTILS_PATHS = [
+    ROOT_DIR / "lib" / "bindings" / "utils.js",
+    ROOT_DIR / "Main" / "lib" / "bindings" / "utils.js",
+]
+
+
+@router.get(
+    "/raw-html",
+    response_class=HTMLResponse,
+    summary="Serve rendered interactive PyVis Knowledge Graph HTML from outputs/graph_model",
+)
+@router.get(
+    "/{course_id}/raw-html",
+    response_class=HTMLResponse,
+    summary="Serve rendered interactive PyVis Knowledge Graph HTML for a course or default outputs/graph_model",
+)
+async def get_raw_graph_html(course_id: str | None = None):
+    """
+    Returns the generated interactive Vis.js Knowledge Graph HTML from outputs/graph_model.
+    Inlines utils.js so the graph is completely standalone and functional inside iframes.
+    """
+    html_file = None
+    for p in CANDIDATE_HTML_PATHS:
+        if p.exists() and p.stat().st_size > 0:
+            html_file = p
+            break
+
+    if not html_file:
+        raise HTTPException(
+            status_code=404,
+            detail="Interactive Knowledge Graph HTML not found inside outputs/graph_model.",
+        )
+
+    content = html_file.read_text(encoding="utf-8", errors="replace")
+
+    # Inline utils.js if present so iframe has no broken relative script dependencies
+    utils_content = ""
+    for up in CANDIDATE_UTILS_PATHS:
+        if up.exists() and up.stat().st_size > 0:
+            utils_content = up.read_text(encoding="utf-8", errors="replace")
+            break
+
+    if utils_content and 'src="lib/bindings/utils.js"' in content:
+        content = content.replace(
+            '<script src="lib/bindings/utils.js"></script>',
+            f'<script>\n/* Inlined lib/bindings/utils.js */\n{utils_content}\n</script>',
+        )
+
+    return HTMLResponse(content=content)
 
 
 @router.get(

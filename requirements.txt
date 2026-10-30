@@ -34,3 +34,4 @@ pyjwt
 bcrypt
 python-multipart
 pydantic-settings
+eval-type-backport  # Required for Python 3.9 PEP 604 union syntax ('|')

@@ -250,6 +250,10 @@ export const studentApi = {
 // 5. Graph API (/api/v1/graph)
 // ==========================================
 export const graphApi = {
+  getRawHtmlUrl: () => `${API_BASE}/api/v1/graph/raw-html`,
+
+  getCourseRawHtmlUrl: (courseId) => `${API_BASE}/api/v1/graph/${courseId}/raw-html`,
+
   getGmlUrl: (courseId) => `${API_BASE}/api/v1/graph/${courseId}/gml`,
 
   getNeighborhood: (courseId, conceptName) =>
