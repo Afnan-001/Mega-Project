@@ -187,13 +187,13 @@ async def list_teacher_courses(teacher: UserDocument = Depends(require_teacher))
     return [
         CourseResponse(
             id=str(c.id),
-            title=c.title,
+            title=c.title or "Untitled Course",
             description=c.description,
-            teacher_id=c.teacher_id,
-            uploaded_pdf_name=c.uploaded_pdf_name,
-            status=c.status,
+            teacher_id=c.teacher_id or "system_seed",
+            uploaded_pdf_name=c.uploaded_pdf_name or "curriculum.pdf",
+            status=c.status or "ready",
             active_task_id=c.active_task_id,
-            created_at=c.created_at,
+            created_at=c.created_at or datetime.now(timezone.utc),
         )
         for c in courses
     ]

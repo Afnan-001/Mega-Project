@@ -26,7 +26,15 @@ class Settings(BaseSettings):
     COURSE_OUTPUTS_DIR: Path = MAIN_DIR / "outputs" / "courses"
 
     # ── CORS ─────────────────────────────────────────────────────────
-    CORS_ORIGINS: list[str] = ["*"]
+    CORS_ORIGINS: list[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
+    CORS_ORIGIN_REGEX: str = r"^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$"
 
     class Config:
         env_file = ".env"

@@ -3,7 +3,7 @@ server/models/schemas.py — Pydantic Request and Response DTO Schemas.
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 from pydantic import BaseModel, Field
 
@@ -40,13 +40,13 @@ class UserResponse(BaseModel):
 # ── Teacher Schemas ─────────────────────────────────────────────────────
 class CourseResponse(BaseModel):
     id: str
-    title: str
+    title: str = "Untitled Course"
     description: str | None = None
-    teacher_id: str
-    uploaded_pdf_name: str
-    status: str
+    teacher_id: str = "system_seed"
+    uploaded_pdf_name: str = "curriculum.pdf"
+    status: str = "ready"
     active_task_id: str | None = None
-    created_at: datetime
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class PipelineStartResponse(BaseModel):
