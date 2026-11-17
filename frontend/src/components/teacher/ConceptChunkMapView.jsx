@@ -19,10 +19,12 @@ import {
   loadConceptChunkMap, 
   loadConceptChunkScores, 
   loadContentChunks, 
-  buildChunkToConceptsMap 
+  buildChunkToConceptsMap,
+  loadConceptChunkMapForCourse,
+  loadContentChunksForCourse
 } from '../../services/dataService';
 
-export default function ConceptChunkMapView({ initialConcept }) {
+export default function ConceptChunkMapView({ courseId, initialConcept }) {
   const [conceptMap, setConceptMap] = useState({});
   const [scoresMap, setScoresMap] = useState({});
   const [chunksData, setChunksData] = useState([]);
@@ -38,9 +40,9 @@ export default function ConceptChunkMapView({ initialConcept }) {
     async function fetchData() {
       setLoading(true);
       const [map, scores, chunks] = await Promise.all([
-        loadConceptChunkMap(),
+        courseId ? loadConceptChunkMapForCourse(courseId) : loadConceptChunkMap(),
         loadConceptChunkScores(),
-        loadContentChunks(),
+        courseId ? loadContentChunksForCourse(courseId) : loadContentChunks(),
       ]);
       setConceptMap(map || {});
       setScoresMap(scores || {});
@@ -53,7 +55,7 @@ export default function ConceptChunkMapView({ initialConcept }) {
       setLoading(false);
     }
     fetchData();
-  }, [initialConcept]);
+  }, [courseId, initialConcept]);
 
   // Index chunks by chunk_id for fast excerpt lookup
   const chunksById = useMemo(() => {

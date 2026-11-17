@@ -4,6 +4,7 @@ server/services/bkt_engine.py — Bayesian Knowledge Tracing (BKT) Math Engine.
 from __future__ import annotations
 
 import logging
+import math
 from datetime import datetime, timezone
 from server.models.student import StudentMasteryDocument
 
@@ -67,6 +68,47 @@ class BKTEngine:
 
         return p_obs, p_next
 
+    def compute_confidence(self, n_attempts: int, recent_answers: list[int]) -> float:
+        """
+        Learner Confidence Model (spec §3.10).
+        - Conf_attempt(N) = 1 - exp(-0.35 * N)
+        - Conf_consistency(R) = 1 - 4*p*(1-p), where p = mean of last 10 binary answers
+        - Conf_final = (0.5*Conf_attempt + 0.5*Conf_consistency) * min(1.0, N/6)
+        Returns a float in [0.0, 1.0].
+        """
+        conf_attempt = 1.0 - math.exp(-0.35 * n_attempts)
+
+        if recent_answers:
+            p = sum(recent_answers) / len(recent_answers)
+        else:
+            p = 0.0
+        conf_consistency = 1.0 - 4.0 * p * (1.0 - p)
+
+        scale = min(1.0, n_attempts / 6.0)
+        conf_final = (0.5 * conf_attempt + 0.5 * conf_consistency) * scale
+        return round(max(0.0, min(1.0, conf_final)), 4)
+
+    def update_multi_concept_mastery(
+        self,
+        priors: dict[str, float],
+        concept_weights: dict[str, float],
+        is_correct: bool,
+    ) -> dict[str, tuple[float, float]]:
+        """
+        Weighted multi-concept BKT update (spec §3.10 / GAP BE-6).
+        concept_weights must sum to 1.0; primary concept weight >= 0.51.
+        Returns {concept_name: (prior, updated)} for each concept.
+        """
+        results: dict[str, tuple[float, float]] = {}
+        for concept, weight in concept_weights.items():
+            p_prior = max(0.01, min(0.99, priors.get(concept, self.p_l0)))
+            _, p_new = self.compute_update(p_prior, is_correct)
+            # Weighted delta: preserve prior trajectory proportionally
+            p_updated = p_prior + weight * (p_new - p_prior)
+            p_updated = round(max(0.01, min(0.99, p_updated)), 4)
+            results[concept] = (p_prior, p_updated)
+        return results
+
     async def update_student_concept_mastery(
         self,
         student_id: str,
@@ -88,6 +130,7 @@ class BKTEngine:
             prior = self.p_l0
             attempts = 1
             corrects = 1 if is_correct else 0
+            recent_answers = [1 if is_correct else 0]
             _, updated = self.compute_update(prior, is_correct)
             record = StudentMasteryDocument(
                 student_id=student_id,
@@ -96,6 +139,7 @@ class BKTEngine:
                 mastery_probability=updated,
                 attempts_count=attempts,
                 correct_count=corrects,
+                recent_answers=recent_answers,
                 last_practiced_at=datetime.now(timezone.utc),
             )
             await record.insert()
@@ -106,6 +150,10 @@ class BKTEngine:
             record.attempts_count += 1
             if is_correct:
                 record.correct_count += 1
+            # Maintain rolling window of last 10 answers
+            recent_answers = list(record.recent_answers or [])
+            recent_answers.append(1 if is_correct else 0)
+            record.recent_answers = recent_answers[-10:]
             record.last_practiced_at = datetime.now(timezone.utc)
             await record.save()
 

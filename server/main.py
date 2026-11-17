@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from server.config import settings
 from server.database import close_db, init_db
+from server.services.seed_service import seed_initial_data_if_empty
 from server.routers import auth, graph, student, teacher
 
 # Configure logging
@@ -28,6 +29,7 @@ async def lifespan(app: FastAPI):
     try:
         await init_db()
         logger.info("Database connection and Beanie ODM successfully initialized.")
+        await seed_initial_data_if_empty()
     except Exception as e:
         logger.warning(
             "MongoDB connection could not be established at startup: %s. "

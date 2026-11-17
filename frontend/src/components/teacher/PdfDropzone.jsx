@@ -19,7 +19,8 @@ import { teacherApi } from '../../services/api';
 
 export default function PdfDropzone({ courses, onUploadComplete, onClose, onOpenPipelineModal }) {
   const [dragActive, setDragActive] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState(courses[0]?.id || '');
+  const [selectedCourse, setSelectedCourse] = useState(courses[0]?.id || '__new__');
+  const [newCourseTitle, setNewCourseTitle] = useState('');
   const [moduleName, setModuleName] = useState('');
   const [extractionMode, setExtractionMode] = useState('autohkg');
 
@@ -31,6 +32,15 @@ export default function PdfDropzone({ courses, onUploadComplete, onClose, onOpen
   const [completedItems, setCompletedItems] = useState([]);
 
   const fileInputRef = useRef(null);
+
+  // Auto-sync selectedCourse when courses arrive
+  React.useEffect(() => {
+    if (courses.length > 0 && selectedCourse === '__new__' && !newCourseTitle) {
+      setSelectedCourse(courses[0].id);
+    } else if (courses.length === 0) {
+      setSelectedCourse('__new__');
+    }
+  }, [courses]);
 
   const formatFileSize = (bytes) => {
     if (!bytes) return '0 KB';
@@ -134,7 +144,12 @@ export default function PdfDropzone({ courses, onUploadComplete, onClose, onOpen
     setIsProcessing(true);
     setErrorMessage('');
 
+    const isCreatingNewCourse = selectedCourse === '__new__' || !selectedCourse;
     const targetCourseObj = courses.find((c) => c.id === selectedCourse);
+    const courseTitleToUse = isCreatingNewCourse 
+      ? (newCourseTitle.trim() || fileQueue[0]?.title || fileQueue[0]?.name || 'New Course')
+      : (targetCourseObj?.name || targetCourseObj?.title || 'Course Content');
+
     const totalFiles = fileQueue.length;
     let completedCount = 0;
     const finishedMaterials = [];
@@ -147,7 +162,7 @@ export default function PdfDropzone({ courses, onUploadComplete, onClose, onOpen
       if (primaryFile && primaryFile.file) {
         const uploadRes = await teacherApi.uploadPdf(
           primaryFile.file, 
-          primaryFile.title || primaryFile.name, 
+          courseTitleToUse, 
           moduleName || 'Curriculum Ingestion'
         );
         apiCourseId = uploadRes.id || uploadRes.course_id || selectedCourse;
@@ -158,7 +173,7 @@ export default function PdfDropzone({ courses, onUploadComplete, onClose, onOpen
           onOpenPipelineModal({
             taskId: apiTaskId,
             courseId: apiCourseId,
-            courseTitle: primaryFile.title || primaryFile.name
+            courseTitle: courseTitleToUse
           });
         }
       }
@@ -482,13 +497,32 @@ export default function PdfDropzone({ courses, onUploadComplete, onClose, onOpen
                 disabled={isProcessing}
                 required
               >
+                <option value="__new__">+ Create New Course from this PDF</option>
                 {courses.map((course) => (
                   <option key={course.id} value={course.id}>
-                    {course.code} - {course.name}
+                    {course.code ? `${course.code}: ` : ''}{course.name || course.title}
                   </option>
                 ))}
               </select>
             </div>
+
+            {selectedCourse === '__new__' && (
+              <div className="form-field-group">
+                <label className="field-label">
+                  <BookOpen size={14} />
+                  <span>New Course Title</span>
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="e.g., Compilers: Principles & Techniques"
+                  value={newCourseTitle}
+                  onChange={(e) => setNewCourseTitle(e.target.value)}
+                  className="custom-input"
+                  disabled={isProcessing}
+                  required
+                />
+              </div>
+            )}
 
             <div className="form-field-group">
               <label className="field-label">

@@ -2,7 +2,7 @@
 server/models — Beanie ODM documents and Pydantic schemas.
 """
 from server.models.user import UserDocument
-from server.models.course import CourseDocument, PipelineTaskDocument
+from server.models.course import CourseDocument, PipelineTaskDocument, CourseEnrollmentDocument
 from server.models.knowledge import (
     ContentChunkDocument,
     ConceptDocument,
@@ -16,6 +16,7 @@ __all__ = [
     "UserDocument",
     "CourseDocument",
     "PipelineTaskDocument",
+    "CourseEnrollmentDocument",
     "ContentChunkDocument",
     "ConceptDocument",
     "ConceptChunkMappingDocument",

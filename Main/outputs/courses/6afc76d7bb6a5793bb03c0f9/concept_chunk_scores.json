@@ -1,0 +1,2204 @@
+{
+    "Abstract Syntax": [
+        {
+            "chunk_id": "Compiler_book_p117_c0",
+            "similarity": 0.6357
+        },
+        {
+            "chunk_id": "Compiler_book_p122_c0",
+            "similarity": 0.6189
+        },
+        {
+            "chunk_id": "Compiler_book_p79_c0",
+            "similarity": 0.6117
+        }
+    ],
+    "Abstract Syntax Tree": [
+        {
+            "chunk_id": "Compiler_book_p117_c0",
+            "similarity": 0.699
+        },
+        {
+            "chunk_id": "Compiler_book_p1018_c0",
+            "similarity": 0.6538
+        },
+        {
+            "chunk_id": "Compiler_book_p95_c0",
+            "similarity": 0.6519
+        },
+        {
+            "chunk_id": "Compiler_book_p94_c2",
+            "similarity": 0.6427
+        },
+        {
+            "chunk_id": "Compiler_book_p347_c0",
+            "similarity": 0.6399
+        },
+        {
+            "chunk_id": "Compiler_book_p384_c0",
+            "similarity": 0.638
+        },
+        {
+            "chunk_id": "Compiler_book_p121_c0",
+            "similarity": 0.6322
+        },
+        {
+            "chunk_id": "Compiler_book_p66_c0",
+            "similarity": 0.6214
+        },
+        {
+            "chunk_id": "Compiler_book_p122_c0",
+            "similarity": 0.6122
+        }
+    ],
+    "Abstraction": [
+        {
+            "chunk_id": "Compiler_book_p17_c3",
+            "similarity": 0.6613
+        }
+    ],
+    "Accepting State": [
+        {
+            "chunk_id": "Compiler_book_p178_c3",
+            "similarity": 0.6253
+        },
+        {
+            "chunk_id": "Compiler_book_p195_c3",
+            "similarity": 0.6057
+        }
+    ],
+    "Address Descriptor": [
+        {
+            "chunk_id": "Compiler_book_p570_c1",
+            "similarity": 0.6026
+        }
+    ],
+    "Annotated Parse Tree": [
+        {
+            "chunk_id": "Compiler_book_p1018_c0",
+            "similarity": 0.652
+        },
+        {
+            "chunk_id": "Compiler_book_p437_c1",
+            "similarity": 0.6185
+        },
+        {
+            "chunk_id": "Compiler_book_p363_c0",
+            "similarity": 0.6151
+        },
+        {
+            "chunk_id": "Compiler_book_p331_c3",
+            "similarity": 0.6144
+        },
+        {
+            "chunk_id": "Compiler_book_p80_c0",
+            "similarity": 0.6141
+        },
+        {
+            "chunk_id": "Compiler_book_p117_c0",
+            "similarity": 0.6048
+        },
+        {
+            "chunk_id": "Compiler_book_p227_c0",
+            "similarity": 0.6002
+        },
+        {
+            "chunk_id": "Compiler_book_p347_c2",
+            "similarity": 0.6001
+        }
+    ],
+    "Anticipated Expression": [
+        {
+            "chunk_id": "Compiler_book_p674_c0",
+            "similarity": 0.6411
+        },
+        {
+            "chunk_id": "Compiler_book_p675_c0",
+            "similarity": 0.61
+        },
+        {
+            "chunk_id": "Compiler_book_p673_c0",
+            "similarity": 0.6046
+        }
+    ],
+    "Automatic Garbage Collection": [
+        {
+            "chunk_id": "Compiler_book_p502_c2",
+            "similarity": 0.6152
+        }
+    ],
+    "Binary Translation": [
+        {
+            "chunk_id": "Compiler_book_p47_c1",
+            "similarity": 0.6406
+        }
+    ],
+    "Called Procedure": [
+        {
+            "chunk_id": "Compiler_book_p461_c1",
+            "similarity": 0.6075
+        }
+    ],
+    "Calling Procedure": [
+        {
+            "chunk_id": "Compiler_book_p461_c1",
+            "similarity": 0.6309
+        },
+        {
+            "chunk_id": "Compiler_book_p461_c0",
+            "similarity": 0.6018
+        }
+    ],
+    "Canonical LR": [
+        {
+            "chunk_id": "Compiler_book_p14_c2",
+            "similarity": 0.6205
+        }
+    ],
+    "Class Arith": [
+        {
+            "chunk_id": "Compiler_book_p998_c0",
+            "similarity": 0.6011
+        }
+    ],
+    "Class Expr": [
+        {
+            "chunk_id": "Compiler_book_p1000_c0",
+            "similarity": 0.6104
+        }
+    ],
+    "Class Token": [
+        {
+            "chunk_id": "Compiler_book_p106_c1",
+            "similarity": 0.6324
+        }
+    ],
+    "Cloned Call Graph": [
+        {
+            "chunk_id": "Compiler_book_p973_c1",
+            "similarity": 0.6638
+        },
+        {
+            "chunk_id": "Compiler_book_p973_c0",
+            "similarity": 0.6237
+        },
+        {
+            "chunk_id": "Compiler_book_p974_c0",
+            "similarity": 0.6121
+        }
+    ],
+    "Code Scheduling": [
+        {
+            "chunk_id": "Compiler_book_p754_c0",
+            "similarity": 0.6531
+        },
+        {
+            "chunk_id": "Compiler_book_p760_c0",
+            "similarity": 0.6116
+        },
+        {
+            "chunk_id": "Compiler_book_p758_c0",
+            "similarity": 0.6107
+        },
+        {
+            "chunk_id": "Compiler_book_p762_c0",
+            "similarity": 0.607
+        },
+        {
+            "chunk_id": "Compiler_book_p736_c0",
+            "similarity": 0.6059
+        },
+        {
+            "chunk_id": "Compiler_book_p752_c0",
+            "similarity": 0.6016
+        }
+    ],
+    "Common Subexpression": [
+        {
+            "chunk_id": "Compiler_book_p559_c0",
+            "similarity": 0.6053
+        }
+    ],
+    "Compiled Simulation": [
+        {
+            "chunk_id": "Compiler_book_p48_c0",
+            "similarity": 0.6127
+        },
+        {
+            "chunk_id": "Compiler_book_p1031_c1",
+            "similarity": 0.6003
+        }
+    ],
+    "Compiler": [
+        {
+            "chunk_id": "Compiler_book_p2_c0",
+            "similarity": 0.6444
+        },
+        {
+            "chunk_id": "Compiler_book_p40_c0",
+            "similarity": 0.6131
+        },
+        {
+            "chunk_id": "Compiler_book_p26_c2",
+            "similarity": 0.6071
+        }
+    ],
+    "Compiler Design": [
+        {
+            "chunk_id": "Compiler_book_p40_c0",
+            "similarity": 0.667
+        },
+        {
+            "chunk_id": "Compiler_book_p10_c1",
+            "similarity": 0.6492
+        },
+        {
+            "chunk_id": "Compiler_book_p2_c0",
+            "similarity": 0.6358
+        },
+        {
+            "chunk_id": "Compiler_book_p42_c1",
+            "similarity": 0.6328
+        },
+        {
+            "chunk_id": "Compiler_book_p39_c0",
+            "similarity": 0.6317
+        },
+        {
+            "chunk_id": "Compiler_book_p39_c1",
+            "similarity": 0.6284
+        },
+        {
+            "chunk_id": "Compiler_book_p46_c0",
+            "similarity": 0.626
+        },
+        {
+            "chunk_id": "Compiler_book_p37_c0",
+            "similarity": 0.6232
+        },
+        {
+            "chunk_id": "Compiler_book_p48_c0",
+            "similarity": 0.6217
+        },
+        {
+            "chunk_id": "Compiler_book_p41_c2",
+            "similarity": 0.6174
+        },
+        {
+            "chunk_id": "Compiler_book_p26_c1",
+            "similarity": 0.6161
+        },
+        {
+            "chunk_id": "Compiler_book_p42_c0",
+            "similarity": 0.6152
+        },
+        {
+            "chunk_id": "Compiler_book_p62_c0",
+            "similarity": 0.6107
+        },
+        {
+            "chunk_id": "Compiler_book_p44_c0",
+            "similarity": 0.6095
+        },
+        {
+            "chunk_id": "Compiler_book_p40_c1",
+            "similarity": 0.6067
+        },
+        {
+            "chunk_id": "Compiler_book_p29_c0",
+            "similarity": 0.6039
+        },
+        {
+            "chunk_id": "Compiler_book_p6_c0",
+            "similarity": 0.6017
+        }
+    ],
+    "Compiler Technology": [
+        {
+            "chunk_id": "Compiler_book_p2_c0",
+            "similarity": 0.6802
+        },
+        {
+            "chunk_id": "Compiler_book_p10_c1",
+            "similarity": 0.6419
+        },
+        {
+            "chunk_id": "Compiler_book_p48_c0",
+            "similarity": 0.6227
+        },
+        {
+            "chunk_id": "Compiler_book_p26_c1",
+            "similarity": 0.6195
+        }
+    ],
+    "Compiler Writing": [
+        {
+            "chunk_id": "Compiler_book_p40_c0",
+            "similarity": 0.6804
+        },
+        {
+            "chunk_id": "Compiler_book_p39_c0",
+            "similarity": 0.6697
+        },
+        {
+            "chunk_id": "Compiler_book_p10_c1",
+            "similarity": 0.6602
+        },
+        {
+            "chunk_id": "Compiler_book_p26_c1",
+            "similarity": 0.6588
+        },
+        {
+            "chunk_id": "Compiler_book_p37_c0",
+            "similarity": 0.6574
+        },
+        {
+            "chunk_id": "Compiler_book_p39_c1",
+            "similarity": 0.6424
+        },
+        {
+            "chunk_id": "Compiler_book_p2_c0",
+            "similarity": 0.632
+        },
+        {
+            "chunk_id": "Compiler_book_p41_c2",
+            "similarity": 0.6277
+        },
+        {
+            "chunk_id": "Compiler_book_p39_c3",
+            "similarity": 0.6264
+        },
+        {
+            "chunk_id": "Compiler_book_p39_c2",
+            "similarity": 0.625
+        },
+        {
+            "chunk_id": "Compiler_book_p62_c0",
+            "similarity": 0.6188
+        },
+        {
+            "chunk_id": "Compiler_book_p26_c0",
+            "similarity": 0.6174
+        },
+        {
+            "chunk_id": "Compiler_book_p40_c1",
+            "similarity": 0.6168
+        },
+        {
+            "chunk_id": "Compiler_book_p63_c0",
+            "similarity": 0.6161
+        },
+        {
+            "chunk_id": "Compiler_book_p42_c1",
+            "similarity": 0.6144
+        },
+        {
+            "chunk_id": "Compiler_book_p26_c2",
+            "similarity": 0.6094
+        },
+        {
+            "chunk_id": "Compiler_book_p5_c1",
+            "similarity": 0.603
+        }
+    ],
+    "Concrete Syntax": [
+        {
+            "chunk_id": "Compiler_book_p122_c0",
+            "similarity": 0.6003
+        }
+    ],
+    "Copying Collector": [
+        {
+            "chunk_id": "Compiler_book_p506_c0",
+            "similarity": 0.6686
+        },
+        {
+            "chunk_id": "Compiler_book_p522_c2",
+            "similarity": 0.6347
+        },
+        {
+            "chunk_id": "Compiler_book_p504_c1",
+            "similarity": 0.6021
+        },
+        {
+            "chunk_id": "Compiler_book_p522_c1",
+            "similarity": 0.6019
+        }
+    ],
+    "Cyclic Garbage": [
+        {
+            "chunk_id": "Compiler_book_p515_c2",
+            "similarity": 0.6123
+        }
+    ],
+    "Data Abstraction": [
+        {
+            "chunk_id": "Compiler_book_p17_c3",
+            "similarity": 0.653
+        },
+        {
+            "chunk_id": "Compiler_book_p622_c0",
+            "similarity": 0.6176
+        },
+        {
+            "chunk_id": "Compiler_book_p623_c1",
+            "similarity": 0.6039
+        }
+    ],
+    "Data Dependence Analysis": [
+        {
+            "chunk_id": "Compiler_book_p848_c0",
+            "similarity": 0.6451
+        },
+        {
+            "chunk_id": "Compiler_book_p842_c0",
+            "similarity": 0.6103
+        }
+    ],
+    "Data Dependence Problem": [
+        {
+            "chunk_id": "Compiler_book_p848_c0",
+            "similarity": 0.6412
+        }
+    ],
+    "Datalog Program": [
+        {
+            "chunk_id": "Compiler_book_p954_c2",
+            "similarity": 0.6353
+        }
+    ],
+    "Datalog Rule": [
+        {
+            "chunk_id": "Compiler_book_p984_c3",
+            "similarity": 0.6236
+        },
+        {
+            "chunk_id": "Compiler_book_p954_c1",
+            "similarity": 0.6058
+        }
+    ],
+    "Dependence Analysis": [
+        {
+            "chunk_id": "Compiler_book_p848_c0",
+            "similarity": 0.6511
+        }
+    ],
+    "Dependence Graph": [
+        {
+            "chunk_id": "Compiler_book_p848_c0",
+            "similarity": 0.616
+        }
+    ],
+    "Dependency Graph": [
+        {
+            "chunk_id": "Compiler_book_p848_c0",
+            "similarity": 0.613
+        }
+    ],
+    "Deterministic Finite Automaton": [
+        {
+            "chunk_id": "Compiler_book_p1022_c0",
+            "similarity": 0.6291
+        },
+        {
+            "chunk_id": "Compiler_book_p172_c0",
+            "similarity": 0.6149
+        },
+        {
+            "chunk_id": "Compiler_book_p213_c1",
+            "similarity": 0.6136
+        },
+        {
+            "chunk_id": "Compiler_book_p174_c2",
+            "similarity": 0.6119
+        }
+    ],
+    "Distributed Memory Machine": [
+        {
+            "chunk_id": "Compiler_book_p919_c0",
+            "similarity": 0.603
+        }
+    ],
+    "Dynamic Programming": [
+        {
+            "chunk_id": "Compiler_book_p600_c0",
+            "similarity": 0.6388
+        },
+        {
+            "chunk_id": "Compiler_book_p602_c2",
+            "similarity": 0.6073
+        }
+    ],
+    "Dynamic Programming Algorithm": [
+        {
+            "chunk_id": "Compiler_book_p600_c0",
+            "similarity": 0.638
+        }
+    ],
+    "Dynamic RAM": [
+        {
+            "chunk_id": "Compiler_book_p481_c0",
+            "similarity": 0.6507
+        }
+    ],
+    "EDB Predicate": [
+        {
+            "chunk_id": "Compiler_book_p949_c1",
+            "similarity": 0.628
+        },
+        {
+            "chunk_id": "Compiler_book_p949_c2",
+            "similarity": 0.6059
+        },
+        {
+            "chunk_id": "Compiler_book_p957_c0",
+            "similarity": 0.6011
+        }
+    ],
+    "Elimination Algorithm": [
+        {
+            "chunk_id": "Compiler_book_p825_c1",
+            "similarity": 0.6238
+        },
+        {
+            "chunk_id": "Compiler_book_p496_c2",
+            "similarity": 0.6037
+        }
+    ],
+    "Enclosing Construct": [
+        {
+            "chunk_id": "Compiler_book_p288_c0",
+            "similarity": 0.6062
+        }
+    ],
+    "Enclosing Loop": [
+        {
+            "chunk_id": "Compiler_book_p270_c0",
+            "similarity": 0.6161
+        }
+    ],
+    "Error Correction": [
+        {
+            "chunk_id": "Compiler_book_p139_c1",
+            "similarity": 0.6002
+        }
+    ],
+    "Error Detection": [
+        {
+            "chunk_id": "Compiler_book_p219_c3",
+            "similarity": 0.6056
+        },
+        {
+            "chunk_id": "Compiler_book_p309_c2",
+            "similarity": 0.603
+        },
+        {
+            "chunk_id": "Compiler_book_p220_c1",
+            "similarity": 0.6004
+        }
+    ],
+    "Error Handling": [
+        {
+            "chunk_id": "Compiler_book_p220_c1",
+            "similarity": 0.6354
+        },
+        {
+            "chunk_id": "Compiler_book_p99_c3",
+            "similarity": 0.6338
+        },
+        {
+            "chunk_id": "Compiler_book_p309_c1",
+            "similarity": 0.6162
+        },
+        {
+            "chunk_id": "Compiler_book_p219_c0",
+            "similarity": 0.6005
+        }
+    ],
+    "Euclidean Algorithm": [
+        {
+            "chunk_id": "Compiler_book_p845_c0",
+            "similarity": 0.6619
+        },
+        {
+            "chunk_id": "Compiler_book_p851_c2",
+            "similarity": 0.6472
+        }
+    ],
+    "Evaluation Order": [
+        {
+            "chunk_id": "Compiler_book_p820_c0",
+            "similarity": 0.6004
+        }
+    ],
+    "Executed Iteration Space": [
+        {
+            "chunk_id": "Compiler_book_p805_c1",
+            "similarity": 0.6365
+        },
+        {
+            "chunk_id": "Compiler_book_p816_c0",
+            "similarity": 0.6054
+        },
+        {
+            "chunk_id": "Compiler_book_p818_c2",
+            "similarity": 0.6026
+        }
+    ],
+    "Expression Grammar": [
+        {
+            "chunk_id": "Compiler_book_p218_c2",
+            "similarity": 0.6429
+        },
+        {
+            "chunk_id": "Compiler_book_p212_c2",
+            "similarity": 0.6271
+        },
+        {
+            "chunk_id": "Compiler_book_p213_c0",
+            "similarity": 0.6096
+        },
+        {
+            "chunk_id": "Compiler_book_p95_c1",
+            "similarity": 0.6065
+        },
+        {
+            "chunk_id": "Compiler_book_p223_c0",
+            "similarity": 0.6064
+        },
+        {
+            "chunk_id": "Compiler_book_p256_c1",
+            "similarity": 0.602
+        },
+        {
+            "chunk_id": "Compiler_book_p234_c0",
+            "similarity": 0.6018
+        }
+    ],
+    "Expression Translator": [
+        {
+            "chunk_id": "Compiler_book_p94_c0",
+            "similarity": 0.6207
+        },
+        {
+            "chunk_id": "Compiler_book_p119_c0",
+            "similarity": 0.6021
+        }
+    ],
+    "Generational Garbage Collection": [
+        {
+            "chunk_id": "Compiler_book_p513_c3",
+            "similarity": 0.66
+        },
+        {
+            "chunk_id": "Compiler_book_p512_c3",
+            "similarity": 0.6321
+        },
+        {
+            "chunk_id": "Compiler_book_p515_c0",
+            "similarity": 0.6204
+        },
+        {
+            "chunk_id": "Compiler_book_p515_c1",
+            "similarity": 0.6111
+        },
+        {
+            "chunk_id": "Compiler_book_p508_c2",
+            "similarity": 0.6065
+        },
+        {
+            "chunk_id": "Compiler_book_p514_c2",
+            "similarity": 0.6061
+        }
+    ],
+    "Graph Coloring": [
+        {
+            "chunk_id": "Compiler_book_p581_c1",
+            "similarity": 0.6368
+        }
+    ],
+    "Graph Depth": [
+        {
+            "chunk_id": "Compiler_book_p690_c0",
+            "similarity": 0.6393
+        }
+    ],
+    "Handle Pruning": [
+        {
+            "chunk_id": "Compiler_book_p14_c1",
+            "similarity": 0.6136
+        }
+    ],
+    "IDB Predicate": [
+        {
+            "chunk_id": "Compiler_book_p953_c2",
+            "similarity": 0.627
+        },
+        {
+            "chunk_id": "Compiler_book_p950_c1",
+            "similarity": 0.624
+        },
+        {
+            "chunk_id": "Compiler_book_p957_c0",
+            "similarity": 0.6021
+        }
+    ],
+    "Incremental Garbage Collection": [
+        {
+            "chunk_id": "Compiler_book_p508_c2",
+            "similarity": 0.6101
+        },
+        {
+            "chunk_id": "Compiler_book_p526_c3",
+            "similarity": 0.6085
+        }
+    ],
+    "Instruction": [
+        {
+            "chunk_id": "Compiler_book_p553_c0",
+            "similarity": 0.6006
+        }
+    ],
+    "Instruction Ordering": [
+        {
+            "chunk_id": "Compiler_book_p531_c0",
+            "similarity": 0.6495
+        },
+        {
+            "chunk_id": "Compiler_book_p537_c2",
+            "similarity": 0.6325
+        },
+        {
+            "chunk_id": "Compiler_book_p759_c2",
+            "similarity": 0.6297
+        },
+        {
+            "chunk_id": "Compiler_book_p553_c0",
+            "similarity": 0.6233
+        },
+        {
+            "chunk_id": "Compiler_book_p391_c0",
+            "similarity": 0.6218
+        },
+        {
+            "chunk_id": "Compiler_book_p393_c2",
+            "similarity": 0.6158
+        },
+        {
+            "chunk_id": "Compiler_book_p481_c2",
+            "similarity": 0.6142
+        },
+        {
+            "chunk_id": "Compiler_book_p586_c0",
+            "similarity": 0.6097
+        },
+        {
+            "chunk_id": "Compiler_book_p883_c0",
+            "similarity": 0.607
+        }
+    ],
+    "Instruction Pipeline": [
+        {
+            "chunk_id": "Compiler_book_p733_c2",
+            "similarity": 0.6067
+        }
+    ],
+    "Instruction Selection": [
+        {
+            "chunk_id": "Compiler_book_p583_c0",
+            "similarity": 0.6526
+        },
+        {
+            "chunk_id": "Compiler_book_p586_c0",
+            "similarity": 0.6358
+        }
+    ],
+    "Intermediate Code": [
+        {
+            "chunk_id": "Compiler_book_p128_c0",
+            "similarity": 0.6012
+        }
+    ],
+    "Interprocedural Analysis": [
+        {
+            "chunk_id": "Compiler_book_p933_c0",
+            "similarity": 0.6098
+        },
+        {
+            "chunk_id": "Compiler_book_p966_c0",
+            "similarity": 0.6064
+        },
+        {
+            "chunk_id": "Compiler_book_p973_c0",
+            "similarity": 0.6046
+        }
+    ],
+    "Interprocedural Data Flow Analysis": [
+        {
+            "chunk_id": "Compiler_book_p989_c0",
+            "similarity": 0.6376
+        }
+    ],
+    "Intraprocedural Analysis": [
+        {
+            "chunk_id": "Compiler_book_p928_c2",
+            "similarity": 0.6323
+        },
+        {
+            "chunk_id": "Compiler_book_p941_c1",
+            "similarity": 0.6275
+        },
+        {
+            "chunk_id": "Compiler_book_p928_c1",
+            "similarity": 0.6252
+        },
+        {
+            "chunk_id": "Compiler_book_p966_c0",
+            "similarity": 0.6215
+        },
+        {
+            "chunk_id": "Compiler_book_p989_c0",
+            "similarity": 0.6163
+        },
+        {
+            "chunk_id": "Compiler_book_p929_c0",
+            "similarity": 0.6147
+        },
+        {
+            "chunk_id": "Compiler_book_p928_c0",
+            "similarity": 0.6132
+        },
+        {
+            "chunk_id": "Compiler_book_p973_c0",
+            "similarity": 0.6108
+        },
+        {
+            "chunk_id": "Compiler_book_p933_c0",
+            "similarity": 0.6099
+        },
+        {
+            "chunk_id": "Compiler_book_p943_c0",
+            "similarity": 0.6054
+        },
+        {
+            "chunk_id": "Compiler_book_p937_c0",
+            "similarity": 0.605
+        }
+    ],
+    "Iteration": [
+        {
+            "chunk_id": "Compiler_book_p823_c1",
+            "similarity": 0.6139
+        }
+    ],
+    "Iteration Space": [
+        {
+            "chunk_id": "Compiler_book_p805_c1",
+            "similarity": 0.6436
+        },
+        {
+            "chunk_id": "Compiler_book_p813_c2",
+            "similarity": 0.6426
+        },
+        {
+            "chunk_id": "Compiler_book_p805_c0",
+            "similarity": 0.6413
+        },
+        {
+            "chunk_id": "Compiler_book_p816_c0",
+            "similarity": 0.6379
+        },
+        {
+            "chunk_id": "Compiler_book_p823_c1",
+            "similarity": 0.6271
+        },
+        {
+            "chunk_id": "Compiler_book_p22_c2",
+            "similarity": 0.6029
+        },
+        {
+            "chunk_id": "Compiler_book_p822_c0",
+            "similarity": 0.601
+        }
+    ],
+    "Jumping Code": [
+        {
+            "chunk_id": "Compiler_book_p1002_c0",
+            "similarity": 0.6096
+        }
+    ],
+    "KMP Algorithm": [
+        {
+            "chunk_id": "Compiler_book_p163_c0",
+            "similarity": 0.6045
+        }
+    ],
+    "LALR Parsing Table": [
+        {
+            "chunk_id": "Compiler_book_p291_c0",
+            "similarity": 0.6476
+        },
+        {
+            "chunk_id": "Compiler_book_p293_c1",
+            "similarity": 0.6089
+        },
+        {
+            "chunk_id": "Compiler_book_p316_c3",
+            "similarity": 0.6028
+        }
+    ],
+    "LR Parse": [
+        {
+            "chunk_id": "Compiler_book_p266_c0",
+            "similarity": 0.6014
+        },
+        {
+            "chunk_id": "Compiler_book_p267_c0",
+            "similarity": 0.6009
+        }
+    ],
+    "LR Parser": [
+        {
+            "chunk_id": "Compiler_book_p275_c2",
+            "similarity": 0.6049
+        },
+        {
+            "chunk_id": "Compiler_book_p275_c1",
+            "similarity": 0.6041
+        }
+    ],
+    "LR Parsing": [
+        {
+            "chunk_id": "Compiler_book_p267_c0",
+            "similarity": 0.6544
+        },
+        {
+            "chunk_id": "Compiler_book_p275_c2",
+            "similarity": 0.646
+        },
+        {
+            "chunk_id": "Compiler_book_p266_c0",
+            "similarity": 0.6455
+        },
+        {
+            "chunk_id": "Compiler_book_p276_c0",
+            "similarity": 0.6338
+        },
+        {
+            "chunk_id": "Compiler_book_p266_c1",
+            "similarity": 0.6261
+        },
+        {
+            "chunk_id": "Compiler_book_p14_c2",
+            "similarity": 0.6224
+        },
+        {
+            "chunk_id": "Compiler_book_p291_c0",
+            "similarity": 0.6172
+        },
+        {
+            "chunk_id": "Compiler_book_p14_c1",
+            "similarity": 0.617
+        },
+        {
+            "chunk_id": "Compiler_book_p275_c1",
+            "similarity": 0.616
+        },
+        {
+            "chunk_id": "Compiler_book_p290_c0",
+            "similarity": 0.6118
+        },
+        {
+            "chunk_id": "Compiler_book_p267_c1",
+            "similarity": 0.6104
+        },
+        {
+            "chunk_id": "Compiler_book_p1026_c1",
+            "similarity": 0.6084
+        },
+        {
+            "chunk_id": "Compiler_book_p278_c0",
+            "similarity": 0.6072
+        },
+        {
+            "chunk_id": "Compiler_book_p273_c1",
+            "similarity": 0.6071
+        },
+        {
+            "chunk_id": "Compiler_book_p590_c2",
+            "similarity": 0.6025
+        }
+    ],
+    "LR Parsing Table": [
+        {
+            "chunk_id": "Compiler_book_p291_c0",
+            "similarity": 0.6261
+        },
+        {
+            "chunk_id": "Compiler_book_p302_c2",
+            "similarity": 0.6073
+        },
+        {
+            "chunk_id": "Compiler_book_p275_c2",
+            "similarity": 0.6054
+        }
+    ],
+    "Lex Compiler": [
+        {
+            "chunk_id": "Compiler_book_p165_c1",
+            "similarity": 0.6102
+        }
+    ],
+    "Lexical Analysis": [
+        {
+            "chunk_id": "Compiler_book_p215_c0",
+            "similarity": 0.664
+        },
+        {
+            "chunk_id": "Compiler_book_p11_c3",
+            "similarity": 0.6579
+        },
+        {
+            "chunk_id": "Compiler_book_p134_c0",
+            "similarity": 0.6313
+        },
+        {
+            "chunk_id": "Compiler_book_p213_c0",
+            "similarity": 0.6292
+        },
+        {
+            "chunk_id": "Compiler_book_p12_c0",
+            "similarity": 0.6243
+        },
+        {
+            "chunk_id": "Compiler_book_p165_c0",
+            "similarity": 0.6228
+        },
+        {
+            "chunk_id": "Compiler_book_p135_c0",
+            "similarity": 0.6206
+        },
+        {
+            "chunk_id": "Compiler_book_p141_c0",
+            "similarity": 0.6126
+        }
+    ],
+    "Lexical Analyzer": [
+        {
+            "chunk_id": "Compiler_book_p134_c0",
+            "similarity": 0.6597
+        },
+        {
+            "chunk_id": "Compiler_book_p215_c0",
+            "similarity": 0.6338
+        },
+        {
+            "chunk_id": "Compiler_book_p108_c0",
+            "similarity": 0.6309
+        },
+        {
+            "chunk_id": "Compiler_book_p135_c0",
+            "similarity": 0.6284
+        },
+        {
+            "chunk_id": "Compiler_book_p165_c0",
+            "similarity": 0.6241
+        },
+        {
+            "chunk_id": "Compiler_book_p191_c1",
+            "similarity": 0.6218
+        },
+        {
+            "chunk_id": "Compiler_book_p213_c0",
+            "similarity": 0.6171
+        },
+        {
+            "chunk_id": "Compiler_book_p1026_c0",
+            "similarity": 0.6161
+        },
+        {
+            "chunk_id": "Compiler_book_p11_c3",
+            "similarity": 0.6161
+        },
+        {
+            "chunk_id": "Compiler_book_p134_c1",
+            "similarity": 0.6158
+        },
+        {
+            "chunk_id": "Compiler_book_p106_c0",
+            "similarity": 0.6151
+        },
+        {
+            "chunk_id": "Compiler_book_p166_c2",
+            "similarity": 0.6145
+        },
+        {
+            "chunk_id": "Compiler_book_p159_c1",
+            "similarity": 0.6072
+        },
+        {
+            "chunk_id": "Compiler_book_p135_c1",
+            "similarity": 0.6037
+        }
+    ],
+    "List Scheduling": [
+        {
+            "chunk_id": "Compiler_book_p750_c0",
+            "similarity": 0.6155
+        }
+    ],
+    "Manual Memory Management": [
+        {
+            "chunk_id": "Compiler_book_p478_c0",
+            "similarity": 0.6251
+        }
+    ],
+    "Memory Access": [
+        {
+            "chunk_id": "Compiler_book_p798_c2",
+            "similarity": 0.6031
+        }
+    ],
+    "Memory Address": [
+        {
+            "chunk_id": "Compiler_book_p538_c1",
+            "similarity": 0.603
+        }
+    ],
+    "Memory Management": [
+        {
+            "chunk_id": "Compiler_book_p478_c0",
+            "similarity": 0.6569
+        },
+        {
+            "chunk_id": "Compiler_book_p478_c2",
+            "similarity": 0.6206
+        },
+        {
+            "chunk_id": "Compiler_book_p480_c0",
+            "similarity": 0.6097
+        },
+        {
+            "chunk_id": "Compiler_book_p479_c0",
+            "similarity": 0.6074
+        }
+    ],
+    "Memory Manager": [
+        {
+            "chunk_id": "Compiler_book_p478_c0",
+            "similarity": 0.6559
+        },
+        {
+            "chunk_id": "Compiler_book_p478_c2",
+            "similarity": 0.6046
+        }
+    ],
+    "Memory Usage": [
+        {
+            "chunk_id": "Compiler_book_p491_c1",
+            "similarity": 0.6223
+        },
+        {
+            "chunk_id": "Compiler_book_p478_c0",
+            "similarity": 0.6192
+        },
+        {
+            "chunk_id": "Compiler_book_p525_c3",
+            "similarity": 0.6091
+        },
+        {
+            "chunk_id": "Compiler_book_p481_c3",
+            "similarity": 0.6042
+        },
+        {
+            "chunk_id": "Compiler_book_p523_c3",
+            "similarity": 0.6038
+        },
+        {
+            "chunk_id": "Compiler_book_p480_c0",
+            "similarity": 0.6002
+        }
+    ],
+    "Nesting Depth": [
+        {
+            "chunk_id": "Compiler_book_p468_c2",
+            "similarity": 0.6285
+        }
+    ],
+    "Next Instruction": [
+        {
+            "chunk_id": "Compiler_book_p438_c0",
+            "similarity": 0.6086
+        },
+        {
+            "chunk_id": "Compiler_book_p440_c0",
+            "similarity": 0.6062
+        }
+    ],
+    "Nonterminal Expression": [
+        {
+            "chunk_id": "Compiler_book_p14_c0",
+            "similarity": 0.6011
+        }
+    ],
+    "Optimized Program": [
+        {
+            "chunk_id": "Compiler_book_p905_c1",
+            "similarity": 0.6133
+        },
+        {
+            "chunk_id": "Compiler_book_p916_c1",
+            "similarity": 0.6092
+        },
+        {
+            "chunk_id": "Compiler_book_p884_c2",
+            "similarity": 0.6075
+        },
+        {
+            "chunk_id": "Compiler_book_p730_c1",
+            "similarity": 0.6021
+        },
+        {
+            "chunk_id": "Compiler_book_p926_c1",
+            "similarity": 0.6017
+        }
+    ],
+    "Optimizing Compiler": [
+        {
+            "chunk_id": "Compiler_book_p42_c0",
+            "similarity": 0.6823
+        },
+        {
+            "chunk_id": "Compiler_book_p41_c2",
+            "similarity": 0.6793
+        },
+        {
+            "chunk_id": "Compiler_book_p41_c1",
+            "similarity": 0.6578
+        },
+        {
+            "chunk_id": "Compiler_book_p10_c1",
+            "similarity": 0.6565
+        },
+        {
+            "chunk_id": "Compiler_book_p42_c1",
+            "similarity": 0.656
+        },
+        {
+            "chunk_id": "Compiler_book_p609_c1",
+            "similarity": 0.6484
+        },
+        {
+            "chunk_id": "Compiler_book_p794_c0",
+            "similarity": 0.6467
+        },
+        {
+            "chunk_id": "Compiler_book_p530_c1",
+            "similarity": 0.6446
+        },
+        {
+            "chunk_id": "Compiler_book_p40_c3",
+            "similarity": 0.6445
+        },
+        {
+            "chunk_id": "Compiler_book_p927_c0",
+            "similarity": 0.6438
+        },
+        {
+            "chunk_id": "Compiler_book_p2_c0",
+            "similarity": 0.6421
+        },
+        {
+            "chunk_id": "Compiler_book_p41_c0",
+            "similarity": 0.6418
+        },
+        {
+            "chunk_id": "Compiler_book_p562_c0",
+            "similarity": 0.6393
+        },
+        {
+            "chunk_id": "Compiler_book_p62_c0",
+            "similarity": 0.6322
+        }
+    ],
+    "Output Dependence": [
+        {
+            "chunk_id": "Compiler_book_p723_c0",
+            "similarity": 0.6058
+        },
+        {
+            "chunk_id": "Compiler_book_p653_c0",
+            "similarity": 0.6008
+        }
+    ],
+    "Parallel Computation": [
+        {
+            "chunk_id": "Compiler_book_p905_c1",
+            "similarity": 0.6248
+        },
+        {
+            "chunk_id": "Compiler_book_p799_c0",
+            "similarity": 0.6208
+        },
+        {
+            "chunk_id": "Compiler_book_p926_c1",
+            "similarity": 0.6199
+        },
+        {
+            "chunk_id": "Compiler_book_p732_c1",
+            "similarity": 0.615
+        },
+        {
+            "chunk_id": "Compiler_book_p905_c2",
+            "similarity": 0.6104
+        }
+    ],
+    "Parallel Execution": [
+        {
+            "chunk_id": "Compiler_book_p735_c0",
+            "similarity": 0.6047
+        }
+    ],
+    "Parallelizable Loop": [
+        {
+            "chunk_id": "Compiler_book_p905_c0",
+            "similarity": 0.611
+        },
+        {
+            "chunk_id": "Compiler_book_p879_c0",
+            "similarity": 0.61
+        }
+    ],
+    "Parameter Passing": [
+        {
+            "chunk_id": "Compiler_book_p62_c3",
+            "similarity": 0.6563
+        },
+        {
+            "chunk_id": "Compiler_book_p473_c0",
+            "similarity": 0.6437
+        },
+        {
+            "chunk_id": "Compiler_book_p493_c3",
+            "similarity": 0.6013
+        }
+    ],
+    "Parse Tree": [
+        {
+            "chunk_id": "Compiler_book_p227_c1",
+            "similarity": 0.6116
+        },
+        {
+            "chunk_id": "Compiler_book_p227_c0",
+            "similarity": 0.6028
+        }
+    ],
+    "Parser Generator": [
+        {
+            "chunk_id": "Compiler_book_p312_c0",
+            "similarity": 0.6033
+        }
+    ],
+    "Parsing Action": [
+        {
+            "chunk_id": "Compiler_book_p437_c1",
+            "similarity": 0.6229
+        }
+    ],
+    "Parsing Algorithm": [
+        {
+            "chunk_id": "Compiler_book_p275_c2",
+            "similarity": 0.6024
+        }
+    ],
+    "Parsing Process": [
+        {
+            "chunk_id": "Compiler_book_p70_c1",
+            "similarity": 0.6262
+        },
+        {
+            "chunk_id": "Compiler_book_p86_c1",
+            "similarity": 0.6024
+        },
+        {
+            "chunk_id": "Compiler_book_p275_c2",
+            "similarity": 0.6017
+        }
+    ],
+    "Parsing Table": [
+        {
+            "chunk_id": "Compiler_book_p252_c0",
+            "similarity": 0.6299
+        }
+    ],
+    "Partial Collection": [
+        {
+            "chunk_id": "Compiler_book_p508_c2",
+            "similarity": 0.6204
+        },
+        {
+            "chunk_id": "Compiler_book_p527_c0",
+            "similarity": 0.6189
+        },
+        {
+            "chunk_id": "Compiler_book_p508_c1",
+            "similarity": 0.6057
+        }
+    ],
+    "Partial Redundancy": [
+        {
+            "chunk_id": "Compiler_book_p674_c1",
+            "similarity": 0.6256
+        }
+    ],
+    "Pipelined Parallelism": [
+        {
+            "chunk_id": "Compiler_book_p889_c3",
+            "similarity": 0.6382
+        },
+        {
+            "chunk_id": "Compiler_book_p887_c0",
+            "similarity": 0.636
+        },
+        {
+            "chunk_id": "Compiler_book_p799_c0",
+            "similarity": 0.6288
+        },
+        {
+            "chunk_id": "Compiler_book_p905_c1",
+            "similarity": 0.6241
+        },
+        {
+            "chunk_id": "Compiler_book_p905_c0",
+            "similarity": 0.6205
+        },
+        {
+            "chunk_id": "Compiler_book_p907_c0",
+            "similarity": 0.6161
+        },
+        {
+            "chunk_id": "Compiler_book_p923_c3",
+            "similarity": 0.6138
+        },
+        {
+            "chunk_id": "Compiler_book_p892_c0",
+            "similarity": 0.6106
+        },
+        {
+            "chunk_id": "Compiler_book_p801_c0",
+            "similarity": 0.6095
+        },
+        {
+            "chunk_id": "Compiler_book_p893_c0",
+            "similarity": 0.6075
+        },
+        {
+            "chunk_id": "Compiler_book_p888_c0",
+            "similarity": 0.6069
+        },
+        {
+            "chunk_id": "Compiler_book_p800_c1",
+            "similarity": 0.6063
+        },
+        {
+            "chunk_id": "Compiler_book_p901_c1",
+            "similarity": 0.6041
+        }
+    ],
+    "Prioritized Topological Order": [
+        {
+            "chunk_id": "Compiler_book_p750_c0",
+            "similarity": 0.6087
+        },
+        {
+            "chunk_id": "Compiler_book_p790_c2",
+            "similarity": 0.6007
+        }
+    ],
+    "Procedure Call": [
+        {
+            "chunk_id": "Compiler_book_p461_c1",
+            "similarity": 0.6182
+        },
+        {
+            "chunk_id": "Compiler_book_p461_c0",
+            "similarity": 0.6123
+        }
+    ],
+    "Program Analysis": [
+        {
+            "chunk_id": "Compiler_book_p729_c2",
+            "similarity": 0.6182
+        },
+        {
+            "chunk_id": "Compiler_book_p11_c3",
+            "similarity": 0.6069
+        }
+    ],
+    "Program-Dependence Graph": [
+        {
+            "chunk_id": "Compiler_book_p879_c2",
+            "similarity": 0.6331
+        },
+        {
+            "chunk_id": "Compiler_book_p881_c1",
+            "similarity": 0.6126
+        },
+        {
+            "chunk_id": "Compiler_book_p881_c0",
+            "similarity": 0.6035
+        }
+    ],
+    "Purify": [
+        {
+            "chunk_id": "Compiler_book_p487_c0",
+            "similarity": 0.6419
+        },
+        {
+            "chunk_id": "Compiler_book_p487_c1",
+            "similarity": 0.6244
+        }
+    ],
+    "Quicksort": [
+        {
+            "chunk_id": "Compiler_book_p471_c1",
+            "similarity": 0.6008
+        }
+    ],
+    "Register Allocation": [
+        {
+            "chunk_id": "Compiler_book_p578_c1",
+            "similarity": 0.6286
+        },
+        {
+            "chunk_id": "Compiler_book_p579_c0",
+            "similarity": 0.6256
+        },
+        {
+            "chunk_id": "Compiler_book_p1030_c0",
+            "similarity": 0.6078
+        }
+    ],
+    "Register Renaming": [
+        {
+            "chunk_id": "Compiler_book_p1030_c0",
+            "similarity": 0.6278
+        }
+    ],
+    "Regular Expression": [
+        {
+            "chunk_id": "Compiler_book_p12_c2",
+            "similarity": 0.6185
+        },
+        {
+            "chunk_id": "Compiler_book_p148_c0",
+            "similarity": 0.6111
+        },
+        {
+            "chunk_id": "Compiler_book_p212_c2",
+            "similarity": 0.6097
+        },
+        {
+            "chunk_id": "Compiler_book_p151_c1",
+            "similarity": 0.6049
+        }
+    ],
+    "Resulting Grammar": [
+        {
+            "chunk_id": "Compiler_book_p287_c1",
+            "similarity": 0.6086
+        }
+    ],
+    "Scheduling Constraint": [
+        {
+            "chunk_id": "Compiler_book_p736_c0",
+            "similarity": 0.6034
+        }
+    ],
+    "Semantic Action": [
+        {
+            "chunk_id": "Compiler_book_p315_c1",
+            "similarity": 0.6099
+        },
+        {
+            "chunk_id": "Compiler_book_p437_c1",
+            "similarity": 0.6088
+        }
+    ],
+    "Semantic Analysis": [
+        {
+            "chunk_id": "Compiler_book_p11_c3",
+            "similarity": 0.629
+        },
+        {
+            "chunk_id": "Compiler_book_p215_c0",
+            "similarity": 0.62
+        },
+        {
+            "chunk_id": "Compiler_book_p33_c2",
+            "similarity": 0.6137
+        }
+    ],
+    "Simple LR": [
+        {
+            "chunk_id": "Compiler_book_p266_c0",
+            "similarity": 0.6394
+        },
+        {
+            "chunk_id": "Compiler_book_p266_c1",
+            "similarity": 0.6084
+        }
+    ],
+    "Spatial Reuse": [
+        {
+            "chunk_id": "Compiler_book_p836_c0",
+            "similarity": 0.6081
+        }
+    ],
+    "Statement Expression": [
+        {
+            "chunk_id": "Compiler_book_p438_c2",
+            "similarity": 0.6161
+        }
+    ],
+    "Static RAM": [
+        {
+            "chunk_id": "Compiler_book_p481_c0",
+            "similarity": 0.6386
+        },
+        {
+            "chunk_id": "Compiler_book_p1032_c0",
+            "similarity": 0.6002
+        }
+    ],
+    "Static Scoping": [
+        {
+            "chunk_id": "Compiler_book_p58_c0",
+            "similarity": 0.6089
+        }
+    ],
+    "Static Storage": [
+        {
+            "chunk_id": "Compiler_book_p1032_c0",
+            "similarity": 0.6108
+        }
+    ],
+    "Subset Construction": [
+        {
+            "chunk_id": "Compiler_book_p177_c2",
+            "similarity": 0.6126
+        }
+    ],
+    "Synchronization": [
+        {
+            "chunk_id": "Compiler_book_p923_c3",
+            "similarity": 0.613
+        },
+        {
+            "chunk_id": "Compiler_book_p884_c2",
+            "similarity": 0.6129
+        },
+        {
+            "chunk_id": "Compiler_book_p879_c0",
+            "similarity": 0.6032
+        }
+    ],
+    "Synchronizing Set": [
+        {
+            "chunk_id": "Compiler_book_p254_c0",
+            "similarity": 0.6056
+        }
+    ],
+    "Synchronizing Token": [
+        {
+            "chunk_id": "Compiler_book_p220_c3",
+            "similarity": 0.6146
+        }
+    ],
+    "Syntactic Analysis": [
+        {
+            "chunk_id": "Compiler_book_p235_c0",
+            "similarity": 0.6275
+        },
+        {
+            "chunk_id": "Compiler_book_p33_c0",
+            "similarity": 0.6184
+        },
+        {
+            "chunk_id": "Compiler_book_p241_c0",
+            "similarity": 0.6068
+        },
+        {
+            "chunk_id": "Compiler_book_p215_c0",
+            "similarity": 0.6065
+        },
+        {
+            "chunk_id": "Compiler_book_p216_c0",
+            "similarity": 0.6044
+        },
+        {
+            "chunk_id": "Compiler_book_p219_c0",
+            "similarity": 0.6037
+        }
+    ],
+    "Syntax Analysis": [
+        {
+            "chunk_id": "Compiler_book_p33_c0",
+            "similarity": 0.6449
+        },
+        {
+            "chunk_id": "Compiler_book_p216_c0",
+            "similarity": 0.6298
+        },
+        {
+            "chunk_id": "Compiler_book_p235_c0",
+            "similarity": 0.6282
+        },
+        {
+            "chunk_id": "Compiler_book_p283_c0",
+            "similarity": 0.6279
+        },
+        {
+            "chunk_id": "Compiler_book_p219_c0",
+            "similarity": 0.6257
+        },
+        {
+            "chunk_id": "Compiler_book_p277_c0",
+            "similarity": 0.6243
+        },
+        {
+            "chunk_id": "Compiler_book_p269_c0",
+            "similarity": 0.6237
+        },
+        {
+            "chunk_id": "Compiler_book_p225_c0",
+            "similarity": 0.6218
+        },
+        {
+            "chunk_id": "Compiler_book_p215_c0",
+            "similarity": 0.6198
+        },
+        {
+            "chunk_id": "Compiler_book_p301_c0",
+            "similarity": 0.6197
+        },
+        {
+            "chunk_id": "Compiler_book_p13_c2",
+            "similarity": 0.6179
+        },
+        {
+            "chunk_id": "Compiler_book_p241_c0",
+            "similarity": 0.6165
+        },
+        {
+            "chunk_id": "Compiler_book_p227_c0",
+            "similarity": 0.6124
+        }
+    ],
+    "Syntax Analyzer": [
+        {
+            "chunk_id": "Compiler_book_p33_c0",
+            "similarity": 0.6165
+        },
+        {
+            "chunk_id": "Compiler_book_p327_c0",
+            "similarity": 0.6148
+        },
+        {
+            "chunk_id": "Compiler_book_p66_c0",
+            "similarity": 0.6077
+        },
+        {
+            "chunk_id": "Compiler_book_p269_c0",
+            "similarity": 0.6059
+        },
+        {
+            "chunk_id": "Compiler_book_p295_c0",
+            "similarity": 0.6014
+        }
+    ],
+    "Syntax Error Handling": [
+        {
+            "chunk_id": "Compiler_book_p219_c0",
+            "similarity": 0.6738
+        },
+        {
+            "chunk_id": "Compiler_book_p99_c3",
+            "similarity": 0.6658
+        },
+        {
+            "chunk_id": "Compiler_book_p309_c1",
+            "similarity": 0.6386
+        },
+        {
+            "chunk_id": "Compiler_book_p321_c0",
+            "similarity": 0.6279
+        },
+        {
+            "chunk_id": "Compiler_book_p320_c1",
+            "similarity": 0.6214
+        },
+        {
+            "chunk_id": "Compiler_book_p219_c2",
+            "similarity": 0.6153
+        },
+        {
+            "chunk_id": "Compiler_book_p216_c0",
+            "similarity": 0.61
+        },
+        {
+            "chunk_id": "Compiler_book_p139_c1",
+            "similarity": 0.609
+        },
+        {
+            "chunk_id": "Compiler_book_p321_c1",
+            "similarity": 0.6089
+        },
+        {
+            "chunk_id": "Compiler_book_p219_c1",
+            "similarity": 0.6042
+        },
+        {
+            "chunk_id": "Compiler_book_p220_c0",
+            "similarity": 0.6009
+        }
+    ],
+    "Syntax Tree": [
+        {
+            "chunk_id": "Compiler_book_p95_c0",
+            "similarity": 0.6742
+        },
+        {
+            "chunk_id": "Compiler_book_p121_c0",
+            "similarity": 0.6516
+        },
+        {
+            "chunk_id": "Compiler_book_p117_c0",
+            "similarity": 0.6278
+        },
+        {
+            "chunk_id": "Compiler_book_p384_c0",
+            "similarity": 0.6261
+        },
+        {
+            "chunk_id": "Compiler_book_p33_c0",
+            "similarity": 0.6194
+        },
+        {
+            "chunk_id": "Compiler_book_p227_c0",
+            "similarity": 0.6128
+        },
+        {
+            "chunk_id": "Compiler_book_p346_c0",
+            "similarity": 0.6108
+        },
+        {
+            "chunk_id": "Compiler_book_p345_c0",
+            "similarity": 0.6073
+        },
+        {
+            "chunk_id": "Compiler_book_p588_c2",
+            "similarity": 0.6037
+        }
+    ],
+    "Synthesized Attribute": [
+        {
+            "chunk_id": "Compiler_book_p378_c0",
+            "similarity": 0.6058
+        },
+        {
+            "chunk_id": "Compiler_book_p339_c0",
+            "similarity": 0.6033
+        }
+    ],
+    "Terminal Expression": [
+        {
+            "chunk_id": "Compiler_book_p68_c3",
+            "similarity": 0.6043
+        }
+    ],
+    "Topological Order": [
+        {
+            "chunk_id": "Compiler_book_p337_c2",
+            "similarity": 0.6235
+        }
+    ],
+    "Tracing Algorithm": [
+        {
+            "chunk_id": "Compiler_book_p685_c2",
+            "similarity": 0.6067
+        },
+        {
+            "chunk_id": "Compiler_book_p509_c3",
+            "similarity": 0.6049
+        },
+        {
+            "chunk_id": "Compiler_book_p496_c0",
+            "similarity": 0.6027
+        },
+        {
+            "chunk_id": "Compiler_book_p522_c3",
+            "similarity": 0.6007
+        },
+        {
+            "chunk_id": "Compiler_book_p509_c2",
+            "similarity": 0.6007
+        },
+        {
+            "chunk_id": "Compiler_book_p502_c2",
+            "similarity": 0.6003
+        }
+    ],
+    "Train Algorithm": [
+        {
+            "chunk_id": "Compiler_book_p515_c0",
+            "similarity": 0.6462
+        },
+        {
+            "chunk_id": "Compiler_book_p522_c3",
+            "similarity": 0.6353
+        },
+        {
+            "chunk_id": "Compiler_book_p515_c3",
+            "similarity": 0.6321
+        },
+        {
+            "chunk_id": "Compiler_book_p516_c0",
+            "similarity": 0.6319
+        },
+        {
+            "chunk_id": "Compiler_book_p517_c1",
+            "similarity": 0.6164
+        },
+        {
+            "chunk_id": "Compiler_book_p516_c1",
+            "similarity": 0.6057
+        },
+        {
+            "chunk_id": "Compiler_book_p515_c2",
+            "similarity": 0.6051
+        }
+    ],
+    "Transfer Function": [
+        {
+            "chunk_id": "Compiler_book_p708_c1",
+            "similarity": 0.6668
+        },
+        {
+            "chunk_id": "Compiler_book_p722_c1",
+            "similarity": 0.6422
+        },
+        {
+            "chunk_id": "Compiler_book_p716_c2",
+            "similarity": 0.6418
+        },
+        {
+            "chunk_id": "Compiler_book_p721_c1",
+            "similarity": 0.6352
+        },
+        {
+            "chunk_id": "Compiler_book_p661_c1",
+            "similarity": 0.6306
+        },
+        {
+            "chunk_id": "Compiler_book_p717_c1",
+            "similarity": 0.6286
+        },
+        {
+            "chunk_id": "Compiler_book_p704_c0",
+            "similarity": 0.6254
+        },
+        {
+            "chunk_id": "Compiler_book_p708_c4",
+            "similarity": 0.6223
+        },
+        {
+            "chunk_id": "Compiler_book_p708_c2",
+            "similarity": 0.6213
+        },
+        {
+            "chunk_id": "Compiler_book_p659_c1",
+            "similarity": 0.6185
+        },
+        {
+            "chunk_id": "Compiler_book_p673_c1",
+            "similarity": 0.6137
+        }
+    ],
+    "Transition Diagram": [
+        {
+            "chunk_id": "Compiler_book_p248_c0",
+            "similarity": 0.6348
+        },
+        {
+            "chunk_id": "Compiler_book_p173_c1",
+            "similarity": 0.6108
+        },
+        {
+            "chunk_id": "Compiler_book_p248_c1",
+            "similarity": 0.6064
+        },
+        {
+            "chunk_id": "Compiler_book_p158_c1",
+            "similarity": 0.6039
+        }
+    ],
+    "Transition Function": [
+        {
+            "chunk_id": "Compiler_book_p722_c1",
+            "similarity": 0.6045
+        }
+    ],
+    "Transition Table": [
+        {
+            "chunk_id": "Compiler_book_p173_c1",
+            "similarity": 0.6086
+        }
+    ],
+    "Type Error": [
+        {
+            "chunk_id": "Compiler_book_p1005_c2",
+            "similarity": 0.617
+        }
+    ],
+    "Underlying Grammar": [
+        {
+            "chunk_id": "Compiler_book_p14_c0",
+            "similarity": 0.6046
+        },
+        {
+            "chunk_id": "Compiler_book_p326_c2",
+            "similarity": 0.6015
+        }
+    ],
+    "Virtual Memory": [
+        {
+            "chunk_id": "Compiler_book_p480_c0",
+            "similarity": 0.603
+        }
+    ],
+    "Yacc Output": [
+        {
+            "chunk_id": "Compiler_book_p313_c0",
+            "similarity": 0.6311
+        },
+        {
+            "chunk_id": "Compiler_book_p317_c0",
+            "similarity": 0.6172
+        },
+        {
+            "chunk_id": "Compiler_book_p312_c1",
+            "similarity": 0.6022
+        }
+    ],
+    "Yacc Parser": [
+        {
+            "chunk_id": "Compiler_book_p312_c1",
+            "similarity": 0.6854
+        },
+        {
+            "chunk_id": "Compiler_book_p312_c0",
+            "similarity": 0.6523
+        },
+        {
+            "chunk_id": "Compiler_book_p320_c1",
+            "similarity": 0.6274
+        },
+        {
+            "chunk_id": "Compiler_book_p316_c3",
+            "similarity": 0.6271
+        },
+        {
+            "chunk_id": "Compiler_book_p316_c2",
+            "similarity": 0.6231
+        },
+        {
+            "chunk_id": "Compiler_book_p320_c0",
+            "similarity": 0.6224
+        },
+        {
+            "chunk_id": "Compiler_book_p317_c0",
+            "similarity": 0.6073
+        },
+        {
+            "chunk_id": "Compiler_book_p14_c3",
+            "similarity": 0.6063
+        },
+        {
+            "chunk_id": "Compiler_book_p320_c2",
+            "similarity": 0.6062
+        },
+        {
+            "chunk_id": "Compiler_book_p318_c0",
+            "similarity": 0.605
+        },
+        {
+            "chunk_id": "Compiler_book_p313_c0",
+            "similarity": 0.6038
+        }
+    ],
+    "Yacc Semantic Action": [
+        {
+            "chunk_id": "Compiler_book_p316_c2",
+            "similarity": 0.6742
+        },
+        {
+            "chunk_id": "Compiler_book_p320_c1",
+            "similarity": 0.6561
+        },
+        {
+            "chunk_id": "Compiler_book_p315_c0",
+            "similarity": 0.6407
+        },
+        {
+            "chunk_id": "Compiler_book_p316_c3",
+            "similarity": 0.6347
+        },
+        {
+            "chunk_id": "Compiler_book_p320_c2",
+            "similarity": 0.6242
+        },
+        {
+            "chunk_id": "Compiler_book_p318_c0",
+            "similarity": 0.624
+        },
+        {
+            "chunk_id": "Compiler_book_p315_c1",
+            "similarity": 0.6207
+        },
+        {
+            "chunk_id": "Compiler_book_p320_c0",
+            "similarity": 0.618
+        },
+        {
+            "chunk_id": "Compiler_book_p314_c1",
+            "similarity": 0.6154
+        },
+        {
+            "chunk_id": "Compiler_book_p313_c0",
+            "similarity": 0.6146
+        },
+        {
+            "chunk_id": "Compiler_book_p167_c4",
+            "similarity": 0.6043
+        },
+        {
+            "chunk_id": "Compiler_book_p316_c1",
+            "similarity": 0.6039
+        },
+        {
+            "chunk_id": "Compiler_book_p319_c2",
+            "similarity": 0.6017
+        }
+    ],
+    "Yacc Source Program": [
+        {
+            "chunk_id": "Compiler_book_p312_c2",
+            "similarity": 0.6463
+        },
+        {
+            "chunk_id": "Compiler_book_p312_c1",
+            "similarity": 0.6387
+        }
+    ]
+}

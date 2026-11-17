@@ -24,10 +24,12 @@ import MappedConceptsView from '../components/teacher/MappedConceptsView';
 import ConceptChunkMapView from '../components/teacher/ConceptChunkMapView';
 import KnowledgeGraphView from '../components/teacher/KnowledgeGraphView';
 import PipelineProgressModal from '../components/teacher/PipelineProgressModal';
+import StudentEnrollmentView from '../components/teacher/StudentEnrollmentView';
 import { teacherApi } from '../services/api';
 
 export default function TeacherDashboard({ 
   courses, 
+  coursesLoading = false,
   materials, 
   onAddMaterial, 
   onDeleteMaterial,
@@ -36,6 +38,7 @@ export default function TeacherDashboard({
   activeTab = 'dashboard',
   setActiveTab
 }) {
+  const [selectedCourseId, setSelectedCourseId] = useState(courses[0]?.id || null);
   const [selectedMaterialPreview, setSelectedMaterialPreview] = useState(null);
   const [jumpToConcept, setJumpToConcept] = useState(null);
   const [pipelineModal, setPipelineModal] = useState({
@@ -44,6 +47,13 @@ export default function TeacherDashboard({
     courseId: null,
     courseTitle: '',
   });
+
+  // Keep selectedCourseId in sync with courses prop
+  React.useEffect(() => {
+    if (!selectedCourseId && courses.length > 0) {
+      setSelectedCourseId(courses[0].id);
+    }
+  }, [courses, selectedCourseId]);
 
   // Dynamic calculations
   const totalPdfs = materials.length;
@@ -121,6 +131,14 @@ export default function TeacherDashboard({
                 <button 
                   type="button"
                   className="btn-ghost-hero"
+                  onClick={() => setActiveTab && setActiveTab('students')}
+                >
+                  <Users size={18} className="text-emerald" />
+                  <span>Enroll Students</span>
+                </button>
+                <button 
+                  type="button"
+                  className="btn-ghost-hero"
                   onClick={() => setActiveTab && setActiveTab('knowledge-graph')}
                 >
                   <Network size={18} className="text-cyan" />
@@ -158,6 +176,20 @@ export default function TeacherDashboard({
 
           {/* Quick Section Jump Cards */}
           <section className="quick-nav-cards-row">
+            <div 
+              className="quick-nav-card glass-panel glow-hover"
+              onClick={() => setActiveTab && setActiveTab('students')}
+            >
+              <div className="nav-card-icon-box text-emerald">
+                <Users size={24} />
+              </div>
+              <div className="nav-card-text">
+                <h4>Student Enrollment</h4>
+                <p>View all students in database and enroll them with 1-click or batch enroll all</p>
+              </div>
+              <span className="jump-arrow"><ChevronRight size={16} /></span>
+            </div>
+
             <div 
               className="quick-nav-card glass-panel glow-hover"
               onClick={() => setActiveTab && setActiveTab('content-chunks')}
@@ -279,6 +311,10 @@ export default function TeacherDashboard({
               onDeleteMaterial={onDeleteMaterial}
               onSelectMaterial={(item) => setSelectedMaterialPreview(item)}
               onOpenUploadModal={() => setIsUploadModalOpen(true)}
+              onNavigateToEnrollment={(cId) => {
+                if (cId) setSelectedCourseId(cId);
+                if (setActiveTab) setActiveTab('students');
+              }}
             />
           </section>
 
@@ -292,6 +328,17 @@ export default function TeacherDashboard({
         </>
       )}
 
+      {/* Section: Student Roster & Course Enrollment */}
+      {activeTab === 'students' && (
+        <section className="materials-section-wrapper animate-fade-in">
+          <StudentEnrollmentView 
+            courses={courses}
+            selectedCourseId={selectedCourseId}
+            onSelectCourse={setSelectedCourseId}
+          />
+        </section>
+      )}
+
       {/* Section 2: Course Content */}
       {activeTab === 'course-content' && (
         <section className="materials-section-wrapper animate-fade-in">
@@ -300,6 +347,10 @@ export default function TeacherDashboard({
             onDeleteMaterial={onDeleteMaterial}
             onSelectMaterial={(item) => setSelectedMaterialPreview(item)}
             onOpenUploadModal={() => setIsUploadModalOpen(true)}
+            onNavigateToEnrollment={(cId) => {
+              if (cId) setSelectedCourseId(cId);
+              if (setActiveTab) setActiveTab('students');
+            }}
           />
 
           <div className="quick-submit-section glass-panel" style={{ marginTop: '1.5rem' }}>
@@ -320,22 +371,47 @@ export default function TeacherDashboard({
 
       {/* Section 3: Content Chunks (from content_chunks.json) */}
       {activeTab === 'content-chunks' && (
-        <ContentChunksView />
+        <ContentChunksView courseId={selectedCourseId || courses[0]?.id} />
       )}
 
       {/* Section 4: Mapped Concepts (from mapped_concepts.json) */}
       {activeTab === 'mapped-concepts' && (
-        <MappedConceptsView onSelectConceptForMap={navigateToConceptMap} />
+        <MappedConceptsView 
+          courseId={selectedCourseId || courses[0]?.id} 
+          onSelectConceptForMap={navigateToConceptMap} 
+        />
       )}
 
       {/* Section 5: Concept Chunk Map (from concept_chunk_map.json) */}
       {activeTab === 'concept-chunk-map' && (
-        <ConceptChunkMapView initialConcept={jumpToConcept} />
+        <ConceptChunkMapView 
+          courseId={selectedCourseId || courses[0]?.id} 
+          initialConcept={jumpToConcept} 
+        />
       )}
 
-      {/* Section 6: Knowledge Graph Visualizer (from outputs/graph_model) */}
+      {/* Section 6: Knowledge Graph Visualizer (from outputs/graph_model or API) */}
       {activeTab === 'knowledge-graph' && (
-        <KnowledgeGraphView />
+        <div>
+          {courses.length > 1 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+              <span style={{ fontSize: '13px', color: '#94a3b8' }}>Select Course:</span>
+              <select
+                value={selectedCourseId || ''}
+                onChange={(e) => setSelectedCourseId(e.target.value)}
+                className="custom-select"
+                style={{ width: 'auto', padding: '4px 10px', fontSize: '13px' }}
+              >
+                {courses.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.code || c.id}: {c.name || c.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          <KnowledgeGraphView courseId={selectedCourseId || courses[0]?.id} />
+        </div>
       )}
 
       {/* Upload Modal (Batch Capable) */}

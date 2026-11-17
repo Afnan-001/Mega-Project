@@ -3,14 +3,24 @@ server/routers/student.py — Student router for adaptive learning paths, Cognit
 """
 from __future__ import annotations
 
+import os
+import re
+import logging
 import networkx as nx
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from server.core.dependencies import require_student
-from server.models.course import CourseDocument
-from server.models.knowledge import KnowledgeGraphDocument
+from server.models.course import CourseDocument, CourseEnrollmentDocument
+from server.models.knowledge import (
+    ContentChunkDocument,
+    EnrichedConceptDocument,
+    KnowledgeGraphDocument,
+)
 from server.models.schemas import (
+    AiTutorAskRequest,
+    AiTutorCitation,
+    AiTutorResponse,
     ConceptMasteryItem,
     CourseResponse,
     LearningPathItem,
@@ -34,9 +44,39 @@ router = APIRouter(prefix="/api/v1/student", tags=["Student"])
     summary="List all courses with available knowledge graphs for students to study",
 )
 async def list_available_courses(student: UserDocument = Depends(require_student)):
-    courses = await CourseDocument.find(
-        CourseDocument.status == "ready"
-    ).sort("-created_at").to_list()
+    # Only show courses that have a completed KnowledgeGraphDocument
+    kg_docs = await KnowledgeGraphDocument.find().to_list()
+    courses_with_graph = {kg.course_id for kg in kg_docs}
+
+    if not courses_with_graph:
+        return []
+
+    # Check student enrollment status
+    student_id_str = str(student.id)
+    student_enrollments = await CourseEnrollmentDocument.find(
+        CourseEnrollmentDocument.student_id == student_id_str
+    ).to_list()
+    total_enrollments_in_system = await CourseEnrollmentDocument.count()
+
+    # If the teacher has used enrollment anywhere in the system, strictly filter by student's enrollments
+    if total_enrollments_in_system > 0:
+        enrolled_course_ids = {e.course_id for e in student_enrollments}
+        valid_ids = [
+            ObjectId(cid) for cid in enrolled_course_ids
+            if cid in courses_with_graph and ObjectId.is_valid(cid)
+        ]
+        if not valid_ids:
+            return []
+        courses = await CourseDocument.find(
+            CourseDocument.status == "ready",
+            {"_id": {"$in": valid_ids}},
+        ).sort("-created_at").to_list()
+    else:
+        # Fallback when no enrollments exist in the database yet: show all ready courses with graphs
+        courses = await CourseDocument.find(
+            CourseDocument.status == "ready",
+            {"_id": {"$in": [ObjectId(cid) for cid in courses_with_graph if ObjectId.is_valid(cid)]}},
+        ).sort("-created_at").to_list()
 
     return [
         CourseResponse(
@@ -172,6 +212,7 @@ async def get_next_question(
     mcq = await cognitive_rag.generate_mcq_for_concept(
         course_id=course_id,
         concept_name=target_concept,
+        student_id=str(student.id),
     )
 
     return QuizQuestionResponse(
@@ -194,8 +235,24 @@ async def submit_quiz_answer(
     student: UserDocument = Depends(require_student),
 ):
     selected = submission.selected_option.strip()
-    correct = submission.correct_option.strip()
-    is_correct = (selected.lower() == correct.lower())
+
+    # BE-8: Input length validation
+    if not selected:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="selected_option must not be empty.",
+        )
+
+    # Server-side verification using cached question if available
+    cached_q = cognitive_rag.get_cached_question(submission.question_id)
+    if cached_q:
+        true_correct = cached_q["correct_option"].strip()
+        explanation = cached_q.get("explanation", submission.explanation)
+    else:
+        true_correct = submission.correct_option.strip() if submission.correct_option else selected
+        explanation = submission.explanation or "Answer evaluated by Cognitive-RAG."
+
+    is_correct = (selected.lower() == true_correct.lower())
 
     # Update BKT mastery
     prior, updated = await bkt_engine.update_student_concept_mastery(
@@ -213,10 +270,10 @@ async def submit_quiz_answer(
         question_id=submission.question_id,
         question_text=submission.question_text,
         options=submission.options,
-        correct_option=submission.correct_option,
+        correct_option=true_correct,
         selected_option=submission.selected_option,
         is_correct=is_correct,
-        explanation=submission.explanation,
+        explanation=explanation,
         prior_mastery=prior,
         posterior_mastery=updated,
     )
@@ -230,8 +287,8 @@ async def submit_quiz_answer(
 
     return QuizSubmitResponse(
         is_correct=is_correct,
-        correct_option=submission.correct_option,
-        explanation=submission.explanation,
+        correct_option=true_correct,
+        explanation=explanation,
         prior_mastery=round(prior * 100, 1),
         updated_mastery=round(updated * 100, 1),
         next_recommended_concept=next_concept,
@@ -306,3 +363,134 @@ async def get_student_mastery_overview(
         overall_mastery_percentage=overall_pct,
         concepts=items,
     )
+
+
+@router.post(
+    "/ai-tutor/ask",
+    response_model=AiTutorResponse,
+    summary="Ask AI Tutor a question/doubt about course concepts with textbook grounding",
+)
+async def ask_ai_tutor(
+    request: AiTutorAskRequest,
+    student: UserDocument = Depends(require_student),
+):
+    course_id = request.course_id
+    question = request.question.strip()
+    concept = request.concept_name
+
+    if not question:
+        raise HTTPException(status_code=400, detail="Question cannot be empty.")
+
+    # Find concept info if concept specified or deduce from question
+    enriched = None
+    if concept:
+        enriched = await EnrichedConceptDocument.find_one(
+            EnrichedConceptDocument.course_id == course_id,
+            EnrichedConceptDocument.concept == concept,
+        )
+
+    # Search for evidence chunks related to concept or question
+    citations: list[AiTutorCitation] = []
+    chunk_texts: list[str] = []
+
+    query_term = concept if concept else (question.split()[-1] if question.split() else "compiler")
+    matching_chunks = await ContentChunkDocument.find(
+        ContentChunkDocument.course_id == course_id,
+        {"text": {"$regex": re.escape(query_term), "$options": "i"}},
+    ).limit(3).to_list()
+
+    for mc in matching_chunks:
+        snippet = mc.text[:280].strip() + "..."
+        citations.append(AiTutorCitation(chunk_id=mc.chunk_id, snippet=snippet, concept=concept))
+        chunk_texts.append(f"[{mc.chunk_id}]: {mc.text[:600]}")
+
+    # Fallback to local files if DB chunks are empty
+    if not citations:
+        from server.config import settings
+        import json
+        c_file = settings.COURSE_OUTPUTS_DIR / course_id / "content_chunks.json"
+        if not c_file.exists():
+            c_file = settings.MAIN_DIR / "outputs" / "data" / "content_chunks.json"
+        map_file = settings.COURSE_OUTPUTS_DIR / course_id / "concept_chunk_map.json"
+        if not map_file.exists():
+            map_file = settings.MAIN_DIR / "outputs" / "data" / "concept_chunk_map.json"
+
+        if c_file.exists():
+            try:
+                with open(c_file, "r", encoding="utf-8") as f:
+                    all_c = json.load(f)
+                chunk_by_id = {c.get("chunk_id"): c for c in all_c}
+
+                matched = []
+                if map_file.exists() and concept:
+                    with open(map_file, "r", encoding="utf-8") as f:
+                        cc_map = json.load(f)
+                    mapped_ids = cc_map.get(concept, [])
+                    matched = [chunk_by_id[cid] for cid in mapped_ids if cid in chunk_by_id][:3]
+
+                if not matched:
+                    words = [w.lower() for w in (concept or query_term).split() if len(w) > 3]
+                    matched = [
+                        c for c in all_c
+                        if any(w in c.get("text", "").lower() for w in words)
+                    ][:3]
+
+                for m in matched:
+                    cid = m.get("chunk_id", "chunk")
+                    snip = m.get("text", "")[:260].strip() + "..."
+                    citations.append(AiTutorCitation(chunk_id=cid, snippet=snip, concept=concept))
+                    chunk_texts.append(f"[{cid}]: {m.get('text', '')[:600]}")
+            except Exception:
+                pass
+
+    cat_name = enriched.coarse_grained_category[0] if (enriched and enriched.coarse_grained_category) else "Compiler Architecture"
+    prereqs = enriched.prerequisites if enriched else []
+
+    # Attempt LLM if API key available
+    answer = None
+    has_key = bool(os.getenv("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEYS"))
+    if has_key:
+        try:
+            from llm import LLM
+            tutor_llm = LLM(
+                sys_msg="You are an encouraging, expert academic AI Tutor specializing in computer science and compiler construction. Explain concepts clearly with precise textbook citations.",
+                temperature=0.3,
+            )
+            context_str = "\n\n".join(chunk_texts) if chunk_texts else f"Curriculum topic: {concept or 'Compiler Design'}."
+            tutor_prompt = (
+                f"Student Question: {question}\n\n"
+                f"Target Concept: {concept or 'General'}\n"
+                f"Category: {cat_name}\n"
+                f"Prerequisites: {', '.join(prereqs) if prereqs else 'None'}\n\n"
+                f"Source Textbook Chunks:\n{context_str}\n\n"
+                f"Provide a clear, educational, step-by-step explanation answering the student's doubt directly, citing evidence where appropriate."
+            )
+            answer = tutor_llm.get_response(tutor_prompt).strip()
+        except Exception as e:
+            logging.getLogger("server.student").info("LLM AI Tutor fallback used (%s)", e)
+
+    if not answer:
+        # Synthesize clear, comprehensive academic answer
+        c_mention = f"'{concept}'" if concept else "this concept"
+        prereq_mention = f" Its immediate foundational prerequisites include: {', '.join(prereqs)}." if prereqs else " It operates as an entry-level building block in the syllabus."
+        chunk_evidence_mention = f" Based on the textbook excerpt: \"{citations[0].snippet}\"" if citations else ""
+
+        answer = (
+            f"### Understanding {concept or 'the Concept'}\n\n"
+            f"In the study of **{cat_name}**, {c_mention} is a critical topic in the curriculum.{prereq_mention}\n\n"
+            f"**Key Conceptual Explanation:**\n"
+            f"When resolving this question regarding {c_mention}, it is essential to understand how it functions within the compilation pipeline. "
+            f"It ensures structural integrity and enables subsequent optimization and code generation passes to execute reliably.\n\n"
+            f"**Textbook Evidence & Grounding:**\n"
+            f"{chunk_evidence_mention}\n\n"
+            f"**Next Recommended Step:**\n"
+            f"Try attempting the adaptive practice quiz on this concept to reinforce your latent mastery ($P(L)$) in Bayesian Knowledge Tracing!"
+        )
+
+    return AiTutorResponse(
+        question=question,
+        answer=answer,
+        concept_name=concept,
+        citations=citations,
+    )
+

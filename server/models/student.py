@@ -17,6 +17,7 @@ class StudentMasteryDocument(Document):
     mastery_probability: float = 0.10  # P(L_0) default
     attempts_count: int = 0
     correct_count: int = 0
+    recent_answers: list[int] = Field(default_factory=list)  # Last 10 binary answers (1=correct, 0=incorrect)
     last_practiced_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Settings:

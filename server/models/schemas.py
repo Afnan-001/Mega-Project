@@ -75,6 +75,33 @@ class ConceptPatchRequest(BaseModel):
     prerequisites: list[str] = Field(default_factory=list)
 
 
+# ── Student Roster & Course Enrollment Schemas ──────────────────────────
+class StudentRosterItem(BaseModel):
+    id: str
+    email: str
+    full_name: str
+    created_at: datetime
+    is_enrolled: bool = False
+    enrolled_at: datetime | None = None
+
+
+class StudentEnrollRequest(BaseModel):
+    student_id: str
+
+
+class StudentEnrollBatchRequest(BaseModel):
+    student_ids: list[str] = Field(default_factory=list)
+
+
+class EnrollmentActionResponse(BaseModel):
+    course_id: str
+    student_id: str | None = None
+    enrolled_count: int = 1
+    is_enrolled: bool = True
+    message: str
+
+
+
 # ── Student & Adaptive Quiz Schemas ─────────────────────────────────────
 class LearningPathItem(BaseModel):
     concept_name: str
@@ -171,3 +198,24 @@ class ConceptNeighborhoodResponse(BaseModel):
     prerequisites: list[str]
     dependents: list[str]
     evidence_chunks: list[dict[str, Any]]
+
+
+# ── AI Tutor & Doubts Schemas ───────────────────────────────────────────
+class AiTutorAskRequest(BaseModel):
+    course_id: str
+    question: str
+    concept_name: str | None = None
+
+
+class AiTutorCitation(BaseModel):
+    chunk_id: str
+    snippet: str
+    concept: str | None = None
+
+
+class AiTutorResponse(BaseModel):
+    question: str
+    answer: str
+    concept_name: str | None = None
+    citations: list[AiTutorCitation] = Field(default_factory=list)
+

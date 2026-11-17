@@ -22,10 +22,13 @@ import {
   loadMappedConcepts, 
   loadConceptChunkMap, 
   loadEnrichedConcepts,
-  loadContentChunks
+  loadContentChunks,
+  loadMappedConceptsForCourse,
+  loadConceptChunkMapForCourse,
+  loadContentChunksForCourse
 } from '../../services/dataService';
 
-export default function MappedConceptsView({ onSelectConceptForMap }) {
+export default function MappedConceptsView({ courseId, onSelectConceptForMap }) {
   const [concepts, setConcepts] = useState([]);
   const [conceptMap, setConceptMap] = useState({});
   const [enrichedData, setEnrichedData] = useState([]);
@@ -47,10 +50,10 @@ export default function MappedConceptsView({ onSelectConceptForMap }) {
     async function fetchData() {
       setLoading(true);
       const [mappedList, mapData, enrichedList, chunks] = await Promise.all([
-        loadMappedConcepts(),
-        loadConceptChunkMap(),
+        courseId ? loadMappedConceptsForCourse(courseId) : loadMappedConcepts(),
+        courseId ? loadConceptChunkMapForCourse(courseId) : loadConceptChunkMap(),
         loadEnrichedConcepts(),
-        loadContentChunks()
+        courseId ? loadContentChunksForCourse(courseId) : loadContentChunks(),
       ]);
       setConcepts(mappedList || []);
       setConceptMap(mapData || {});
@@ -63,7 +66,7 @@ export default function MappedConceptsView({ onSelectConceptForMap }) {
       setLoading(false);
     }
     fetchData();
-  }, []);
+  }, [courseId]);
 
   // Index chunks by chunk_id for quick preview
   const chunksById = useMemo(() => {

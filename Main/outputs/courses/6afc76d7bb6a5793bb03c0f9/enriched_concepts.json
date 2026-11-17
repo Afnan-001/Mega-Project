@@ -1,0 +1,2443 @@
+[
+    {
+        "concept": "Abstract Syntax",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Intermediate Code"
+        ],
+        "parent_concept": [
+            "Intermediate Code"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Intermediate Code",
+            "confidence": 0.85,
+            "evidence_chunk": "Compiler_book_p122_c0",
+            "evidence_text": ". . INTERMEDIA TE CODE GENERA TION   CONCRETE SYNT AX ABSTRA CT SYNT AX = assign || cond && cond == != rel < <= >= > rel + - op * / % op ! not - unary min us [ ] access Figure  .  : Concrete and abstract syn tax for sev eral Ja v a op erators"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Abstract Syntax Tree",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Syntax Tree"
+        ],
+        "parent_concept": [
+            "Syntax Tree"
+        ],
+        "prerequisites": [
+            "Parse Tree"
+        ],
+        "category_edge": {
+            "concept": "Syntax Tree",
+            "confidence": 0.95,
+            "evidence_chunk": "Compiler_book_p117_c0",
+            "evidence_text": "Abstract-syn tax trees, or simply syn tax trees, w ere in tro duced in Section . ."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Parse Tree",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p94_c2",
+                "evidence_text": "Abstract syn tax trees, or simply syntax tr e es, resem ble parse trees to an exten t."
+            }
+        ]
+    },
+    {
+        "concept": "Abstraction",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Accepting State",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Deterministic Finite Automaton"
+        ],
+        "parent_concept": [
+            "Deterministic Finite Automaton"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Deterministic Finite Automaton",
+            "confidence": 0.85,
+            "evidence_chunk": "Compiler_book_p195_c3",
+            "evidence_text": "as so on as w e meet an accepting DF A state, w e p erform the action asso ciated with the pattern for that state."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Address Descriptor",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [
+            "Instruction"
+        ],
+        "category_edge": null,
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Instruction",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p570_c1",
+                "evidence_text": "As the co de-generation algorithm issues load, store, and other mac hine instruc- tions, it needs to up date the register and address descriptors."
+            }
+        ]
+    },
+    {
+        "concept": "Annotated Parse Tree",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Parse Tree"
+        ],
+        "parent_concept": [
+            "Parse Tree"
+        ],
+        "prerequisites": [
+            "Parse Tree"
+        ],
+        "category_edge": {
+            "concept": "Parse Tree",
+            "confidence": 0.95,
+            "evidence_chunk": "Compiler_book_p331_c3",
+            "evidence_text": "v alue(s) of its attribute(s) is called an annotate d p arse tr e e."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Parse Tree",
+                "confidence": 0.95,
+                "evidence_chunk": "Compiler_book_p363_c0",
+                "evidence_text": "Build the p arse tr e e and annotate."
+            }
+        ]
+    },
+    {
+        "concept": "Anticipated Expression",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Partial Redundancy"
+        ],
+        "parent_concept": [
+            "Partial Redundancy"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Partial Redundancy",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p674_c0",
+            "evidence_text": "P AR TIAL-REDUND ANCY ELIMINA TION    (a) An ticipated Expressions"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Automatic Garbage Collection",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Binary Translation",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Called Procedure",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Calling Procedure",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [
+            "Procedure Call"
+        ],
+        "category_edge": null,
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Procedure Call",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p461_c0",
+                "evidence_text": "A return sequence is similar code to restore the state of the machine so the calling procedure can continue its execution after the call."
+            }
+        ]
+    },
+    {
+        "concept": "Canonical LR",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Class Arith",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [
+            "Type Error"
+        ],
+        "category_edge": null,
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Type Error",
+                "confidence": 0.75,
+                "evidence_chunk": "Compiler_book_p998_c0",
+                "evidence_text": "If they can b e co erced, type is set to the result t yp e; otherwise, a t yp e error is rep orted (line  )."
+            }
+        ]
+    },
+    {
+        "concept": "Class Expr",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Class Token",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Cloned Call Graph",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Interprocedural Analysis"
+        ],
+        "parent_concept": [
+            "Interprocedural Analysis"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Interprocedural Analysis",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p973_c0",
+            "evidence_text": "CHAPTER . INTERPR OCEDURAL ANAL YSIS"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Code Scheduling",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [
+            "Instruction",
+            "Iteration"
+        ],
+        "category_edge": null,
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Instruction",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p762_c0",
+                "evidence_text": "If a target machine has a dynamic scheduler, the static scheduler's primary function is to ensure that instructions with high latency are fetched early"
+            },
+            {
+                "prerequisite": "Iteration",
+                "confidence": 0.75,
+                "evidence_chunk": "Compiler_book_p760_c0",
+                "evidence_text": "In region-based scheduling, the boundary of a loop iteration is a barrier to code motion. Operations from one iteration cannot overlap with those from another."
+            }
+        ]
+    },
+    {
+        "concept": "Common Subexpression",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Compiled Simulation",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Technology"
+        ],
+        "parent_concept": [
+            "Compiler Technology"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Technology",
+            "confidence": 0.95,
+            "evidence_chunk": "Compiler_book_p48_c0",
+            "evidence_text": "APPLICA TIONS OF COMPILER TECHNOLOGY ... Compiled Sim ulation"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Compiler",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Compiler Design",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Compiler Technology",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Compiler Writing",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.85,
+            "evidence_chunk": "Compiler_book_p40_c0",
+            "evidence_text": "The Science of Building a Compiler Compiler design is full of beautiful examples where complicated real-world problems are solved by abstracting the essence of the problem mathematically."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Concrete Syntax",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Copying Collector",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Tracing Algorithm"
+        ],
+        "parent_concept": [
+            "Tracing Algorithm"
+        ],
+        "prerequisites": [
+            "Tracing Algorithm"
+        ],
+        "category_edge": {
+            "concept": "Tracing Algorithm",
+            "confidence": 0.95,
+            "evidence_chunk": "Compiler_book_p506_c0",
+            "evidence_text": "INTR ODUCTION TO TRA CE-BASED COLLECTION ... CopyingCol le ctor ()"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Tracing Algorithm",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p522_c2",
+                "evidence_text": "A cop ying collector gures out where the reac hable ob jects go as tracing pro ceeds"
+            }
+        ]
+    },
+    {
+        "concept": "Cyclic Garbage",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Generational Garbage Collection"
+        ],
+        "parent_concept": [
+            "Generational Garbage Collection"
+        ],
+        "prerequisites": [
+            "Generational Garbage Collection"
+        ],
+        "category_edge": {
+            "concept": "Generational Garbage Collection",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p515_c2",
+            "evidence_text": "A cyclic structure across partitions that may be cyclic garbage In generational garbage collection, w e ev en tually collect partition j..."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Generational Garbage Collection",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p515_c2",
+                "evidence_text": "In generational garbage collection, w e ev en tually collect partition j , and since i < j , w e also collect i at that time."
+            }
+        ]
+    },
+    {
+        "concept": "Data Abstraction",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Data Dependence Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Dependence Analysis"
+        ],
+        "parent_concept": [
+            "Dependence Analysis"
+        ],
+        "prerequisites": [
+            "Iteration"
+        ],
+        "category_edge": {
+            "concept": "Dependence Analysis",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p848_c0",
+            "evidence_text": "ARRA Y D A T A-DEPENDENCE ANAL YSIS"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Iteration",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p842_c0",
+                "evidence_text": "Except for the rst iteration, eac h iteration reads the v alue written in the previous iteration."
+            }
+        ]
+    },
+    {
+        "concept": "Data Dependence Problem",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Datalog Program",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Datalog Rule",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Datalog Program"
+        ],
+        "parent_concept": [
+            "Datalog Program"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Datalog Program",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p954_c1",
+            "evidence_text": "Consider the Datalog program in Example . . again. The incremen tal form of the rules is giv en in Fig."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Dependence Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Dependence Graph",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Dependency Graph",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Deterministic Finite Automaton",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Lexical Analysis"
+        ],
+        "parent_concept": [
+            "Lexical Analysis"
+        ],
+        "prerequisites": [
+            "Accepting State"
+        ],
+        "category_edge": {
+            "concept": "Lexical Analysis",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p172_c0",
+            "evidence_text": "W e shall no w disco v er ho w Lex turns its input program in to a lexical analyzer. A t the heart of the transition is the formalism kno wn as nite automata."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Accepting State",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p213_c1",
+                "evidence_text": "Finite A utomata. These are a formalization of transition diagrams that include a designation of a start state and one or more accepting states"
+            }
+        ]
+    },
+    {
+        "concept": "Distributed Memory Machine",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Parallel Computation"
+        ],
+        "parent_concept": [
+            "Parallel Computation"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Parallel Computation",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p919_c0",
+            "evidence_text": "CHAPTER   . OPTIMIZING F OR P ARALLELISM AND LOCALITY mac hines... Distributed Memory Mac hines F or distributed memory mac hines, where pro cessors comm unicate b y sending messages to eac h other..."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Dynamic Programming",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [
+            "Dynamic Programming Algorithm"
+        ],
+        "category_edge": null,
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Dynamic Programming Algorithm",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p600_c0",
+                "evidence_text": "This prop ert y allo ws us to use a dynamic programming algorithm to generate an optimal program for T .  .  .  The Dynamic Programming Algorithm The dynamic programming algorithm pro ceeds in three phases"
+            }
+        ]
+    },
+    {
+        "concept": "Dynamic Programming Algorithm",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p600_c0",
+            "evidence_text": "DYNAMIC PROGRAMMING CODE-GENERATION ... This property allows us to use a dynamic programming algorithm to generate an optimal program for T."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Dynamic RAM",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "EDB Predicate",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Datalog Program"
+        ],
+        "parent_concept": [
+            "Datalog Program"
+        ],
+        "prerequisites": [
+            "Datalog Rule"
+        ],
+        "category_edge": {
+            "concept": "Datalog Program",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p949_c1",
+            "evidence_text": "It is con v en tional in Datalog programs to distinguish predicates as follo ws: . EDB, or extensional datab ase, predicates are those that are de ned a- priori."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Datalog Rule",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p949_c1",
+                "evidence_text": "IDB, or intensional datab ase, predicates are de ned only b y the rules. A predicate m ust b e IDB or EDB, and it can b e only one of these."
+            }
+        ]
+    },
+    {
+        "concept": "Elimination Algorithm",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Enclosing Construct",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Enclosing Loop",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Error Correction",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Error Detection",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Error Handling"
+        ],
+        "parent_concept": [
+            "Error Handling"
+        ],
+        "prerequisites": [
+            "LR Parsing Table"
+        ],
+        "category_edge": {
+            "concept": "Error Handling",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p309_c2",
+            "evidence_text": "Consider again the expression grammar E ! E + E j E   E j (E ) j id Figure  .   sho ws the LR parsing table from Fig.  .  for this grammar, mo di ed for error detection and reco v ery ."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "LR Parsing Table",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p309_c2",
+                "evidence_text": "Consider again the expression grammar E ! E + E j E   E j (E ) j id Figure  .   sho ws the LR parsing table from Fig.  .  for this grammar, mo di ed for error detection and reco v ery ."
+            }
+        ]
+    },
+    {
+        "concept": "Error Handling",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [
+            "LR Parser"
+        ],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p219_c0",
+            "evidence_text": "CHAPTER  . SYNT AX ANAL YSIS ... Syntax Error Handling The remainder of this section considers the nature of syn tactic errors and gen- eral strategies for error reco v ery ."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "LR Parser",
+                "confidence": 0.7,
+                "evidence_chunk": "Compiler_book_p309_c1",
+                "evidence_text": "In designing sp eci c error-handling routines for an LR parser, w e can ll in eac h blank en try in the action eld with a p oin ter to an error routine that will tak e the appropriate action selected b y the compiler designer."
+            }
+        ]
+    },
+    {
+        "concept": "Euclidean Algorithm",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Evaluation Order",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Executed Iteration Space",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Iteration Space"
+        ],
+        "parent_concept": [
+            "Iteration Space"
+        ],
+        "prerequisites": [
+            "Iteration Space",
+            "Evaluation Order"
+        ],
+        "category_edge": {
+            "concept": "Iteration Space",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p805_c1",
+            "evidence_text": "The iteration space is the set of iterations, whose ID's are giv en b y the v alues held b y the lo op index v ariables."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Iteration Space",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p818_c2",
+                "evidence_text": "The original program imp oses one sequen tial order on the iterations, whic h is the lexicographic order with resp ect to the lo op index v ariables ordered from the outermost to the innermost. Ho w ev er, the iterations in the space can b e executed in an y order as long as their data dep endences are honored"
+            },
+            {
+                "prerequisite": "Evaluation Order",
+                "confidence": 0.7,
+                "evidence_chunk": "Compiler_book_p818_c2",
+                "evidence_text": "Con trolling the Order of Execution The linear inequalities extracted from the lo w er and upp er b ounds of a lo op b o dy de ne a set of iterations o v er a con v ex p olyhedron."
+            }
+        ]
+    },
+    {
+        "concept": "Expression Grammar",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Syntactic Analysis"
+        ],
+        "parent_concept": [
+            "Syntactic Analysis"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Syntactic Analysis",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p218_c2",
+            "evidence_text": "Expression grammar belongs to the class of LR grammars that are suitable for bottom-up parsing."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Expression Translator",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler"
+        ],
+        "parent_concept": [
+            "Compiler"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler",
+            "confidence": 0.6,
+            "evidence_chunk": "Compiler_book_p119_c0",
+            "evidence_text": "CHAPTER . A SIMPLE SYNT AX-DIRECTED TRANSLA TOR"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Generational Garbage Collection",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Automatic Garbage Collection"
+        ],
+        "parent_concept": [
+            "Automatic Garbage Collection"
+        ],
+        "prerequisites": [
+            "Copying Collector",
+            "Partial Collection"
+        ],
+        "category_edge": {
+            "concept": "Automatic Garbage Collection",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p513_c3",
+            "evidence_text": "The \\generational\" sc heme describ ed b elo w is an example of ho w cop ying ma y b e com bined with partial collection. . . . Generational Garbage Collection Generational garbage collection is an e ectiv e w a y to exploit the prop ert y that most ob jects die y oung."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Copying Collector",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p513_c3",
+                "evidence_text": "P artial garbage collectors are often implemen ted as cop ying garbage collec- tors. ... The \\generational\" sc heme describ ed b elo w is an example of ho w cop ying ma y b e com bined with partial collection."
+            },
+            {
+                "prerequisite": "Partial Collection",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p513_c3",
+                "evidence_text": "The \\generational\" sc heme describ ed b elo w is an example of ho w cop ying ma y b e com bined with partial collection."
+            }
+        ]
+    },
+    {
+        "concept": "Graph Coloring",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Register Allocation"
+        ],
+        "parent_concept": [
+            "Register Allocation"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Register Allocation",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p581_c1",
+            "evidence_text": "Register Allo cation b y Graph Coloring When a register is needed for a computation but all a v ailable registers are in use, the con ten ts of one of the used registers m ust b e stored (spil le d) in to a memory lo cation in order to free up a register. Graph coloring is a simple, systematic tec hnique for allo cating registers and managing register spills."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Graph Depth",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Handle Pruning",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "IDB Predicate",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Datalog Rule"
+        ],
+        "parent_concept": [
+            "Datalog Rule"
+        ],
+        "prerequisites": [
+            "EDB Predicate"
+        ],
+        "category_edge": {
+            "concept": "Datalog Rule",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p953_c2",
+            "evidence_text": "T o tak e adv an tage of this observ ation, in tro duce for eac h IDB predicate p a predicate new P that will hold only the newly disco v ered p-facts from the previous round. Eac h rule that has one or more IDB predicates among its subgoals is replaced b y a collection of rules."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "EDB Predicate",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p957_c0",
+                "evidence_text": "The EDB predicate pr ed(I ; J ) means that statemen t I is a predecessor of statemen t J . ... W e shall use IDB predicates in(I ; D ) and out(I ; D ) to mean that de nition D reac hes the b eginning or end of statemen t I , resp ectiv ely ."
+            }
+        ]
+    },
+    {
+        "concept": "Incremental Garbage Collection",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Automatic Garbage Collection"
+        ],
+        "parent_concept": [
+            "Automatic Garbage Collection"
+        ],
+        "prerequisites": [
+            "Tracing Algorithm"
+        ],
+        "category_edge": {
+            "concept": "Automatic Garbage Collection",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p526_c3",
+            "evidence_text": "Simple trace-based collectors stop the user program while garbage is collected. Incr emental c ol le ctors in terlea v e the actions of the garbage collector and the mutator or user program."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Tracing Algorithm",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p526_c3",
+                "evidence_text": "Simple trace-based collectors stop the user program while garbage is collected. Incr emental c ol le ctors in terlea v e the actions of the garbage collector and the mutator or user program."
+            }
+        ]
+    },
+    {
+        "concept": "Instruction",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Instruction Ordering",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler"
+        ],
+        "parent_concept": [
+            "Compiler"
+        ],
+        "prerequisites": [
+            "Instruction"
+        ],
+        "category_edge": {
+            "concept": "Compiler",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p531_c0",
+            "evidence_text": "CHAPTER . CODE GENERA TION allo cation and assignmen t, and instruction ordering."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Instruction",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p531_c0",
+                "evidence_text": "Instruction ordering in v olv es deciding in what order to sc hedule the execution of instructions."
+            }
+        ]
+    },
+    {
+        "concept": "Instruction Pipeline",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Instruction Selection",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p583_c0",
+            "evidence_text": "CHAPTER . CODE GENERA TION . Instruction Selection b y T ree Rewriting"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Intermediate Code",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Interprocedural Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Interprocedural Data Flow Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Intraprocedural Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler"
+        ],
+        "parent_concept": [
+            "Compiler"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p928_c1",
+            "evidence_text": "Most compiler optimizations, including those described in Chapters , 0, and , are performed on procedures one at a time. We refer to such analyses as intraprocedural."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Iteration",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Iteration Space"
+        ],
+        "parent_concept": [
+            "Iteration Space"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Iteration Space",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p823_c1",
+            "evidence_text": "Figure . : Diagonalwise ordering of the iteration space of Fig. . ... Changing Axes Note that sweeping the iteration space horizontally and vertically, as discussed above, are just two of the most common ways of visiting the iteration space."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Iteration Space",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p805_c0",
+            "evidence_text": "CHAPTER . OPTIMIZING F OR P ARALLELISM AND LOCALITY The follo wing example will illustrate the three spaces | iteration, data, and pro cessor."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Jumping Code",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p1002_c0",
+            "evidence_text": "A. . JUMPING CODE F OR BOOLEAN EXPRESSIONS Metho d jumping (lines 0- , le R el.java) b egins b y generating co de for the sub expressions expr and expr"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "KMP Algorithm",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "LALR Parsing Table",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "LR Parsing Table"
+        ],
+        "parent_concept": [
+            "LR Parsing Table"
+        ],
+        "prerequisites": [
+            "Canonical LR"
+        ],
+        "category_edge": {
+            "concept": "LR Parsing Table",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p291_c0",
+            "evidence_text": "Constructing LALR P arsing T ables W e no w in tro duce our last parser construction metho d, the LALR (lo okahe ad- LR) tec hnique. This metho d is often used in practice, b ecause the tables ob- tained b y it are considerably smaller than the canonical LR tables"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Canonical LR",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p291_c0",
+                "evidence_text": "Constructing LALR P arsing T ables W e no w in tro duce our last parser construction metho d, the LALR (lo okahe ad- LR) tec hnique. This metho d is often used in practice, b ecause the tables ob- tained b y it are considerably smaller than the canonical LR tables"
+            }
+        ]
+    },
+    {
+        "concept": "LR Parse",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p267_c0",
+            "evidence_text": "CHAPTER  . SYNT AX ANAL YSIS   The LR-parsing metho d is the most general non bac ktrac king shift-reduce parsing metho d kno wn"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "LR Parser",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "LR Parsing",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Syntax Analysis"
+        ],
+        "parent_concept": [
+            "Syntax Analysis"
+        ],
+        "prerequisites": [
+            "LR Parser"
+        ],
+        "category_edge": {
+            "concept": "Syntax Analysis",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p267_c0",
+            "evidence_text": "CHAPTER . SYNT AX ANAL YSIS The LR-parsing metho d is the most general non bac ktrac king shift-reduce parsing metho d kno wn"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "LR Parser",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p275_c2",
+                "evidence_text": "All LR parsers b eha v e in this fashion; the only di erence b et w een one LR parser and another is the information in the A CTION and GOTO elds of the parsing table. Algorithm . : LR-parsing algorithm."
+            }
+        ]
+    },
+    {
+        "concept": "LR Parsing Table",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Parsing Table"
+        ],
+        "parent_concept": [
+            "Parsing Table"
+        ],
+        "prerequisites": [
+            "LR Parsing"
+        ],
+        "category_edge": {
+            "concept": "Parsing Table",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p302_c2",
+            "evidence_text": "The table-compression methods for nite automata that w ere discussed in Section . . can also b e used to represen t LR parsing tables."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "LR Parsing",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p275_c2",
+                "evidence_text": "Algorithm : LR-parsing algorithm. INPUT: An input string w and an LR-parsing table with functions ACTION and GOTO for a grammar G."
+            }
+        ]
+    },
+    {
+        "concept": "Lex Compiler",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [
+            "Regular Expression",
+            "Transition Diagram"
+        ],
+        "category_edge": null,
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Regular Expression",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p165_c1",
+                "evidence_text": "The mechanics of how this translation from regular expressions to transition diagrams occurs is the subject of the next sections; here we only learn the Lex language."
+            },
+            {
+                "prerequisite": "Transition Diagram",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p165_c1",
+                "evidence_text": "Behind the scenes, the Lex compiler transforms the input patterns into a transition diagram and generates code, in a le called lex.yy.c, that simulates this transition diagram."
+            }
+        ]
+    },
+    {
+        "concept": "Lexical Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p11_c3",
+            "evidence_text": "Lexical Analysis"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Lexical Analyzer",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Lexical Analysis"
+        ],
+        "parent_concept": [
+            "Lexical Analysis"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Lexical Analysis",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p134_c0",
+            "evidence_text": "Chapter Lexical Analysis In this chapter we show how to construct a lexical analyzer."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "List Scheduling",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Code Scheduling"
+        ],
+        "parent_concept": [
+            "Code Scheduling"
+        ],
+        "prerequisites": [
+            "Prioritized Topological Order"
+        ],
+        "category_edge": {
+            "concept": "Code Scheduling",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p750_c0",
+            "evidence_text": "Figure 0. : A list scheduling algorithm"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Prioritized Topological Order",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p750_c0",
+                "evidence_text": "for (each n in N in prioritized topological order)"
+            }
+        ]
+    },
+    {
+        "concept": "Manual Memory Management",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Memory Access",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Memory Address",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Memory Management",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler"
+        ],
+        "parent_concept": [
+            "Compiler"
+        ],
+        "prerequisites": [
+            "Virtual Memory",
+            "Memory Manager"
+        ],
+        "category_edge": {
+            "concept": "Compiler",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p479_c0",
+            "evidence_text": "CHAPTER . R UN-TIME ENVIR ONMENTS . . The Memory Hierarc h y of a Computer Memory managemen t and compiler optimization m ust b e done with an a w are- ness of ho w memory b eha v es."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Virtual Memory",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p478_c0",
+                "evidence_text": "if no c h unk of the needed size is a v ailable, it seeks to increase the heap storage space b y getting consecutiv e b ytes of virtual memory from the op erating system."
+            },
+            {
+                "prerequisite": "Memory Manager",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p478_c0",
+                "evidence_text": "The Memory Manager The memory manager k eeps trac k of all the free space in heap storage at all times."
+            }
+        ]
+    },
+    {
+        "concept": "Memory Manager",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Memory Management"
+        ],
+        "parent_concept": [
+            "Memory Management"
+        ],
+        "prerequisites": [
+            "Virtual Memory"
+        ],
+        "category_edge": {
+            "concept": "Memory Management",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p478_c0",
+            "evidence_text": "HEAP MANA GEMENT . . The Memory Manager The memory manager k eeps trac k of all the free space in heap storage at all times."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Virtual Memory",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p478_c0",
+                "evidence_text": "if no c h unk of the needed size is a v ailable, it seeks to increase the heap storage space b y getting consecutiv e b ytes of virtual memory from the op erating system."
+            }
+        ]
+    },
+    {
+        "concept": "Memory Usage",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Memory Management"
+        ],
+        "parent_concept": [
+            "Memory Management"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Memory Management",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p491_c1",
+            "evidence_text": "a program's memory usage, decreases its data lo calit y , and increases the length of the pauses."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Nesting Depth",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Next Instruction",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Nonterminal Expression",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Optimized Program",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Optimizing Compiler",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Technology"
+        ],
+        "parent_concept": [
+            "Compiler Technology"
+        ],
+        "prerequisites": [
+            "Compiler Design"
+        ],
+        "category_edge": {
+            "concept": "Compiler Technology",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p42_c0",
+            "evidence_text": "APPLICA TIONS OF COMPILER TECHNOLOGY"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Compiler Design",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p41_c1",
+                "evidence_text": "One of the most imp ortan t skills in compiler design is the abilit y to form ulate the righ t problem to solv e."
+            }
+        ]
+    },
+    {
+        "concept": "Output Dependence",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Parallel Computation",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Parallel Execution",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Parallelizable Loop",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Technology"
+        ],
+        "parent_concept": [
+            "Compiler Technology"
+        ],
+        "prerequisites": [
+            "Synchronization",
+            "Iteration"
+        ],
+        "category_edge": {
+            "concept": "Compiler Technology",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p879_c0",
+            "evidence_text": "CHAPTER . OPTIMIZING F OR P ARALLELISM AND LOCALITY is no parallelism. W e observ e, ho w ev er, that b oth lo ops are indep enden tly parallelizable."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Synchronization",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p879_c0",
+                "evidence_text": "One w a y to parallelize the co de is to ha v e di eren t pro cessors w ork on di eren t columns of the arra y in the rst lo op, sync hronize and w ait for all pro cessors to nish..."
+            },
+            {
+                "prerequisite": "Iteration",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p905_c0",
+                "evidence_text": "Iterations (i ; j ; k ) are assigned to the pro cessor with ID (i ; j ). Eac h pro cessor executes the innermost lo op, the lo op with the index k ."
+            }
+        ]
+    },
+    {
+        "concept": "Parameter Passing",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [
+            "Calling Procedure",
+            "Called Procedure"
+        ],
+        "category_edge": null,
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Calling Procedure",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p62_c3",
+                "evidence_text": "Parameters are passed from a calling procedure to the callee either by value or by reference."
+            },
+            {
+                "prerequisite": "Called Procedure",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p62_c3",
+                "evidence_text": "Parameters are passed from a calling procedure to the callee either by value or by reference."
+            }
+        ]
+    },
+    {
+        "concept": "Parse Tree",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Syntactic Analysis"
+        ],
+        "parent_concept": [
+            "Syntactic Analysis"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Syntactic Analysis",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p227_c0",
+            "evidence_text": "CHAPTER . SYNT AX ANAL YSIS ) id E + id E E E ( E Figure . : P arse tree for (id + id)"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Parser Generator",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler"
+        ],
+        "parent_concept": [
+            "Compiler"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p312_c0",
+            "evidence_text": "This section shows how a parser generator can be used to facilitate the construction of the fron t end of a compiler."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Parsing Action",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Parsing Algorithm",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "LR Parser"
+        ],
+        "parent_concept": [
+            "LR Parser"
+        ],
+        "prerequisites": [
+            "LR Parsing Table"
+        ],
+        "category_edge": {
+            "concept": "LR Parser",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p275_c2",
+            "evidence_text": "The LR-parsing algorithm is summarized b elo w. All LR parsers b eha v e in this fashion"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "LR Parsing Table",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p275_c2",
+                "evidence_text": "INPUT: An input string w and an LR-parsing table with functions A CTION and GOTO for a grammar G."
+            }
+        ]
+    },
+    {
+        "concept": "Parsing Process",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Syntactic Analysis"
+        ],
+        "parent_concept": [
+            "Syntactic Analysis"
+        ],
+        "prerequisites": [
+            "Lexical Analyzer"
+        ],
+        "category_edge": {
+            "concept": "Syntactic Analysis",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p70_c1",
+            "evidence_text": "Parsing is the problem of taking a string of terminals and guring out ho w to deriv e it from the start sym b ol of the grammar"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Lexical Analyzer",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p70_c1",
+                "evidence_text": "source program has m ultic haracter lexemes that are group ed b y the lexical analyzer in to tok ens, whose rst comp onen ts are the terminals pro cessed b y the parser."
+            }
+        ]
+    },
+    {
+        "concept": "Parsing Table",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Partial Collection",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Automatic Garbage Collection"
+        ],
+        "parent_concept": [
+            "Automatic Garbage Collection"
+        ],
+        "prerequisites": [
+            "Incremental Garbage Collection"
+        ],
+        "category_edge": {
+            "concept": "Automatic Garbage Collection",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p527_c0",
+            "evidence_text": "Partial Collectors also reduce pauses; they collect a subset of the garbage at a time."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Incremental Garbage Collection",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p508_c1",
+                "evidence_text": "We can divide the work in time, by interleaving garbage collection with the mutation, or we can divide the work in space by collecting a subset of the garbage at a time. The former is known as incremental collection and the latter is known as partial collection."
+            }
+        ]
+    },
+    {
+        "concept": "Partial Redundancy",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Pipelined Parallelism",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Parallel Computation"
+        ],
+        "parent_concept": [
+            "Parallel Computation"
+        ],
+        "prerequisites": [
+            "Synchronization"
+        ],
+        "category_edge": {
+            "concept": "Parallel Computation",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p887_c0",
+            "evidence_text": "CHAPTER . OPTIMIZING F OR P ARALLELISM AND LOCALITY ... W e can parallelize this co de b y ha ving eac h pro cessor p erform a separate summation ... and deriv e parallelism b y o v erlapping the execut"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Synchronization",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p905_c1",
+                "evidence_text": "Algorithm . nds all the pip elinable parallelism requir- ing O (n) sync hronizations where n is the n um b er of iterations in the outermost lo op."
+            }
+        ]
+    },
+    {
+        "concept": "Prioritized Topological Order",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [
+            "List Scheduling"
+        ],
+        "category_edge": null,
+        "prerequisite_edges": [
+            {
+                "prerequisite": "List Scheduling",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p790_c2",
+                "evidence_text": "List Scheduling : Given a prioritized topological order for a data-depen- dence graph, w e ma y consider the no des in that order."
+            }
+        ]
+    },
+    {
+        "concept": "Procedure Call",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Program Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Program-Dependence Graph",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Purify",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Memory Management"
+        ],
+        "parent_concept": [
+            "Memory Management"
+        ],
+        "prerequisites": [
+            "Compiler",
+            "Instruction"
+        ],
+        "category_edge": {
+            "concept": "Memory Management",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p487_c0",
+            "evidence_text": "Rational's Purify is one of the most popular commercial tools that helps programmers find memory access errors and memory leaks in programs."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Compiler",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p487_c0",
+                "evidence_text": "Purify instruments binary code by adding additional instructions to check for errors as the program executes."
+            },
+            {
+                "prerequisite": "Instruction",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p487_c0",
+                "evidence_text": "Purify instruments binary code by adding additional instructions to check for errors as the program executes."
+            }
+        ]
+    },
+    {
+        "concept": "Quicksort",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Register Allocation",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler"
+        ],
+        "parent_concept": [
+            "Compiler"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p579_c0",
+            "evidence_text": "CHAPTER  . CODE GENERA TION One strategy for global register allo cation is to assign some xed n um b er of registers to hold the most activ e v alues in eac h inner lo op."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Register Renaming",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Register Allocation"
+        ],
+        "parent_concept": [
+            "Register Allocation"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Register Allocation",
+            "confidence": 0.7,
+            "evidence_chunk": "Compiler_book_p1030_c0",
+            "evidence_text": "Region-based allo cation Register , 0, { , { , { See also Pseudoregister, Rotat- ing register le Register allo cation 0{ , { , 0{ , , Register assignmen t 0, Register descriptor , { Register pair 0 Register renaming See Hardw are register renam-"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Regular Expression",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p212_c2",
+            "evidence_text": "Regular Expressions. These expressions are commonly used to describe patterns. Regular expressions are built from single characters, using union, concatenation, and the Kleene closure"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Resulting Grammar",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Scheduling Constraint",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Code Scheduling"
+        ],
+        "parent_concept": [
+            "Code Scheduling"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Code Scheduling",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p736_c0",
+            "evidence_text": ". CODE-SCHEDULING CONSTRAINTS      . Data-dep endenc e c onstr aints."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Semantic Action",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Semantic Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [
+            "Syntax Tree"
+        ],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p33_c2",
+            "evidence_text": "The semantic analyzer uses the syntax tree and the information in the symbol table to check the source program for semantic consistency with the language definition."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Syntax Tree",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p33_c2",
+                "evidence_text": "The semantic analyzer uses the syntax tree and the information in the symbol table to check the source program for semantic consistency with the language definition."
+            }
+        ]
+    },
+    {
+        "concept": "Simple LR",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "LR Parsing"
+        ],
+        "parent_concept": [
+            "LR Parsing"
+        ],
+        "prerequisites": [
+            "Parser Generator"
+        ],
+        "category_edge": {
+            "concept": "LR Parsing",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p266_c0",
+            "evidence_text": "INTR ODUCTION TO LR P ARSING: SIMPLE LR"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Parser Generator",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p266_c1",
+                "evidence_text": "Some familiarit y with the basic concepts is helpful ev en if the LR parser itself is constructed using an automatic parser generator."
+            }
+        ]
+    },
+    {
+        "concept": "Spatial Reuse",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Technology"
+        ],
+        "parent_concept": [
+            "Compiler Technology"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Technology",
+            "confidence": 0.6,
+            "evidence_chunk": "Compiler_book_p836_c0",
+            "evidence_text": "The general rule for determining whether there is self-spatial reuse is as follo ws. As alw a ys, w e assume that the lo op indexes corresp ond to columns of the co e cien t matrix in order..."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Statement Expression",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Static RAM",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Static Scoping",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Static Storage",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Static RAM"
+        ],
+        "parent_concept": [
+            "Static RAM"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Static RAM",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p1032_c0",
+            "evidence_text": "Static access     Static allo cation    ,     Static c hec king  {  ,     See also T yp e c hec king Static p olicy    Static RAM     Static scop e"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Subset Construction",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Synchronization",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Synchronizing Set",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Synchronizing Token",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Error Handling"
+        ],
+        "parent_concept": [
+            "Error Handling"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Error Handling",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p220_c3",
+            "evidence_text": "and global-correction. P anic-Mo de Reco v ery With this metho d, on disco v ering an error, the parser discards input sym b ols one at a time un til one of a designated set of synchr onizing tokens is found."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Syntactic Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [
+            "Lexical Analysis"
+        ],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p33_c0",
+            "evidence_text": "CHAPTER . INTRODUCTION . . Syntax Analysis The second phase of the compiler is syntax analysis or parsing."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Lexical Analysis",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p33_c0",
+                "evidence_text": "The parser uses the rst comp onen ts of the tok ens pro duced b y the lexical analyzer to create a tree-lik e in termediate represen tation that depicts the grammatical structure of the tok en stream."
+            }
+        ]
+    },
+    {
+        "concept": "Syntax Analysis",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [
+            "Lexical Analysis"
+        ],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p33_c0",
+            "evidence_text": "CHAPTER . INTR ODUCTION . . Syn tax Analysis The second phase of the compiler is syntax analysis or p arsing."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Lexical Analysis",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p33_c0",
+                "evidence_text": "The parser uses the rst comp onen ts of the tok ens pro duced b y the lexical analyzer to create a tree-lik e in termediate represen tation that depicts the grammatical structure of the tok en stream."
+            }
+        ]
+    },
+    {
+        "concept": "Syntax Analyzer",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [
+            "Lexical Analyzer"
+        ],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p33_c0",
+            "evidence_text": "The second phase of the compiler is syntax analysis or parsing. The parser uses the rst comp onen ts of the tok ens pro duced b y the lexical analyzer to create a tree-lik e in termediate represen tation that depicts the grammatical structure of the tok en stream."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Lexical Analyzer",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p33_c0",
+                "evidence_text": "The parser uses the rst comp onen ts of the tok ens pro duced b y the lexical analyzer to create a tree-lik e in termediate represen tation that depicts the grammatical structure of the tok en stream."
+            }
+        ]
+    },
+    {
+        "concept": "Syntax Error Handling",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Syntactic Analysis"
+        ],
+        "parent_concept": [
+            "Syntactic Analysis"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Syntactic Analysis",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p219_c0",
+            "evidence_text": "CHAPTER . SYNT AX ANAL YSIS ... Syntax Error Handling The remainder of this section considers the nature of syntactic errors and general strategies for error recovery ."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Syntax Tree",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Parse Tree"
+        ],
+        "parent_concept": [
+            "Parse Tree"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Parse Tree",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p95_c0",
+            "evidence_text": "To emphasize the contrast, a parse tree is sometimes called a concrete syntax tree, and the underlying grammar is called a concrete syntax for the language."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Synthesized Attribute",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p378_c0",
+            "evidence_text": "Summary of Chapter ! Inherite d and Synthesize d A ttributes : Syn tax-directed de nitions ma y use t w o kinds of attributes."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Terminal Expression",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Topological Order",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Tracing Algorithm",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler"
+        ],
+        "parent_concept": [
+            "Compiler"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Compiler",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p496_c0",
+            "evidence_text": "INTR ODUCTION TO TRA CE-BASED COLLECTION     X A D G H I E F Y B C Figure  . 0: Another net w ork of ob jects trace-based collector whenev er the free space is exhausted or its amoun t drops b elo w some threshold."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Train Algorithm",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Automatic Garbage Collection"
+        ],
+        "parent_concept": [
+            "Automatic Garbage Collection"
+        ],
+        "prerequisites": [
+            "Generational Garbage Collection"
+        ],
+        "category_edge": {
+            "concept": "Automatic Garbage Collection",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p515_c0",
+            "evidence_text": "A di eren t approac h to incremen tal collection, called the tr ain algorithm, w as dev elop ed to impro v e the handling of mature ob jects."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Generational Garbage Collection",
+                "confidence": 0.8,
+                "evidence_chunk": "Compiler_book_p515_c0",
+                "evidence_text": "it is probably b etter to use the generational approac h for immature ob jects and, only after they ha v e surviv ed a few rounds of collection, \\promote\" them to another heap, managed b y the train algorithm."
+            }
+        ]
+    },
+    {
+        "concept": "Transfer Function",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Program Analysis"
+        ],
+        "parent_concept": [
+            "Program Analysis"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Program Analysis",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p716_c2",
+            "evidence_text": "The transfer functions in this data- o w problem send sym b olic maps to sym- b olic maps."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Transition Diagram",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Lexical Analyzer"
+        ],
+        "parent_concept": [
+            "Lexical Analyzer"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Lexical Analyzer",
+            "confidence": 0.7,
+            "evidence_chunk": "Compiler_book_p248_c0",
+            "evidence_text": "Transition diagrams for predictive parsers differ from those for lexical analyzers."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Transition Function",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Transition Table",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Compiler Design"
+        ],
+        "parent_concept": [
+            "Compiler Design"
+        ],
+        "prerequisites": [
+            "Transition Function"
+        ],
+        "category_edge": {
+            "concept": "Compiler Design",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p173_c1",
+            "evidence_text": "Transition Tables W e can also represen t an NF A b y a tr ansition table, whose ro ws corresp ond to states..."
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "Transition Function",
+                "confidence": 0.9,
+                "evidence_chunk": "Compiler_book_p173_c1",
+                "evidence_text": "The en try for a giv en state and input is the v alue of the transition function applied to those argumen ts."
+            }
+        ]
+    },
+    {
+        "concept": "Type Error",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Underlying Grammar",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [],
+        "parent_concept": [],
+        "prerequisites": [],
+        "category_edge": null,
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Virtual Memory",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Memory Management"
+        ],
+        "parent_concept": [
+            "Memory Management"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Memory Management",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p480_c0",
+            "evidence_text": "HEAP MANA GEMENT ... Physical Memory - ms > GB Virtual Memory (Disk)"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Yacc Output",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Parser Generator"
+        ],
+        "parent_concept": [
+            "Parser Generator"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Parser Generator",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p312_c1",
+            "evidence_text": "The P arser Generator Yacc A translator can b e constructed using Yacc in the manner illustrated in Fig.  .  . First, a le, sa y translate.y, con taining a Yacc sp eci cation of the translator is prepared."
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Yacc Parser",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Parser Generator"
+        ],
+        "parent_concept": [
+            "Parser Generator"
+        ],
+        "prerequisites": [
+            "LALR Parsing Table"
+        ],
+        "category_edge": {
+            "concept": "Parser Generator",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p312_c0",
+            "evidence_text": "This section shows how a parser generator can be used to facilitate the construction of the front end of a compiler. We shall use the LALR parser generator Yacc as the basis of our discussion"
+        },
+        "prerequisite_edges": [
+            {
+                "prerequisite": "LALR Parsing Table",
+                "confidence": 0.85,
+                "evidence_chunk": "Compiler_book_p312_c1",
+                "evidence_text": "The program y.tab.c is a repre- sen tation of an LALR parser written in C, along with other C routines that the user ma y ha v e prepared. The LALR parsing table is compacted as describ ed in Section"
+            }
+        ]
+    },
+    {
+        "concept": "Yacc Semantic Action",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Yacc Source Program"
+        ],
+        "parent_concept": [
+            "Yacc Source Program"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Yacc Source Program",
+            "confidence": 0.8,
+            "evidence_chunk": "Compiler_book_p315_c0",
+            "evidence_text": "In a Yacc pro duction, unquoted strings of letters and digits not declared to b e tok ens are tak en to b e non terminals... A Yacc seman tic a"
+        },
+        "prerequisite_edges": []
+    },
+    {
+        "concept": "Yacc Source Program",
+        "node_type": "fine_grained_concept",
+        "coarse_grained_category": [
+            "Parser Generator"
+        ],
+        "parent_concept": [
+            "Parser Generator"
+        ],
+        "prerequisites": [],
+        "category_edge": {
+            "concept": "Parser Generator",
+            "confidence": 0.9,
+            "evidence_chunk": "Compiler_book_p312_c1",
+            "evidence_text": "First, a le, sa y translate.y, con taining a Yacc sp eci cation of the translator is prepared."
+        },
+        "prerequisite_edges": []
+    }
+]

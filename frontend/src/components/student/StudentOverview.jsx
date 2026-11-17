@@ -19,10 +19,12 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { studentApi } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import CognitiveRagQuizModal from './CognitiveRagQuizModal';
 
-export default function StudentOverview({ materials, courses, onSwitchToTeacher }) {
-  const [activeCourseTab, setActiveCourseTab] = useState(courses[0]?.id || 'ai402');
+export default function StudentOverview({ materials, courses, coursesLoading = false, onSwitchToTeacher }) {
+  const { user } = useAuth();
+  const [activeCourseTab, setActiveCourseTab] = useState(courses[0]?.id || null);
   const [learningPath, setLearningPath] = useState([]);
   const [masteryData, setMasteryData] = useState(null);
   const [isLoadingPath, setIsLoadingPath] = useState(false);
@@ -36,12 +38,26 @@ export default function StudentOverview({ materials, courses, onSwitchToTeacher 
   });
 
   const selectedCourseMaterials = materials.filter(m => m.courseId === activeCourseTab);
-  const currentCourse = courses.find(c => c.id === activeCourseTab) || courses[0];
+  const currentCourse = courses.find(c => c.id === activeCourseTab) || courses[0] || null;
 
   const [errorMessage, setErrorMessage] = useState(null);
 
+  // Sync activeCourseTab when courses prop changes
+  useEffect(() => {
+    if (!activeCourseTab && courses.length > 0) {
+      setActiveCourseTab(courses[0].id);
+    }
+  }, [courses, activeCourseTab]);
+
   // Fetch topological prerequisite learning path and mastery heatmap
   useEffect(() => {
+    // Guard: only call if we have a valid MongoDB ObjectId
+    if (!activeCourseTab || !activeCourseTab.match(/^[a-f0-9]{24}$/i)) {
+      setLearningPath([]);
+      setMasteryData(null);
+      setIsLoadingPath(false);
+      return;
+    }
     async function loadStudentData() {
       setIsLoadingPath(true);
       setErrorMessage(null);
@@ -104,7 +120,7 @@ export default function StudentOverview({ materials, courses, onSwitchToTeacher 
             <Sparkles size={14} className="text-accent" />
             <span>Cognitive-RAG Adaptive Learning Portal</span>
           </div>
-          <h2>Welcome back, Alex!</h2>
+          <h2>Welcome back, {user?.name || 'Student'}!</h2>
           <p>
             Explore AI-extracted knowledge graphs and dynamic prerequisite learning paths.
             Your mastery is continuously updated using Bayesian Knowledge Tracing (BKT) as you practice.
@@ -130,8 +146,21 @@ export default function StudentOverview({ materials, courses, onSwitchToTeacher 
           <button 
             type="button" 
             className="btn-accent"
-            onClick={() => setQuizModal({ isOpen: true, conceptName: null })}
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 18px' }}
+            disabled={courses.length === 0}
+            onClick={() => {
+              if (courses.length > 0) {
+                setQuizModal({ isOpen: true, conceptName: null });
+              }
+            }}
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px', 
+              padding: '10px 18px',
+              opacity: courses.length === 0 ? 0.6 : 1,
+              cursor: courses.length === 0 ? 'not-allowed' : 'pointer'
+            }}
+            title={courses.length === 0 ? 'No courses available for quizzes yet' : 'Start Adaptive Quiz'}
           >
             <Sparkles size={16} />
             <span>Start Adaptive Quiz (Cognitive-RAG)</span>
@@ -141,71 +170,109 @@ export default function StudentOverview({ materials, courses, onSwitchToTeacher 
 
       {/* Course Navigation Pills */}
       <div className="course-tabs-selector" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {courses.map((course) => (
-            <button
-              key={course.id}
-              type="button"
-              className={`course-tab-pill ${activeCourseTab === course.id ? 'active' : ''}`}
-              onClick={() => setActiveCourseTab(course.id)}
-            >
-              <BookOpen size={16} />
-              <span>{course.code || course.id}: {course.name || course.title}</span>
-            </button>
-          ))}
-        </div>
+        {coursesLoading ? (
+          <div style={{
+            textAlign: 'center',
+            padding: '24px',
+            background: 'rgba(255, 255, 255, 0.02)',
+            borderRadius: '12px',
+            color: '#94a3b8',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px'
+          }}>
+            <RefreshCw size={18} className="animate-spin text-accent" />
+            <span style={{ fontSize: '14px' }}>Loading available courses from server...</span>
+          </div>
+        ) : courses.length === 0 ? (
+          <div style={{
+            textAlign: 'center',
+            padding: '32px 24px',
+            background: 'rgba(255, 255, 255, 0.02)',
+            borderRadius: '12px',
+            border: '1px dashed rgba(255, 255, 255, 0.1)',
+            color: '#94a3b8',
+            width: '100%'
+          }}>
+            <BookOpen size={32} style={{ margin: '0 auto 12px', color: '#6366f1', opacity: 0.8 }} />
+            <h4 style={{ color: '#f8fafc', margin: '0 0 6px', fontSize: '15px', fontWeight: 600 }}>
+              No Enrolled Courses Found
+            </h4>
+            <p style={{ margin: '0 auto', maxWidth: '420px', fontSize: '13px', color: '#94a3b8', lineHeight: 1.5 }}>
+              You are not currently enrolled in any courses. Please ask your instructor to enroll you from the Faculty Student Roster.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {courses.map((course) => (
+                <button
+                  key={course.id}
+                  type="button"
+                  className={`course-tab-pill ${activeCourseTab === course.id ? 'active' : ''}`}
+                  onClick={() => setActiveCourseTab(course.id)}
+                >
+                  <BookOpen size={16} />
+                  <span>{course.code || course.id}: {course.name || course.title}</span>
+                </button>
+              ))}
+            </div>
 
-        {/* View Switcher: Learning Path vs Materials vs Heatmap */}
-        <div style={{ display: 'flex', gap: '6px' }}>
-          <button
-            type="button"
-            className={`btn-secondary ${activeTab === 'path' ? 'active-tab-btn' : ''}`}
-            onClick={() => setActiveTab('path')}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '8px',
-              fontSize: '12px',
-              fontWeight: 600,
-              background: activeTab === 'path' ? 'rgba(99,102,241,0.2)' : 'transparent',
-              border: activeTab === 'path' ? '1px solid #6366f1' : '1px solid rgba(255,255,255,0.1)',
-              color: activeTab === 'path' ? '#818cf8' : '#94a3b8'
-            }}
-          >
-            Topological Learning Path
-          </button>
-          <button
-            type="button"
-            className={`btn-secondary ${activeTab === 'materials' ? 'active-tab-btn' : ''}`}
-            onClick={() => setActiveTab('materials')}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '8px',
-              fontSize: '12px',
-              fontWeight: 600,
-              background: activeTab === 'materials' ? 'rgba(99,102,241,0.2)' : 'transparent',
-              border: activeTab === 'materials' ? '1px solid #6366f1' : '1px solid rgba(255,255,255,0.1)',
-              color: activeTab === 'materials' ? '#818cf8' : '#94a3b8'
-            }}
-          >
-            Course PDFs ({selectedCourseMaterials.length})
-          </button>
-          <button
-            type="button"
-            className={`btn-secondary ${activeTab === 'heatmap' ? 'active-tab-btn' : ''}`}
-            onClick={() => setActiveTab('heatmap')}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '8px',
-              fontSize: '12px',
-              fontWeight: 600,
-              background: activeTab === 'heatmap' ? 'rgba(99,102,241,0.2)' : 'transparent',
-              border: activeTab === 'heatmap' ? '1px solid #6366f1' : '1px solid rgba(255,255,255,0.1)',
-              color: activeTab === 'heatmap' ? '#818cf8' : '#94a3b8'
-            }}
-          >
-            BKT Mastery Heatmap
-          </button>
-        </div>
+            {/* View Switcher: Learning Path vs Materials vs Heatmap */}
+            <div style={{ display: 'flex', gap: '6px' }}>
+              <button
+                type="button"
+                className={`btn-secondary ${activeTab === 'path' ? 'active-tab-btn' : ''}`}
+                onClick={() => setActiveTab('path')}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  background: activeTab === 'path' ? 'rgba(99,102,241,0.2)' : 'transparent',
+                  border: activeTab === 'path' ? '1px solid #6366f1' : '1px solid rgba(255,255,255,0.1)',
+                  color: activeTab === 'path' ? '#818cf8' : '#94a3b8'
+                }}
+              >
+                Topological Learning Path
+              </button>
+              <button
+                type="button"
+                className={`btn-secondary ${activeTab === 'materials' ? 'active-tab-btn' : ''}`}
+                onClick={() => setActiveTab('materials')}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  background: activeTab === 'materials' ? 'rgba(99,102,241,0.2)' : 'transparent',
+                  border: activeTab === 'materials' ? '1px solid #6366f1' : '1px solid rgba(255,255,255,0.1)',
+                  color: activeTab === 'materials' ? '#818cf8' : '#94a3b8'
+                }}
+              >
+                Course PDFs ({selectedCourseMaterials.length})
+              </button>
+              <button
+                type="button"
+                className={`btn-secondary ${activeTab === 'heatmap' ? 'active-tab-btn' : ''}`}
+                onClick={() => setActiveTab('heatmap')}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  background: activeTab === 'heatmap' ? 'rgba(99,102,241,0.2)' : 'transparent',
+                  border: activeTab === 'heatmap' ? '1px solid #6366f1' : '1px solid rgba(255,255,255,0.1)',
+                  color: activeTab === 'heatmap' ? '#818cf8' : '#94a3b8'
+                }}
+              >
+                BKT Mastery Heatmap
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* View 1: Topological Prerequisite Learning Path */}
@@ -549,7 +616,7 @@ export default function StudentOverview({ materials, courses, onSwitchToTeacher 
         isOpen={quizModal.isOpen}
         onClose={() => setQuizModal({ isOpen: false, conceptName: null })}
         courseId={activeCourseTab}
-        courseTitle={currentCourse.name || currentCourse.title}
+        courseTitle={currentCourse?.name || currentCourse?.title || 'Course'}
         conceptName={quizModal.conceptName}
         onMasteryUpdated={handleMasteryUpdated}
       />

@@ -191,6 +191,47 @@ export const teacherApi = {
       method: 'PATCH',
       body: JSON.stringify(payload),
     }),
+
+  /**
+   * Get all registered students with optional enrollment status for a course
+   * @param {string} [courseId]
+   */
+  getStudents: (courseId = null) => {
+    const query = courseId ? `?course_id=${encodeURIComponent(courseId)}` : '';
+    return request(`/api/v1/teacher/students${query}`, {
+      method: 'GET',
+    });
+  },
+
+  /**
+   * Enroll a student into a course
+   * @param {string} courseId
+   * @param {string} studentId
+   */
+  enrollStudent: (courseId, studentId) =>
+    request(`/api/v1/teacher/courses/${courseId}/enroll`, {
+      method: 'POST',
+      body: JSON.stringify({ student_id: studentId }),
+    }),
+
+  /**
+   * Unenroll a student from a course
+   * @param {string} courseId
+   * @param {string} studentId
+   */
+  unenrollStudent: (courseId, studentId) =>
+    request(`/api/v1/teacher/courses/${courseId}/enroll/${studentId}`, {
+      method: 'DELETE',
+    }),
+
+  /**
+   * Enroll all registered students into a course in a single click
+   * @param {string} courseId
+   */
+  enrollAllStudents: (courseId) =>
+    request(`/api/v1/teacher/courses/${courseId}/enroll-all`, {
+      method: 'POST',
+    }),
 };
 
 // ==========================================
@@ -243,6 +284,16 @@ export const studentApi = {
   getMasteryHeatmap: (courseId) =>
     request(`/api/v1/student/mastery/${courseId}`, {
       method: 'GET',
+    }),
+
+  /**
+   * Ask AI Tutor a question with grounded textbook citations
+   * @param {object} payload - { course_id, question, concept_name }
+   */
+  askAiTutor: (payload) =>
+    request('/api/v1/student/ai-tutor/ask', {
+      method: 'POST',
+      body: JSON.stringify(payload),
     }),
 };
 

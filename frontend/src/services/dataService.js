@@ -6,6 +6,7 @@
  * - concept_chunk_scores.json
  * - cleaned_enriched_concepts.json
  */
+import { teacherApi } from './api';
 
 let cachedData = {
   contentChunks: null,
@@ -84,6 +85,53 @@ export async function loadEnrichedConcepts() {
     console.error('Failed to load cleaned_enriched_concepts.json', err);
     return [];
   }
+}
+
+// ==========================================
+// API-based course-aware loaders (FE-12)
+// ==========================================
+
+/**
+ * Fetch content chunks for a specific course.
+ * No direct chunks endpoint exists on the API, so falls back to static.
+ */
+export async function loadContentChunksForCourse(courseId) {
+  if (!courseId) return loadContentChunks();
+  // No chunks API endpoint: fall back to static
+  return loadContentChunks();
+}
+
+/**
+ * Fetch mapped concepts for a specific course from the knowledge-graph API.
+ * Falls back to static loadMappedConcepts() on error or missing courseId.
+ */
+export async function loadMappedConceptsForCourse(courseId) {
+  if (!courseId) return loadMappedConcepts();
+  try {
+    const graph = await teacherApi.getKnowledgeGraph(courseId);
+    const nodes = graph.nodes || [];
+    const conceptNodes = nodes.filter((n) => n.type === 'fine_grained_concept');
+    if (conceptNodes.length === 0) {
+      // Try all nodes if no fine_grained_concept typed nodes exist
+      const allNames = nodes.map((n) => n.label || n.id).filter(Boolean);
+      if (allNames.length > 0) return allNames;
+      return loadMappedConcepts();
+    }
+    return conceptNodes.map((n) => n.label || n.id).filter(Boolean);
+  } catch (err) {
+    console.warn(`loadMappedConceptsForCourse(${courseId}) fell back to static:`, err.message);
+    return loadMappedConcepts();
+  }
+}
+
+/**
+ * Fetch concept-chunk map for a specific course.
+ * No direct API endpoint, falls back to static.
+ */
+export async function loadConceptChunkMapForCourse(courseId) {
+  if (!courseId) return loadConceptChunkMap();
+  // No concept-chunk-map endpoint: fall back to static
+  return loadConceptChunkMap();
 }
 
 /**

@@ -45,11 +45,17 @@ CANDIDATE_UTILS_PATHS = [
 )
 async def get_raw_graph_html(course_id: str | None = None):
     """
-    Returns the generated interactive Vis.js Knowledge Graph HTML from outputs/graph_model.
+    Returns the generated interactive Vis.js Knowledge Graph HTML from outputs/graph_model or per-course workspace.
     Inlines utils.js so the graph is completely standalone and functional inside iframes.
     """
+    candidate_paths = []
+    if course_id:
+        from server.config import settings
+        candidate_paths.append(settings.COURSE_OUTPUTS_DIR / course_id / "knowledge_graph.html")
+    candidate_paths.extend(CANDIDATE_HTML_PATHS)
+
     html_file = None
-    for p in CANDIDATE_HTML_PATHS:
+    for p in candidate_paths:
         if p.exists() and p.stat().st_size > 0:
             html_file = p
             break

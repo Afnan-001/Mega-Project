@@ -14,18 +14,27 @@ import {
   FileCode,
   Share2,
   ZoomIn,
-  Compass
+  Compass,
+  Edit3,
+  Save,
+  X,
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
 import { loadMappedConcepts } from '../../services/dataService';
+import { teacherApi, graphApi } from '../../services/api';
 import '../../styles/knowledgeGraph.css';
 
-export default function KnowledgeGraphView() {
+export default function KnowledgeGraphView({ courseId }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [iframeKey, setIframeKey] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [concepts, setConcepts] = useState([]);
   const [activeConceptInfo, setActiveConceptInfo] = useState(null);
+  const [editingConcept, setEditingConcept] = useState(null);
+  const [isSavingOverride, setIsSavingOverride] = useState(false);
+  const [overrideMessage, setOverrideMessage] = useState(null);
   const [graphStats, setGraphStats] = useState({
     totalNodes: 124,
     totalEdges: 218,
@@ -38,13 +47,45 @@ export default function KnowledgeGraphView() {
   const containerRef = useRef(null);
   const iframeRef = useRef(null);
 
-  // Preferred URL (Vite public static first, fallback to FastAPI backend)
-  const graphHtmlUrl = '/outputs/graph_model/knowledge_graph.html';
-  const backendFallbackUrl = '/api/v1/graph/raw-html';
-  const gmlDownloadUrl = '/outputs/graph_model/knowledge_graph.gml';
+  // Preferred URL (API course raw-html first if courseId present, fallback to Vite public static)
+  const graphHtmlUrl = courseId 
+    ? graphApi.getCourseRawHtmlUrl(courseId) 
+    : '/outputs/graph_model/knowledge_graph.html';
+  const backendFallbackUrl = courseId 
+    ? graphApi.getCourseRawHtmlUrl(courseId) 
+    : '/api/v1/graph/raw-html';
+  const gmlDownloadUrl = courseId 
+    ? graphApi.getGmlUrl(courseId) 
+    : '/outputs/graph_model/knowledge_graph.gml';
 
   useEffect(() => {
     async function initData() {
+      // 1. If courseId is available, attempt to load live Knowledge Graph from FastAPI
+      if (courseId) {
+        try {
+          const res = await teacherApi.getKnowledgeGraph(courseId);
+          if (res && res.nodes && res.nodes.length > 0) {
+            setConcepts(res.nodes);
+            const coarse = res.nodes.filter(n => n.type === 'coarse_grained_category').length;
+            const fine = res.nodes.length - coarse;
+            const prereqs = (res.edges || []).filter(e => e.relation === 'PREREQUISITE_FOR').length;
+            const contains = (res.edges || []).filter(e => e.relation === 'CONTAINS').length;
+            setGraphStats({
+              totalNodes: res.total_nodes || res.nodes.length,
+              totalEdges: res.total_edges || res.edges.length,
+              coarseNodes: coarse,
+              fineNodes: fine,
+              prereqEdges: prereqs,
+              containsEdges: contains
+            });
+            return;
+          }
+        } catch (apiErr) {
+          console.warn('Could not fetch live graph from API, falling back to static json:', apiErr.message);
+        }
+      }
+
+      // 2. Fallback to static mapped concepts
       try {
         const mapped = await loadMappedConcepts();
         if (mapped && mapped.length > 0) {
@@ -63,11 +104,110 @@ export default function KnowledgeGraphView() {
       }
     }
     initData();
-  }, []);
+  }, [courseId]);
 
   const handleRefresh = () => {
     setIsLoading(true);
     setIframeKey(prev => prev + 1);
+  };
+
+  const handleSelectConceptForEdit = async (item) => {
+    const conceptName = typeof item === 'string' ? item : (item.id || item.canonical_name || item.name);
+    setActiveConceptInfo(item);
+    setSearchTerm('');
+    setOverrideMessage(null);
+
+    setEditingConcept({
+      name: conceptName,
+      type: typeof item === 'object' ? item.type : 'fine_grained_concept',
+      categoriesText: '',
+      prereqsText: '',
+      loading: true,
+      evidence: []
+    });
+
+    if (courseId) {
+      try {
+        const neighborhood = await graphApi.getNeighborhood(courseId, conceptName);
+        setEditingConcept({
+          name: conceptName,
+          type: neighborhood.node_type || 'fine_grained_concept',
+          categoriesText: (neighborhood.parents || []).join(', '),
+          prereqsText: (neighborhood.prerequisites || []).join(', '),
+          loading: false,
+          evidence: neighborhood.evidence_chunks || []
+        });
+      } catch (err) {
+        console.warn('Failed to fetch ego-neighborhood:', err.message);
+        setEditingConcept(prev => ({ ...prev, loading: false }));
+      }
+    } else {
+      setEditingConcept(prev => ({ ...prev, loading: false }));
+    }
+  };
+
+  const handleSaveOverride = async (e) => {
+    e.preventDefault();
+    if (!editingConcept) return;
+
+    setIsSavingOverride(true);
+    setOverrideMessage(null);
+
+    const categories = editingConcept.categoriesText
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    const prerequisites = editingConcept.prereqsText
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    try {
+      if (courseId) {
+        await teacherApi.overrideConcept(courseId, {
+          concept_name: editingConcept.name,
+          coarse_grained_category: categories,
+          prerequisites: prerequisites
+        });
+
+        setOverrideMessage({
+          type: 'success',
+          text: `Successfully updated relationships for "${editingConcept.name}" in Knowledge Graph!`
+        });
+
+        // Trigger iframe reload to reflect new edge topology
+        setIframeKey(prev => prev + 1);
+
+        // Refresh graph stats
+        const res = await teacherApi.getKnowledgeGraph(courseId);
+        if (res && res.nodes) {
+          setConcepts(res.nodes);
+          const coarse = res.nodes.filter(n => n.type === 'coarse_grained_category').length;
+          setGraphStats({
+            totalNodes: res.total_nodes || res.nodes.length,
+            totalEdges: res.total_edges || res.edges.length,
+            coarseNodes: coarse,
+            fineNodes: res.nodes.length - coarse,
+            prereqEdges: (res.edges || []).filter(ed => ed.relation === 'PREREQUISITE_FOR').length,
+            containsEdges: (res.edges || []).filter(ed => ed.relation === 'CONTAINS').length
+          });
+        }
+      } else {
+        // Simulated offline success
+        setOverrideMessage({
+          type: 'success',
+          text: `(Demo Mode) Updated local relationships for "${editingConcept.name}". Connect to FastAPI to persist in MongoDB.`
+        });
+      }
+    } catch (err) {
+      setOverrideMessage({
+        type: 'error',
+        text: err.message || 'Failed to save relationship override.'
+      });
+    } finally {
+      setIsSavingOverride(false);
+    }
   };
 
   const handleToggleFullscreen = () => {
@@ -231,10 +371,7 @@ export default function KnowledgeGraphView() {
                 <div 
                   key={idx} 
                   className="kg-search-item"
-                  onClick={() => {
-                    setActiveConceptInfo(item);
-                    setSearchTerm('');
-                  }}
+                  onClick={() => handleSelectConceptForEdit(item)}
                 >
                   <span className={`kg-item-dot ${type === 'coarse_grained_category' ? 'coarse-dot' : 'fine-dot'}`}></span>
                   <span className="kg-item-name">{name}</span>
@@ -245,6 +382,147 @@ export default function KnowledgeGraphView() {
           </div>
         )}
       </div>
+
+      {/* Concept Relationship Editor (Human-in-the-Loop Override) */}
+      {editingConcept && (
+        <div className="kg-concept-editor-panel glass-panel animate-fade-in">
+          <div className="kg-editor-header">
+            <div className="kg-editor-title-wrap">
+              <div className="header-icon-pill">
+                <Edit3 size={18} className="text-indigo" />
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h3>Edit Concept: {editingConcept.name}</h3>
+                  <span className="kg-editor-badge">Human-in-the-Loop Curation</span>
+                </div>
+                <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#94a3b8' }}>
+                  Modify parent category hierarchy and prerequisite relationships. Updates are saved to MongoDB and reflected in the DAG.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="kg-editor-close-btn"
+              onClick={() => setEditingConcept(null)}
+              title="Close editor"
+            >
+              <X size={16} />
+            </button>
+          </div>
+
+          {editingConcept.loading ? (
+            <div style={{ padding: '24px', textAlign: 'center', color: '#94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <Loader2 size={16} className="animate-spin text-indigo" />
+              <span>Fetching ego-neighborhood relationships from API...</span>
+            </div>
+          ) : (
+            <form onSubmit={handleSaveOverride}>
+              <div className="kg-editor-grid">
+                <div className="kg-editor-field">
+                  <label className="kg-editor-label">
+                    <Layers size={14} className="text-indigo" />
+                    <span>Parent Categories (Coarse-Grained)</span>
+                  </label>
+                  <span className="kg-editor-subtext">Comma-separated category names containing this concept</span>
+                  <input
+                    type="text"
+                    className="kg-editor-input"
+                    value={editingConcept.categoriesText}
+                    onChange={(e) => setEditingConcept({ ...editingConcept, categoriesText: e.target.value })}
+                    placeholder="e.g., Compiler Front End, Lexical Analysis"
+                  />
+                  {editingConcept.categoriesText && (
+                    <div className="kg-current-tags-row">
+                      {editingConcept.categoriesText.split(',').map((cat, i) => (
+                        <span key={i} className="kg-tag-chip cat-chip">{cat.trim()}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="kg-editor-field">
+                  <label className="kg-editor-label">
+                    <Share2 size={14} className="text-emerald" />
+                    <span>Prerequisites (PREREQUISITE_FOR)</span>
+                  </label>
+                  <span className="kg-editor-subtext">Comma-separated prerequisite concepts student must master first</span>
+                  <input
+                    type="text"
+                    className="kg-editor-input"
+                    value={editingConcept.prereqsText}
+                    onChange={(e) => setEditingConcept({ ...editingConcept, prereqsText: e.target.value })}
+                    placeholder="e.g., Regular Expressions, Finite Automata"
+                  />
+                  {editingConcept.prereqsText && (
+                    <div className="kg-current-tags-row">
+                      {editingConcept.prereqsText.split(',').map((p, i) => (
+                        <span key={i} className="kg-tag-chip prereq-chip">{p.trim()}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {editingConcept.evidence && editingConcept.evidence.length > 0 && (
+                <div style={{ marginTop: '12px' }}>
+                  <span className="kg-editor-subtext" style={{ fontWeight: 600, color: '#94a3b8' }}>
+                    Cited Evidence Chunks ({editingConcept.evidence.length})
+                  </span>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '6px' }}>
+                    {editingConcept.evidence.map((ev, i) => (
+                      <span key={i} className="kg-tag-chip" title={ev.text}>
+                        {ev.chunk_id} ({Math.round((ev.similarity || 0) * 100)}% match)
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {overrideMessage && (
+                <div className={`kg-editor-alert ${overrideMessage.type}`} style={{ marginTop: '12px' }}>
+                  {overrideMessage.type === 'success' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
+                  <span>{overrideMessage.text}</span>
+                </div>
+              )}
+
+              <div className="kg-editor-footer">
+                <span style={{ fontSize: '12px', color: '#64748b' }}>
+                  {courseId ? `Target Course ID: ${courseId}` : 'Running in local preview mode'}
+                </span>
+                <div className="kg-editor-actions">
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={() => setEditingConcept(null)}
+                    disabled={isSavingOverride}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn-primary"
+                    disabled={isSavingOverride}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    {isSavingOverride ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin" />
+                        <span>Saving...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save size={14} />
+                        <span>Save Overrides</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </form>
+          )}
+        </div>
+      )}
 
       {/* Main Graph Iframe Viewport Container */}
       <div className={`kg-viewport-card glass-panel ${isFullscreen ? 'fullscreen-mode' : ''}`}>

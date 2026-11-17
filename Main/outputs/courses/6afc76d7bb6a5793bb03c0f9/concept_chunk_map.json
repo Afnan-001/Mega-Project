@@ -1,0 +1,773 @@
+{
+    "Abstract Syntax": [
+        "Compiler_book_p117_c0",
+        "Compiler_book_p122_c0",
+        "Compiler_book_p79_c0"
+    ],
+    "Abstract Syntax Tree": [
+        "Compiler_book_p117_c0",
+        "Compiler_book_p1018_c0",
+        "Compiler_book_p95_c0",
+        "Compiler_book_p94_c2",
+        "Compiler_book_p347_c0",
+        "Compiler_book_p384_c0",
+        "Compiler_book_p121_c0",
+        "Compiler_book_p66_c0",
+        "Compiler_book_p122_c0"
+    ],
+    "Abstraction": [
+        "Compiler_book_p17_c3"
+    ],
+    "Accepting State": [
+        "Compiler_book_p178_c3",
+        "Compiler_book_p195_c3"
+    ],
+    "Address Descriptor": [
+        "Compiler_book_p570_c1"
+    ],
+    "Annotated Parse Tree": [
+        "Compiler_book_p1018_c0",
+        "Compiler_book_p437_c1",
+        "Compiler_book_p363_c0",
+        "Compiler_book_p331_c3",
+        "Compiler_book_p80_c0",
+        "Compiler_book_p117_c0",
+        "Compiler_book_p227_c0",
+        "Compiler_book_p347_c2"
+    ],
+    "Anticipated Expression": [
+        "Compiler_book_p674_c0",
+        "Compiler_book_p675_c0",
+        "Compiler_book_p673_c0"
+    ],
+    "Automatic Garbage Collection": [
+        "Compiler_book_p502_c2"
+    ],
+    "Binary Translation": [
+        "Compiler_book_p47_c1"
+    ],
+    "Called Procedure": [
+        "Compiler_book_p461_c1"
+    ],
+    "Calling Procedure": [
+        "Compiler_book_p461_c1",
+        "Compiler_book_p461_c0"
+    ],
+    "Canonical LR": [
+        "Compiler_book_p14_c2"
+    ],
+    "Class Arith": [
+        "Compiler_book_p998_c0"
+    ],
+    "Class Expr": [
+        "Compiler_book_p1000_c0"
+    ],
+    "Class Token": [
+        "Compiler_book_p106_c1"
+    ],
+    "Cloned Call Graph": [
+        "Compiler_book_p973_c1",
+        "Compiler_book_p973_c0",
+        "Compiler_book_p974_c0"
+    ],
+    "Code Scheduling": [
+        "Compiler_book_p754_c0",
+        "Compiler_book_p760_c0",
+        "Compiler_book_p758_c0",
+        "Compiler_book_p762_c0",
+        "Compiler_book_p736_c0",
+        "Compiler_book_p752_c0"
+    ],
+    "Common Subexpression": [
+        "Compiler_book_p559_c0"
+    ],
+    "Compiled Simulation": [
+        "Compiler_book_p48_c0",
+        "Compiler_book_p1031_c1"
+    ],
+    "Compiler": [
+        "Compiler_book_p2_c0",
+        "Compiler_book_p40_c0",
+        "Compiler_book_p26_c2"
+    ],
+    "Compiler Design": [
+        "Compiler_book_p40_c0",
+        "Compiler_book_p10_c1",
+        "Compiler_book_p2_c0",
+        "Compiler_book_p42_c1",
+        "Compiler_book_p39_c0",
+        "Compiler_book_p39_c1",
+        "Compiler_book_p46_c0",
+        "Compiler_book_p37_c0",
+        "Compiler_book_p48_c0",
+        "Compiler_book_p41_c2",
+        "Compiler_book_p26_c1",
+        "Compiler_book_p42_c0",
+        "Compiler_book_p62_c0",
+        "Compiler_book_p44_c0",
+        "Compiler_book_p40_c1",
+        "Compiler_book_p29_c0",
+        "Compiler_book_p6_c0"
+    ],
+    "Compiler Technology": [
+        "Compiler_book_p2_c0",
+        "Compiler_book_p10_c1",
+        "Compiler_book_p48_c0",
+        "Compiler_book_p26_c1"
+    ],
+    "Compiler Writing": [
+        "Compiler_book_p40_c0",
+        "Compiler_book_p39_c0",
+        "Compiler_book_p10_c1",
+        "Compiler_book_p26_c1",
+        "Compiler_book_p37_c0",
+        "Compiler_book_p39_c1",
+        "Compiler_book_p2_c0",
+        "Compiler_book_p41_c2",
+        "Compiler_book_p39_c3",
+        "Compiler_book_p39_c2",
+        "Compiler_book_p62_c0",
+        "Compiler_book_p26_c0",
+        "Compiler_book_p40_c1",
+        "Compiler_book_p63_c0",
+        "Compiler_book_p42_c1",
+        "Compiler_book_p26_c2",
+        "Compiler_book_p5_c1"
+    ],
+    "Concrete Syntax": [
+        "Compiler_book_p122_c0"
+    ],
+    "Copying Collector": [
+        "Compiler_book_p506_c0",
+        "Compiler_book_p522_c2",
+        "Compiler_book_p504_c1",
+        "Compiler_book_p522_c1"
+    ],
+    "Cyclic Garbage": [
+        "Compiler_book_p515_c2"
+    ],
+    "Data Abstraction": [
+        "Compiler_book_p17_c3",
+        "Compiler_book_p622_c0",
+        "Compiler_book_p623_c1"
+    ],
+    "Data Dependence Analysis": [
+        "Compiler_book_p848_c0",
+        "Compiler_book_p842_c0"
+    ],
+    "Data Dependence Problem": [
+        "Compiler_book_p848_c0"
+    ],
+    "Datalog Program": [
+        "Compiler_book_p954_c2"
+    ],
+    "Datalog Rule": [
+        "Compiler_book_p984_c3",
+        "Compiler_book_p954_c1"
+    ],
+    "Dependence Analysis": [
+        "Compiler_book_p848_c0"
+    ],
+    "Dependence Graph": [
+        "Compiler_book_p848_c0"
+    ],
+    "Dependency Graph": [
+        "Compiler_book_p848_c0"
+    ],
+    "Deterministic Finite Automaton": [
+        "Compiler_book_p1022_c0",
+        "Compiler_book_p172_c0",
+        "Compiler_book_p213_c1",
+        "Compiler_book_p174_c2"
+    ],
+    "Distributed Memory Machine": [
+        "Compiler_book_p919_c0"
+    ],
+    "Dynamic Programming": [
+        "Compiler_book_p600_c0",
+        "Compiler_book_p602_c2"
+    ],
+    "Dynamic Programming Algorithm": [
+        "Compiler_book_p600_c0"
+    ],
+    "Dynamic RAM": [
+        "Compiler_book_p481_c0"
+    ],
+    "EDB Predicate": [
+        "Compiler_book_p949_c1",
+        "Compiler_book_p949_c2",
+        "Compiler_book_p957_c0"
+    ],
+    "Elimination Algorithm": [
+        "Compiler_book_p825_c1",
+        "Compiler_book_p496_c2"
+    ],
+    "Enclosing Construct": [
+        "Compiler_book_p288_c0"
+    ],
+    "Enclosing Loop": [
+        "Compiler_book_p270_c0"
+    ],
+    "Error Correction": [
+        "Compiler_book_p139_c1"
+    ],
+    "Error Detection": [
+        "Compiler_book_p219_c3",
+        "Compiler_book_p309_c2",
+        "Compiler_book_p220_c1"
+    ],
+    "Error Handling": [
+        "Compiler_book_p220_c1",
+        "Compiler_book_p99_c3",
+        "Compiler_book_p309_c1",
+        "Compiler_book_p219_c0"
+    ],
+    "Euclidean Algorithm": [
+        "Compiler_book_p845_c0",
+        "Compiler_book_p851_c2"
+    ],
+    "Evaluation Order": [
+        "Compiler_book_p820_c0"
+    ],
+    "Executed Iteration Space": [
+        "Compiler_book_p805_c1",
+        "Compiler_book_p816_c0",
+        "Compiler_book_p818_c2"
+    ],
+    "Expression Grammar": [
+        "Compiler_book_p218_c2",
+        "Compiler_book_p212_c2",
+        "Compiler_book_p213_c0",
+        "Compiler_book_p95_c1",
+        "Compiler_book_p223_c0",
+        "Compiler_book_p256_c1",
+        "Compiler_book_p234_c0"
+    ],
+    "Expression Translator": [
+        "Compiler_book_p94_c0",
+        "Compiler_book_p119_c0"
+    ],
+    "Generational Garbage Collection": [
+        "Compiler_book_p513_c3",
+        "Compiler_book_p512_c3",
+        "Compiler_book_p515_c0",
+        "Compiler_book_p515_c1",
+        "Compiler_book_p508_c2",
+        "Compiler_book_p514_c2"
+    ],
+    "Graph Coloring": [
+        "Compiler_book_p581_c1"
+    ],
+    "Graph Depth": [
+        "Compiler_book_p690_c0"
+    ],
+    "Handle Pruning": [
+        "Compiler_book_p14_c1"
+    ],
+    "IDB Predicate": [
+        "Compiler_book_p953_c2",
+        "Compiler_book_p950_c1",
+        "Compiler_book_p957_c0"
+    ],
+    "Incremental Garbage Collection": [
+        "Compiler_book_p508_c2",
+        "Compiler_book_p526_c3"
+    ],
+    "Instruction": [
+        "Compiler_book_p553_c0"
+    ],
+    "Instruction Ordering": [
+        "Compiler_book_p531_c0",
+        "Compiler_book_p537_c2",
+        "Compiler_book_p759_c2",
+        "Compiler_book_p553_c0",
+        "Compiler_book_p391_c0",
+        "Compiler_book_p393_c2",
+        "Compiler_book_p481_c2",
+        "Compiler_book_p586_c0",
+        "Compiler_book_p883_c0"
+    ],
+    "Instruction Pipeline": [
+        "Compiler_book_p733_c2"
+    ],
+    "Instruction Selection": [
+        "Compiler_book_p583_c0",
+        "Compiler_book_p586_c0"
+    ],
+    "Intermediate Code": [
+        "Compiler_book_p128_c0"
+    ],
+    "Interprocedural Analysis": [
+        "Compiler_book_p933_c0",
+        "Compiler_book_p966_c0",
+        "Compiler_book_p973_c0"
+    ],
+    "Interprocedural Data Flow Analysis": [
+        "Compiler_book_p989_c0"
+    ],
+    "Intraprocedural Analysis": [
+        "Compiler_book_p928_c2",
+        "Compiler_book_p941_c1",
+        "Compiler_book_p928_c1",
+        "Compiler_book_p966_c0",
+        "Compiler_book_p989_c0",
+        "Compiler_book_p929_c0",
+        "Compiler_book_p928_c0",
+        "Compiler_book_p973_c0",
+        "Compiler_book_p933_c0",
+        "Compiler_book_p943_c0",
+        "Compiler_book_p937_c0"
+    ],
+    "Iteration": [
+        "Compiler_book_p823_c1"
+    ],
+    "Iteration Space": [
+        "Compiler_book_p805_c1",
+        "Compiler_book_p813_c2",
+        "Compiler_book_p805_c0",
+        "Compiler_book_p816_c0",
+        "Compiler_book_p823_c1",
+        "Compiler_book_p22_c2",
+        "Compiler_book_p822_c0"
+    ],
+    "Jumping Code": [
+        "Compiler_book_p1002_c0"
+    ],
+    "KMP Algorithm": [
+        "Compiler_book_p163_c0"
+    ],
+    "LALR Parsing Table": [
+        "Compiler_book_p291_c0",
+        "Compiler_book_p293_c1",
+        "Compiler_book_p316_c3"
+    ],
+    "LR Parse": [
+        "Compiler_book_p266_c0",
+        "Compiler_book_p267_c0"
+    ],
+    "LR Parser": [
+        "Compiler_book_p275_c2",
+        "Compiler_book_p275_c1"
+    ],
+    "LR Parsing": [
+        "Compiler_book_p267_c0",
+        "Compiler_book_p275_c2",
+        "Compiler_book_p266_c0",
+        "Compiler_book_p276_c0",
+        "Compiler_book_p266_c1",
+        "Compiler_book_p14_c2",
+        "Compiler_book_p291_c0",
+        "Compiler_book_p14_c1",
+        "Compiler_book_p275_c1",
+        "Compiler_book_p290_c0",
+        "Compiler_book_p267_c1",
+        "Compiler_book_p1026_c1",
+        "Compiler_book_p278_c0",
+        "Compiler_book_p273_c1",
+        "Compiler_book_p590_c2"
+    ],
+    "LR Parsing Table": [
+        "Compiler_book_p291_c0",
+        "Compiler_book_p302_c2",
+        "Compiler_book_p275_c2"
+    ],
+    "Lex Compiler": [
+        "Compiler_book_p165_c1"
+    ],
+    "Lexical Analysis": [
+        "Compiler_book_p215_c0",
+        "Compiler_book_p11_c3",
+        "Compiler_book_p134_c0",
+        "Compiler_book_p213_c0",
+        "Compiler_book_p12_c0",
+        "Compiler_book_p165_c0",
+        "Compiler_book_p135_c0",
+        "Compiler_book_p141_c0"
+    ],
+    "Lexical Analyzer": [
+        "Compiler_book_p134_c0",
+        "Compiler_book_p215_c0",
+        "Compiler_book_p108_c0",
+        "Compiler_book_p135_c0",
+        "Compiler_book_p165_c0",
+        "Compiler_book_p191_c1",
+        "Compiler_book_p213_c0",
+        "Compiler_book_p1026_c0",
+        "Compiler_book_p11_c3",
+        "Compiler_book_p134_c1",
+        "Compiler_book_p106_c0",
+        "Compiler_book_p166_c2",
+        "Compiler_book_p159_c1",
+        "Compiler_book_p135_c1"
+    ],
+    "List Scheduling": [
+        "Compiler_book_p750_c0"
+    ],
+    "Manual Memory Management": [
+        "Compiler_book_p478_c0"
+    ],
+    "Memory Access": [
+        "Compiler_book_p798_c2"
+    ],
+    "Memory Address": [
+        "Compiler_book_p538_c1"
+    ],
+    "Memory Management": [
+        "Compiler_book_p478_c0",
+        "Compiler_book_p478_c2",
+        "Compiler_book_p480_c0",
+        "Compiler_book_p479_c0"
+    ],
+    "Memory Manager": [
+        "Compiler_book_p478_c0",
+        "Compiler_book_p478_c2"
+    ],
+    "Memory Usage": [
+        "Compiler_book_p491_c1",
+        "Compiler_book_p478_c0",
+        "Compiler_book_p525_c3",
+        "Compiler_book_p481_c3",
+        "Compiler_book_p523_c3",
+        "Compiler_book_p480_c0"
+    ],
+    "Nesting Depth": [
+        "Compiler_book_p468_c2"
+    ],
+    "Next Instruction": [
+        "Compiler_book_p438_c0",
+        "Compiler_book_p440_c0"
+    ],
+    "Nonterminal Expression": [
+        "Compiler_book_p14_c0"
+    ],
+    "Optimized Program": [
+        "Compiler_book_p905_c1",
+        "Compiler_book_p916_c1",
+        "Compiler_book_p884_c2",
+        "Compiler_book_p730_c1",
+        "Compiler_book_p926_c1"
+    ],
+    "Optimizing Compiler": [
+        "Compiler_book_p42_c0",
+        "Compiler_book_p41_c2",
+        "Compiler_book_p41_c1",
+        "Compiler_book_p10_c1",
+        "Compiler_book_p42_c1",
+        "Compiler_book_p609_c1",
+        "Compiler_book_p794_c0",
+        "Compiler_book_p530_c1",
+        "Compiler_book_p40_c3",
+        "Compiler_book_p927_c0",
+        "Compiler_book_p2_c0",
+        "Compiler_book_p41_c0",
+        "Compiler_book_p562_c0",
+        "Compiler_book_p62_c0"
+    ],
+    "Output Dependence": [
+        "Compiler_book_p723_c0",
+        "Compiler_book_p653_c0"
+    ],
+    "Parallel Computation": [
+        "Compiler_book_p905_c1",
+        "Compiler_book_p799_c0",
+        "Compiler_book_p926_c1",
+        "Compiler_book_p732_c1",
+        "Compiler_book_p905_c2"
+    ],
+    "Parallel Execution": [
+        "Compiler_book_p735_c0"
+    ],
+    "Parallelizable Loop": [
+        "Compiler_book_p905_c0",
+        "Compiler_book_p879_c0"
+    ],
+    "Parameter Passing": [
+        "Compiler_book_p62_c3",
+        "Compiler_book_p473_c0",
+        "Compiler_book_p493_c3"
+    ],
+    "Parse Tree": [
+        "Compiler_book_p227_c1",
+        "Compiler_book_p227_c0"
+    ],
+    "Parser Generator": [
+        "Compiler_book_p312_c0"
+    ],
+    "Parsing Action": [
+        "Compiler_book_p437_c1"
+    ],
+    "Parsing Algorithm": [
+        "Compiler_book_p275_c2"
+    ],
+    "Parsing Process": [
+        "Compiler_book_p70_c1",
+        "Compiler_book_p86_c1",
+        "Compiler_book_p275_c2"
+    ],
+    "Parsing Table": [
+        "Compiler_book_p252_c0"
+    ],
+    "Partial Collection": [
+        "Compiler_book_p508_c2",
+        "Compiler_book_p527_c0",
+        "Compiler_book_p508_c1"
+    ],
+    "Partial Redundancy": [
+        "Compiler_book_p674_c1"
+    ],
+    "Pipelined Parallelism": [
+        "Compiler_book_p889_c3",
+        "Compiler_book_p887_c0",
+        "Compiler_book_p799_c0",
+        "Compiler_book_p905_c1",
+        "Compiler_book_p905_c0",
+        "Compiler_book_p907_c0",
+        "Compiler_book_p923_c3",
+        "Compiler_book_p892_c0",
+        "Compiler_book_p801_c0",
+        "Compiler_book_p893_c0",
+        "Compiler_book_p888_c0",
+        "Compiler_book_p800_c1",
+        "Compiler_book_p901_c1"
+    ],
+    "Prioritized Topological Order": [
+        "Compiler_book_p750_c0",
+        "Compiler_book_p790_c2"
+    ],
+    "Procedure Call": [
+        "Compiler_book_p461_c1",
+        "Compiler_book_p461_c0"
+    ],
+    "Program Analysis": [
+        "Compiler_book_p729_c2",
+        "Compiler_book_p11_c3"
+    ],
+    "Program-Dependence Graph": [
+        "Compiler_book_p879_c2",
+        "Compiler_book_p881_c1",
+        "Compiler_book_p881_c0"
+    ],
+    "Purify": [
+        "Compiler_book_p487_c0",
+        "Compiler_book_p487_c1"
+    ],
+    "Quicksort": [
+        "Compiler_book_p471_c1"
+    ],
+    "Register Allocation": [
+        "Compiler_book_p578_c1",
+        "Compiler_book_p579_c0",
+        "Compiler_book_p1030_c0"
+    ],
+    "Register Renaming": [
+        "Compiler_book_p1030_c0"
+    ],
+    "Regular Expression": [
+        "Compiler_book_p12_c2",
+        "Compiler_book_p148_c0",
+        "Compiler_book_p212_c2",
+        "Compiler_book_p151_c1"
+    ],
+    "Resulting Grammar": [
+        "Compiler_book_p287_c1"
+    ],
+    "Scheduling Constraint": [
+        "Compiler_book_p736_c0"
+    ],
+    "Semantic Action": [
+        "Compiler_book_p315_c1",
+        "Compiler_book_p437_c1"
+    ],
+    "Semantic Analysis": [
+        "Compiler_book_p11_c3",
+        "Compiler_book_p215_c0",
+        "Compiler_book_p33_c2"
+    ],
+    "Simple LR": [
+        "Compiler_book_p266_c0",
+        "Compiler_book_p266_c1"
+    ],
+    "Spatial Reuse": [
+        "Compiler_book_p836_c0"
+    ],
+    "Statement Expression": [
+        "Compiler_book_p438_c2"
+    ],
+    "Static RAM": [
+        "Compiler_book_p481_c0",
+        "Compiler_book_p1032_c0"
+    ],
+    "Static Scoping": [
+        "Compiler_book_p58_c0"
+    ],
+    "Static Storage": [
+        "Compiler_book_p1032_c0"
+    ],
+    "Subset Construction": [
+        "Compiler_book_p177_c2"
+    ],
+    "Synchronization": [
+        "Compiler_book_p923_c3",
+        "Compiler_book_p884_c2",
+        "Compiler_book_p879_c0"
+    ],
+    "Synchronizing Set": [
+        "Compiler_book_p254_c0"
+    ],
+    "Synchronizing Token": [
+        "Compiler_book_p220_c3"
+    ],
+    "Syntactic Analysis": [
+        "Compiler_book_p235_c0",
+        "Compiler_book_p33_c0",
+        "Compiler_book_p241_c0",
+        "Compiler_book_p215_c0",
+        "Compiler_book_p216_c0",
+        "Compiler_book_p219_c0"
+    ],
+    "Syntax Analysis": [
+        "Compiler_book_p33_c0",
+        "Compiler_book_p216_c0",
+        "Compiler_book_p235_c0",
+        "Compiler_book_p283_c0",
+        "Compiler_book_p219_c0",
+        "Compiler_book_p277_c0",
+        "Compiler_book_p269_c0",
+        "Compiler_book_p225_c0",
+        "Compiler_book_p215_c0",
+        "Compiler_book_p301_c0",
+        "Compiler_book_p13_c2",
+        "Compiler_book_p241_c0",
+        "Compiler_book_p227_c0"
+    ],
+    "Syntax Analyzer": [
+        "Compiler_book_p33_c0",
+        "Compiler_book_p327_c0",
+        "Compiler_book_p66_c0",
+        "Compiler_book_p269_c0",
+        "Compiler_book_p295_c0"
+    ],
+    "Syntax Error Handling": [
+        "Compiler_book_p219_c0",
+        "Compiler_book_p99_c3",
+        "Compiler_book_p309_c1",
+        "Compiler_book_p321_c0",
+        "Compiler_book_p320_c1",
+        "Compiler_book_p219_c2",
+        "Compiler_book_p216_c0",
+        "Compiler_book_p139_c1",
+        "Compiler_book_p321_c1",
+        "Compiler_book_p219_c1",
+        "Compiler_book_p220_c0"
+    ],
+    "Syntax Tree": [
+        "Compiler_book_p95_c0",
+        "Compiler_book_p121_c0",
+        "Compiler_book_p117_c0",
+        "Compiler_book_p384_c0",
+        "Compiler_book_p33_c0",
+        "Compiler_book_p227_c0",
+        "Compiler_book_p346_c0",
+        "Compiler_book_p345_c0",
+        "Compiler_book_p588_c2"
+    ],
+    "Synthesized Attribute": [
+        "Compiler_book_p378_c0",
+        "Compiler_book_p339_c0"
+    ],
+    "Terminal Expression": [
+        "Compiler_book_p68_c3"
+    ],
+    "Topological Order": [
+        "Compiler_book_p337_c2"
+    ],
+    "Tracing Algorithm": [
+        "Compiler_book_p685_c2",
+        "Compiler_book_p509_c3",
+        "Compiler_book_p496_c0",
+        "Compiler_book_p522_c3",
+        "Compiler_book_p509_c2",
+        "Compiler_book_p502_c2"
+    ],
+    "Train Algorithm": [
+        "Compiler_book_p515_c0",
+        "Compiler_book_p522_c3",
+        "Compiler_book_p515_c3",
+        "Compiler_book_p516_c0",
+        "Compiler_book_p517_c1",
+        "Compiler_book_p516_c1",
+        "Compiler_book_p515_c2"
+    ],
+    "Transfer Function": [
+        "Compiler_book_p708_c1",
+        "Compiler_book_p722_c1",
+        "Compiler_book_p716_c2",
+        "Compiler_book_p721_c1",
+        "Compiler_book_p661_c1",
+        "Compiler_book_p717_c1",
+        "Compiler_book_p704_c0",
+        "Compiler_book_p708_c4",
+        "Compiler_book_p708_c2",
+        "Compiler_book_p659_c1",
+        "Compiler_book_p673_c1"
+    ],
+    "Transition Diagram": [
+        "Compiler_book_p248_c0",
+        "Compiler_book_p173_c1",
+        "Compiler_book_p248_c1",
+        "Compiler_book_p158_c1"
+    ],
+    "Transition Function": [
+        "Compiler_book_p722_c1"
+    ],
+    "Transition Table": [
+        "Compiler_book_p173_c1"
+    ],
+    "Type Error": [
+        "Compiler_book_p1005_c2"
+    ],
+    "Underlying Grammar": [
+        "Compiler_book_p14_c0",
+        "Compiler_book_p326_c2"
+    ],
+    "Virtual Memory": [
+        "Compiler_book_p480_c0"
+    ],
+    "Yacc Output": [
+        "Compiler_book_p313_c0",
+        "Compiler_book_p317_c0",
+        "Compiler_book_p312_c1"
+    ],
+    "Yacc Parser": [
+        "Compiler_book_p312_c1",
+        "Compiler_book_p312_c0",
+        "Compiler_book_p320_c1",
+        "Compiler_book_p316_c3",
+        "Compiler_book_p316_c2",
+        "Compiler_book_p320_c0",
+        "Compiler_book_p317_c0",
+        "Compiler_book_p14_c3",
+        "Compiler_book_p320_c2",
+        "Compiler_book_p318_c0",
+        "Compiler_book_p313_c0"
+    ],
+    "Yacc Semantic Action": [
+        "Compiler_book_p316_c2",
+        "Compiler_book_p320_c1",
+        "Compiler_book_p315_c0",
+        "Compiler_book_p316_c3",
+        "Compiler_book_p320_c2",
+        "Compiler_book_p318_c0",
+        "Compiler_book_p315_c1",
+        "Compiler_book_p320_c0",
+        "Compiler_book_p314_c1",
+        "Compiler_book_p313_c0",
+        "Compiler_book_p167_c4",
+        "Compiler_book_p316_c1",
+        "Compiler_book_p319_c2"
+    ],
+    "Yacc Source Program": [
+        "Compiler_book_p312_c2",
+        "Compiler_book_p312_c1"
+    ]
+}

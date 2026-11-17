@@ -40,3 +40,18 @@ class PipelineTaskDocument(Document):
 
     class Settings:
         name = "pipeline_tasks"
+
+
+class CourseEnrollmentDocument(Document):
+    """Enrollment mapping linking a student to an active course."""
+
+    course_id: Indexed(str)
+    student_id: Indexed(str)
+    enrolled_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    class Settings:
+        name = "course_enrollments"
+        indexes = [
+            [("course_id", 1), ("student_id", 1)],
+        ]
+

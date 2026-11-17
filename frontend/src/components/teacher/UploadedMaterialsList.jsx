@@ -12,14 +12,16 @@ import {
   Filter,
   Eye,
   Layers,
-  ChevronDown
+  ChevronDown,
+  Users
 } from 'lucide-react';
 
 export default function UploadedMaterialsList({ 
   materials, 
   onDeleteMaterial, 
   onSelectMaterial,
-  onOpenUploadModal 
+  onOpenUploadModal,
+  onNavigateToEnrollment
 }) {
   const [selectedCourseFilter, setSelectedCourseFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -84,7 +86,30 @@ export default function UploadedMaterialsList({
           <p>Manage uploaded textbooks, research papers, and lecture slides processed by the graph engine</p>
         </div>
 
-        <div className="materials-actions">
+        <div className="materials-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {onNavigateToEnrollment && (
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={() => onNavigateToEnrollment()}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 14px',
+                borderRadius: '8px',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                color: '#6ee7b7',
+                background: 'rgba(16, 185, 129, 0.1)',
+                fontSize: '13px',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              <Users size={15} />
+              <span>Enroll Students</span>
+            </button>
+          )}
           <button 
             type="button" 
             className="btn-primary" 
@@ -208,6 +233,17 @@ export default function UploadedMaterialsList({
 
                   <td>
                     <div className="row-actions text-right">
+                      {onNavigateToEnrollment && (
+                        <button 
+                          type="button" 
+                          className="action-icon-btn"
+                          title="Manage Enrolled Students"
+                          onClick={() => onNavigateToEnrollment(item.courseId)}
+                          style={{ color: '#10b981' }}
+                        >
+                          <Users size={16} />
+                        </button>
+                      )}
                       <button 
                         type="button" 
                         className="action-icon-btn view-btn"

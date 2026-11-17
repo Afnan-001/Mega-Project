@@ -5,14 +5,16 @@ import Navbar from './components/common/Navbar';
 import Sidebar from './components/common/Sidebar';
 import TeacherDashboard from './pages/TeacherDashboard';
 import StudentDashboard from './pages/StudentDashboard';
-import { initialCourses, initialMaterials } from './data/mockData';
+import { initialMaterials } from './data/mockData';
+import { teacherApi, studentApi } from './services/api';
 import { ShieldAlert, ArrowRight } from 'lucide-react';
 import './styles/dashboard.css';
 
 function MainAppContent() {
   const { user, isAuthenticated, role, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [courses] = useState(initialCourses);
+  const [courses, setCourses] = useState([]);
+  const [coursesLoading, setCoursesLoading] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -36,6 +38,42 @@ function MainAppContent() {
       console.error('Failed to save materials to localStorage', e);
     }
   }, [materials]);
+
+  // Fetch real courses from the API based on user role
+  useEffect(() => {
+    if (!user || !role) return;
+    setCoursesLoading(true);
+    const fetchCourses = async () => {
+      try {
+        let data;
+        if (role === 'teacher') {
+          data = await teacherApi.getCourses();
+        } else if (role === 'student') {
+          data = await studentApi.getCourses();
+        } else {
+          setCourses([]);
+          setCoursesLoading(false);
+          return;
+        }
+        const list = Array.isArray(data) ? data : (data?.courses || []);
+        const normalized = list.map(c => ({
+          id: c.id,
+          code: c.id ? c.id.slice(-6).toUpperCase() : 'COURSE',
+          name: c.title,
+          title: c.title,
+          description: c.description,
+          status: c.status,
+        }));
+        setCourses(normalized);
+      } catch (err) {
+        console.warn('Failed to fetch courses from API:', err.message);
+        setCourses([]);
+      } finally {
+        setCoursesLoading(false);
+      }
+    };
+    fetchCourses();
+  }, [user, role]);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -116,6 +154,7 @@ function MainAppContent() {
           {role === 'teacher' ? (
             <TeacherDashboard 
               courses={courses}
+              coursesLoading={coursesLoading}
               materials={materials}
               onAddMaterial={handleAddMaterial}
               onDeleteMaterial={handleDeleteMaterial}
@@ -127,7 +166,10 @@ function MainAppContent() {
           ) : role === 'student' ? (
             <StudentDashboard 
               courses={courses}
+              coursesLoading={coursesLoading}
               materials={materials}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
               onSwitchToTeacher={() => {
                 // When student tries to switch to teacher, require login as teacher
                 logout();

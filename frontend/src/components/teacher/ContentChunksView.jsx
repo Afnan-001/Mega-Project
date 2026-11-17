@@ -14,9 +14,15 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
-import { loadContentChunks, loadConceptChunkMap, buildChunkToConceptsMap } from '../../services/dataService';
+import { 
+  loadContentChunks, 
+  loadConceptChunkMap, 
+  buildChunkToConceptsMap,
+  loadContentChunksForCourse,
+  loadConceptChunkMapForCourse
+} from '../../services/dataService';
 
-export default function ContentChunksView() {
+export default function ContentChunksView({ courseId }) {
   const [chunks, setChunks] = useState([]);
   const [conceptMap, setConceptMap] = useState({});
   const [chunkToConcepts, setChunkToConcepts] = useState({});
@@ -33,8 +39,8 @@ export default function ContentChunksView() {
     async function fetchData() {
       setLoading(true);
       const [chunksData, mapData] = await Promise.all([
-        loadContentChunks(),
-        loadConceptChunkMap()
+        courseId ? loadContentChunksForCourse(courseId) : loadContentChunks(),
+        courseId ? loadConceptChunkMapForCourse(courseId) : loadConceptChunkMap()
       ]);
       setChunks(chunksData || []);
       setConceptMap(mapData || {});
@@ -42,7 +48,7 @@ export default function ContentChunksView() {
       setLoading(false);
     }
     fetchData();
-  }, []);
+  }, [courseId]);
 
   // Filter books
   const booksList = useMemo(() => {

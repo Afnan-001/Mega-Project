@@ -10,13 +10,15 @@ import {
   UploadCloud,
   ChevronRight,
   Database,
-  Network
+  Network,
+  Users
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab, currentRole, onOpenUploadModal }) {
   // Faculty Workspace Navigation Sections
   const teacherMenuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'students', label: 'Student Enrollment', icon: Users, badge: 'ROSTER' },
     { id: 'course-content', label: 'Course Content', icon: FileText, badge: 'PDF' },
     { id: 'content-chunks', label: 'Content Chunks', icon: Database, badge: 'JSON' },
     { id: 'mapped-concepts', label: 'Mapped Concepts', icon: Share2, badge: 'JSON' },
@@ -42,7 +44,7 @@ export default function Sidebar({ activeTab, setActiveTab, currentRole, onOpenUp
       <nav className="sidebar-nav">
         {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeTab === item.id;
+          const isActive = activeTab === item.id || (currentRole === 'student' && item.id === 'my-learning' && activeTab === 'dashboard');
           return (
             <button
               key={item.id}

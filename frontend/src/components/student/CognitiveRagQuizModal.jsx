@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   X, 
   HelpCircle, 
@@ -37,6 +38,12 @@ export default function CognitiveRagQuizModal({
     setResultData(null);
     setErrorMsg(null);
 
+    if (!courseId) {
+      setIsLoadingQuestion(false);
+      setErrorMsg('No course selected. Please select a course with an available knowledge graph first.');
+      return;
+    }
+
     try {
       const data = await studentApi.getNextQuestion(courseId, targetConcept);
       setQuestionData(data);
@@ -55,6 +62,18 @@ export default function CognitiveRagQuizModal({
     }
   }, [isOpen, courseId, conceptName]);
 
+  // Lock body scroll when modal is open so background page doesn't scroll
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const handleSubmitAnswer = async () => {
     if (!selectedOption || !questionData) return;
     setIsSubmitting(true);
@@ -66,7 +85,7 @@ export default function CognitiveRagQuizModal({
         concept_name: questionData.concept_name,
         question_id: questionData.question_id,
         selected_option: selectedOption,
-        correct_option: selectedOption,
+        correct_option: 'server_verified',
         question_text: questionData.question_text,
         explanation: 'Answer evaluated by Cognitive-RAG knowledge graph.',
         options: questionData.options,
@@ -87,11 +106,38 @@ export default function CognitiveRagQuizModal({
 
   if (!isOpen) return null;
 
-  return (
-    <div className="modal-backdrop-overlay" onClick={onClose}>
+  return createPortal(
+    <div 
+      className="modal-backdrop-overlay" 
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 999999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'rgba(0, 0, 0, 0.78)',
+        backdropFilter: 'blur(8px)',
+        padding: '1.5rem',
+        margin: 0,
+        boxSizing: 'border-box',
+      }}
+    >
       <div 
         className="modal-container glass-panel animate-fade-in" 
-        style={{ maxWidth: '720px', width: '92%' }}
+        style={{ 
+          maxWidth: '720px', 
+          width: '92%',
+          maxHeight: '88vh',
+          overflowY: 'auto',
+          margin: 'auto',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -346,6 +392,7 @@ export default function CognitiveRagQuizModal({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

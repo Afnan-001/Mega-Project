@@ -10,7 +10,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPExcepti
 
 from server.config import settings
 from server.core.dependencies import require_teacher
-from server.models.course import CourseDocument, PipelineTaskDocument
+from server.models.course import CourseDocument, PipelineTaskDocument, CourseEnrollmentDocument
 from server.models.knowledge import (
     EnrichedConceptDocument,
     KnowledgeGraphDocument,
@@ -18,11 +18,14 @@ from server.models.knowledge import (
 from server.models.schemas import (
     ConceptPatchRequest,
     CourseResponse,
+    EnrollmentActionResponse,
     GraphEdge,
     GraphNode,
     GraphVisualizerResponse,
     PipelineStartResponse,
     PipelineStatusResponse,
+    StudentEnrollRequest,
+    StudentRosterItem,
 )
 from server.models.user import UserDocument
 from server.services.pipeline_service import pipeline_service
@@ -170,11 +173,15 @@ async def get_pipeline_status(
 @router.get(
     "/courses",
     response_model=list[CourseResponse],
-    summary="List all courses created by the authenticated teacher",
+    summary="List all courses accessible to the authenticated teacher",
 )
 async def list_teacher_courses(teacher: UserDocument = Depends(require_teacher)):
     courses = await CourseDocument.find(
-        CourseDocument.teacher_id == str(teacher.id)
+        {"$or": [
+            {"teacher_id": str(teacher.id)},
+            {"teacher_id": "system_seed"},
+            {"status": "ready"},
+        ]}
     ).sort("-created_at").to_list()
 
     return [
@@ -315,3 +322,156 @@ async def patch_concept_relationships(
         nodes=nodes,
         edges=edges,
     )
+
+
+# ── Student Roster & Enrollment Endpoints ─────────────────────────────────
+
+@router.get(
+    "/students",
+    response_model=list[StudentRosterItem],
+    summary="Get all registered students and their enrollment status for an optional course",
+)
+async def list_students(
+    course_id: str | None = None,
+    teacher: UserDocument = Depends(require_teacher),
+):
+    students = await UserDocument.find(UserDocument.role == "student").sort("+full_name").to_list()
+
+    enrollment_map: dict[str, datetime] = {}
+    if course_id:
+        enrollments = await CourseEnrollmentDocument.find(
+            CourseEnrollmentDocument.course_id == course_id
+        ).to_list()
+        enrollment_map = {e.student_id: e.enrolled_at for e in enrollments}
+
+    return [
+        StudentRosterItem(
+            id=str(s.id),
+            email=s.email,
+            full_name=s.full_name,
+            created_at=s.created_at,
+            is_enrolled=(str(s.id) in enrollment_map) if course_id else False,
+            enrolled_at=enrollment_map.get(str(s.id)),
+        )
+        for s in students
+    ]
+
+
+@router.post(
+    "/courses/{course_id}/enroll",
+    response_model=EnrollmentActionResponse,
+    summary="Enroll an individual student into a course",
+)
+async def enroll_student(
+    course_id: str,
+    payload: StudentEnrollRequest,
+    teacher: UserDocument = Depends(require_teacher),
+):
+    student = (
+        await UserDocument.get(ObjectId(payload.student_id))
+        if ObjectId.is_valid(payload.student_id)
+        else None
+    )
+    if not student or student.role != "student":
+        raise HTTPException(status_code=404, detail="Student not found.")
+
+    if ObjectId.is_valid(course_id):
+        course = await CourseDocument.get(ObjectId(course_id))
+        if not course:
+            raise HTTPException(status_code=404, detail="Course not found.")
+
+    existing = await CourseEnrollmentDocument.find_one(
+        CourseEnrollmentDocument.course_id == course_id,
+        CourseEnrollmentDocument.student_id == payload.student_id,
+    )
+    if not existing:
+        new_enrollment = CourseEnrollmentDocument(
+            course_id=course_id,
+            student_id=payload.student_id,
+        )
+        await new_enrollment.insert()
+
+    return EnrollmentActionResponse(
+        course_id=course_id,
+        student_id=payload.student_id,
+        enrolled_count=1,
+        is_enrolled=True,
+        message=f"Student {student.full_name} enrolled successfully.",
+    )
+
+
+@router.delete(
+    "/courses/{course_id}/enroll/{student_id}",
+    response_model=EnrollmentActionResponse,
+    summary="Unenroll a student from a course",
+)
+async def unenroll_student(
+    course_id: str,
+    student_id: str,
+    teacher: UserDocument = Depends(require_teacher),
+):
+    enrollment = await CourseEnrollmentDocument.find_one(
+        CourseEnrollmentDocument.course_id == course_id,
+        CourseEnrollmentDocument.student_id == student_id,
+    )
+    if enrollment:
+        await enrollment.delete()
+
+    return EnrollmentActionResponse(
+        course_id=course_id,
+        student_id=student_id,
+        enrolled_count=1,
+        is_enrolled=False,
+        message="Student unenrolled successfully.",
+    )
+
+
+@router.post(
+    "/courses/{course_id}/enroll-all",
+    response_model=EnrollmentActionResponse,
+    summary="Enroll all registered students into a course in a single action",
+)
+async def enroll_all_students(
+    course_id: str,
+    teacher: UserDocument = Depends(require_teacher),
+):
+    if ObjectId.is_valid(course_id):
+        course = await CourseDocument.get(ObjectId(course_id))
+        if not course:
+            raise HTTPException(status_code=404, detail="Course not found.")
+
+    all_students = await UserDocument.find(UserDocument.role == "student").to_list()
+    if not all_students:
+        return EnrollmentActionResponse(
+            course_id=course_id,
+            student_id=None,
+            enrolled_count=0,
+            is_enrolled=True,
+            message="No registered students found in the database.",
+        )
+
+    existing_enrollments = await CourseEnrollmentDocument.find(
+        CourseEnrollmentDocument.course_id == course_id
+    ).to_list()
+    enrolled_ids = {e.student_id for e in existing_enrollments}
+
+    new_enrollments = [
+        CourseEnrollmentDocument(
+            course_id=course_id,
+            student_id=str(s.id),
+        )
+        for s in all_students
+        if str(s.id) not in enrolled_ids
+    ]
+
+    for en in new_enrollments:
+        await en.insert()
+
+    return EnrollmentActionResponse(
+        course_id=course_id,
+        student_id=None,
+        enrolled_count=len(new_enrollments),
+        is_enrolled=True,
+        message=f"Enrolled {len(new_enrollments)} new students into course (Total enrolled: {len(all_students)}).",
+    )
+

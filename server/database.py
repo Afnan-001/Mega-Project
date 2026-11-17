@@ -27,7 +27,11 @@ async def init_db() -> None:
 
     # Import Document models lazily to avoid circular imports
     from server.models.user import UserDocument
-    from server.models.course import CourseDocument, PipelineTaskDocument
+    from server.models.course import (
+        CourseDocument,
+        PipelineTaskDocument,
+        CourseEnrollmentDocument,
+    )
     from server.models.knowledge import (
         ContentChunkDocument,
         ConceptDocument,
@@ -44,6 +48,7 @@ async def init_db() -> None:
         UserDocument,
         CourseDocument,
         PipelineTaskDocument,
+        CourseEnrollmentDocument,
         ContentChunkDocument,
         ConceptDocument,
         ConceptChunkMappingDocument,
