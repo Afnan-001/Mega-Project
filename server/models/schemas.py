@@ -126,6 +126,7 @@ class QuizQuestionResponse(BaseModel):
     question_text: str
     options: list[str]
     evidence_chunk_ids: list[str] = Field(default_factory=list)
+    difficulty: str = "medium"
     # The server hides correct_option and explanation from the quiz prompt payload
     # to prevent client inspection cheating; they are kept server-side or encrypted/hashed.
 
@@ -148,6 +149,8 @@ class QuizSubmitResponse(BaseModel):
     prior_mastery: float
     updated_mastery: float
     next_recommended_concept: str | None = None
+    navigation_reason: str | None = None
+    transition_type: str | None = None
 
 
 class ConceptMasteryItem(BaseModel):
@@ -164,6 +167,59 @@ class StudentMasteryResponse(BaseModel):
     student_id: str
     overall_mastery_percentage: float
     concepts: list[ConceptMasteryItem]
+
+
+class SourceChunkItem(BaseModel):
+    chunk_id: str
+    page_number: int | None = None
+    text: str
+
+
+class QuizHistoryItem(BaseModel):
+    id: str
+    course_id: str
+    course_title: str
+    concept_name: str
+    question_id: str
+    question_text: str
+    options: list[str] = Field(default_factory=list)
+    correct_option: str
+    selected_option: str
+    is_correct: bool
+    explanation: str
+    difficulty: str | None = None
+    prior_mastery: float
+    posterior_mastery: float
+    evidence_chunk_ids: list[str] = Field(default_factory=list)
+    source_chunks: list[SourceChunkItem] = Field(default_factory=list)
+    created_at: datetime
+
+
+class ConceptHistorySummary(BaseModel):
+    course_id: str
+    course_title: str
+    concept_name: str
+    attempts: int
+    correct: int
+    incorrect: int
+    accuracy_percentage: float
+    latest_mastery_percentage: float
+
+
+class QuizHistoryCourseOption(BaseModel):
+    course_id: str
+    course_title: str
+    attempts: int
+
+
+class QuizHistoryResponse(BaseModel):
+    total_attempts: int
+    correct_count: int
+    incorrect_count: int
+    accuracy_percentage: float
+    courses: list[QuizHistoryCourseOption] = Field(default_factory=list)
+    concept_summary: list[ConceptHistorySummary] = Field(default_factory=list)
+    attempts: list[QuizHistoryItem] = Field(default_factory=list)
 
 
 # ── Graph Schemas ───────────────────────────────────────────────────────

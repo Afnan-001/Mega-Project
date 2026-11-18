@@ -10,7 +10,11 @@ from server.models.knowledge import (
     EnrichedConceptDocument,
     KnowledgeGraphDocument,
 )
-from server.models.student import StudentMasteryDocument, QuizAttemptDocument
+from server.models.student import (
+    StudentMasteryDocument,
+    QuizAttemptDocument,
+    StudentNavigationStateDocument,
+)
 
 __all__ = [
     "UserDocument",
@@ -24,4 +28,5 @@ __all__ = [
     "KnowledgeGraphDocument",
     "StudentMasteryDocument",
     "QuizAttemptDocument",
+    "StudentNavigationStateDocument",
 ]

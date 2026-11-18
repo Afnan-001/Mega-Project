@@ -11,7 +11,8 @@ import {
   ChevronRight,
   Database,
   Network,
-  Users
+  Users,
+  History
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab, currentRole, onOpenUploadModal }) {
@@ -28,6 +29,7 @@ export default function Sidebar({ activeTab, setActiveTab, currentRole, onOpenUp
 
   const studentMenuItems = [
     { id: 'my-learning', label: 'My Enrolled Courses', icon: BookMarked },
+    { id: 'quiz-history', label: 'Past Questions & Review', icon: History },
     { id: 'study-materials', label: 'Course Materials & PDFs', icon: FileText },
     { id: 'concept-map', label: 'Interactive Concept Map', icon: Share2 },
     { id: 'ai-tutor', label: 'AI Tutor & Doubts', icon: HelpCircle },

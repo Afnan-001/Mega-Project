@@ -160,7 +160,7 @@ export default function CognitiveRagQuizModal({
         <div className="modal-body" style={{ padding: '24px' }}>
           {isLoadingQuestion ? (
             <div style={{ textAlign: 'center', padding: '48px 0' }}>
-              <Loader2 size={36} className="text-accent animate-spin" style={{ margin: '0 auto 16px' }} />
+              <Loader2 size={36} className="text-accent animate-spin" style={{ display: 'block', margin: '0 auto 16px' }} />
               <h4>Generating Grounded Question via Cognitive-RAG...</h4>
               <p style={{ color: '#94a3b8', fontSize: '13px' }}>
                 Retrieving grounded textbook chunks and crafting distractor options
@@ -182,6 +182,30 @@ export default function CognitiveRagQuizModal({
                   }}>
                     Concept: {questionData.concept_name}
                   </span>
+                  {questionData.difficulty && (
+                    <span style={{
+                      background:
+                        questionData.difficulty === 'hard'
+                          ? 'rgba(239, 68, 68, 0.14)'
+                          : questionData.difficulty === 'easy'
+                          ? 'rgba(16, 185, 129, 0.14)'
+                          : 'rgba(245, 158, 11, 0.14)',
+                      color:
+                        questionData.difficulty === 'hard'
+                          ? '#f87171'
+                          : questionData.difficulty === 'easy'
+                          ? '#34d399'
+                          : '#fbbf24',
+                      border: '1px solid rgba(255, 255, 255, 0.12)',
+                      padding: '3px 9px',
+                      borderRadius: '20px',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      textTransform: 'capitalize'
+                    }}>
+                      {questionData.difficulty}
+                    </span>
+                  )}
                   {questionData.evidence_chunk_ids && (
                     <span style={{ fontSize: '12px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <FileText size={12} />
@@ -335,6 +359,40 @@ export default function CognitiveRagQuizModal({
                         : `${(resultData.updated_mastery - resultData.prior_mastery).toFixed(1)}%`}
                     </span>
                   </div>
+
+                  {/* Knowledge Graph Traversal Decision */}
+                  {resultData.navigation_reason && (
+                    <div style={{
+                      marginTop: '8px',
+                      background: 'rgba(99, 102, 241, 0.10)',
+                      border: '1px solid rgba(99, 102, 241, 0.25)',
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      fontSize: '12px',
+                      color: '#c7d2fe',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '10px',
+                      flexWrap: 'wrap'
+                    }}>
+                      <span>
+                        <strong style={{ color: '#a5b4fc' }}>KG Next Step:</strong> {resultData.navigation_reason}
+                      </span>
+                      {resultData.next_recommended_concept && (
+                        <span style={{
+                          background: 'rgba(99, 102, 241, 0.22)',
+                          color: '#e0e7ff',
+                          padding: '2px 8px',
+                          borderRadius: '12px',
+                          fontWeight: 600,
+                          whiteSpace: 'nowrap'
+                        }}>
+                          Next: {resultData.next_recommended_concept}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 

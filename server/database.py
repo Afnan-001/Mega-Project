@@ -42,6 +42,7 @@ async def init_db() -> None:
     from server.models.student import (
         StudentMasteryDocument,
         QuizAttemptDocument,
+        StudentNavigationStateDocument,
     )
 
     document_models = [
@@ -56,6 +57,7 @@ async def init_db() -> None:
         KnowledgeGraphDocument,
         StudentMasteryDocument,
         QuizAttemptDocument,
+        StudentNavigationStateDocument,
     ]
 
     await init_beanie(

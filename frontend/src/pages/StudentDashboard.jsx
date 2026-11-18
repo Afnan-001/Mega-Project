@@ -3,6 +3,7 @@ import StudentOverview from '../components/student/StudentOverview';
 import StudentMaterialsView from '../components/student/StudentMaterialsView';
 import StudentConceptMapView from '../components/student/StudentConceptMapView';
 import StudentAiTutorView from '../components/student/StudentAiTutorView';
+import StudentQuizHistoryView from '../components/student/StudentQuizHistoryView';
 import CognitiveRagQuizModal from '../components/student/CognitiveRagQuizModal';
 
 export default function StudentDashboard({ 
@@ -14,6 +15,7 @@ export default function StudentDashboard({
   onSwitchToTeacher 
 }) {
   const [selectedConceptForTutor, setSelectedConceptForTutor] = useState(null);
+  const [historyRefreshKey, setHistoryRefreshKey] = useState(0);
   const [quizModal, setQuizModal] = useState({
     isOpen: false,
     conceptName: null,
@@ -50,7 +52,21 @@ export default function StudentDashboard({
         />
       )}
 
-      {/* Tab 2: Course Materials & Curriculum PDFs */}
+      {/* Tab 2: Past Questions, Results & Grounded Source Context */}
+      {normalizedTab === 'quiz-history' && (
+        <StudentQuizHistoryView
+          courses={courses}
+          refreshTrigger={historyRefreshKey}
+          onAskTutor={handleAskTutor}
+          onTakeQuiz={(concept, cId) => setQuizModal({
+            isOpen: true,
+            conceptName: concept,
+            courseId: cId || courses[0]?.id,
+          })}
+        />
+      )}
+
+      {/* Tab 3: Course Materials & Curriculum PDFs */}
       {normalizedTab === 'study-materials' && (
         <StudentMaterialsView 
           courses={courses}
@@ -60,7 +76,7 @@ export default function StudentDashboard({
         />
       )}
 
-      {/* Tab 3: Interactive Concept Map (Knowledge Graph) */}
+      {/* Tab 4: Interactive Concept Map (Knowledge Graph) */}
       {normalizedTab === 'concept-map' && (
         <StudentConceptMapView 
           courses={courses}
@@ -73,7 +89,7 @@ export default function StudentDashboard({
         />
       )}
 
-      {/* Tab 4: AI Tutor & Doubts Desk */}
+      {/* Tab 5: AI Tutor & Doubts Desk */}
       {normalizedTab === 'ai-tutor' && (
         <StudentAiTutorView 
           courses={courses}
@@ -82,13 +98,14 @@ export default function StudentDashboard({
         />
       )}
 
-      {/* Global Quiz Modal for Concept Map Launches */}
+      {/* Global Quiz Modal for Concept Map & History Launches */}
       {quizModal.isOpen && (
         <CognitiveRagQuizModal
           isOpen={quizModal.isOpen}
           onClose={() => setQuizModal({ isOpen: false, conceptName: null, courseId: null })}
           courseId={quizModal.courseId || courses[0]?.id}
           conceptName={quizModal.conceptName}
+          onMasteryUpdated={() => setHistoryRefreshKey((k) => k + 1)}
         />
       )}
     </div>
