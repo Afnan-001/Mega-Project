@@ -3,6 +3,7 @@ server/routers/student.py — Student router for adaptive learning paths, Cognit
 """
 from __future__ import annotations
 
+import asyncio
 import os
 import re
 import logging
@@ -21,13 +22,18 @@ from server.models.schemas import (
     AiTutorAskRequest,
     AiTutorCitation,
     AiTutorResponse,
+    ConceptHistorySummary,
     ConceptMasteryItem,
     CourseResponse,
     LearningPathItem,
     LearningPathResponse,
+    QuizHistoryCourseOption,
+    QuizHistoryItem,
+    QuizHistoryResponse,
     QuizQuestionResponse,
     QuizSubmitRequest,
     QuizSubmitResponse,
+    SourceChunkItem,
     StudentMasteryResponse,
 )
 from server.models.student import QuizAttemptDocument, StudentMasteryDocument
@@ -200,9 +206,15 @@ async def get_next_question(
     if not ObjectId.is_valid(course_id):
         raise HTTPException(status_code=400, detail="Invalid course ID.")
 
-    # If specific concept not requested, choose next optimal concept automatically
+    # If specific concept not requested, choose next optimal concept automatically via DAG navigation
     target_concept = concept
-    if not target_concept:
+    if target_concept:
+        await cognitive_rag.set_current_concept(
+            course_id=course_id,
+            student_id=str(student.id),
+            concept_name=target_concept,
+        )
+    else:
         target_concept, _ = await cognitive_rag.get_next_target_concept(
             course_id=course_id,
             student_id=str(student.id),
@@ -222,6 +234,7 @@ async def get_next_question(
         question_text=mcq["question_text"],
         options=mcq["options"],
         evidence_chunk_ids=mcq["evidence_chunk_ids"],
+        difficulty=mcq.get("difficulty", "medium"),
     )
 
 
@@ -248,9 +261,19 @@ async def submit_quiz_answer(
     if cached_q:
         true_correct = cached_q["correct_option"].strip()
         explanation = cached_q.get("explanation", submission.explanation)
+        difficulty = cached_q.get("difficulty")
+        evidence_chunk_ids = list(cached_q.get("evidence_chunk_ids") or [])
+        source_chunks = list(cached_q.get("source_chunks") or [])
     else:
         true_correct = submission.correct_option.strip() if submission.correct_option else selected
         explanation = submission.explanation or "Answer evaluated by Cognitive-RAG."
+        difficulty = None
+        source_chunks = await cognitive_rag.get_grounded_chunks_for_concept(
+            course_id=submission.course_id,
+            concept_name=submission.concept_name,
+            max_chunks=3,
+        )
+        evidence_chunk_ids = [c["chunk_id"] for c in source_chunks]
 
     is_correct = (selected.lower() == true_correct.lower())
 
@@ -262,7 +285,7 @@ async def submit_quiz_answer(
         is_correct=is_correct,
     )
 
-    # Record quiz attempt
+    # Record quiz attempt including grounded source chunks for student review
     attempt = QuizAttemptDocument(
         student_id=str(student.id),
         course_id=submission.course_id,
@@ -274,15 +297,20 @@ async def submit_quiz_answer(
         selected_option=submission.selected_option,
         is_correct=is_correct,
         explanation=explanation,
+        difficulty=difficulty,
+        evidence_chunk_ids=evidence_chunk_ids,
+        source_chunks=source_chunks,
         prior_mastery=prior,
         posterior_mastery=updated,
     )
     await attempt.insert()
 
-    # Determine next recommended concept
-    next_concept, _ = await cognitive_rag.get_next_target_concept(
+    # Determine next recommended concept via Graph-Aware Adaptive Traversal
+    nav_result = await cognitive_rag.select_next_concept_with_navigation(
         course_id=submission.course_id,
         student_id=str(student.id),
+        last_concept_answered=submission.concept_name,
+        last_is_correct=is_correct,
     )
 
     return QuizSubmitResponse(
@@ -291,7 +319,170 @@ async def submit_quiz_answer(
         explanation=explanation,
         prior_mastery=round(prior * 100, 1),
         updated_mastery=round(updated * 100, 1),
-        next_recommended_concept=next_concept,
+        next_recommended_concept=nav_result["concept_name"],
+        navigation_reason=nav_result["navigation_reason"],
+        transition_type=nav_result["transition_type"],
+    )
+
+
+@router.get(
+    "/quiz/history",
+    response_model=QuizHistoryResponse,
+    summary="List student's past answered questions with results, BKT shifts, and grounded textbook context chunks",
+)
+async def get_student_quiz_history(
+    course_id: str | None = None,
+    concept: str | None = None,
+    result: str | None = None,
+    student: UserDocument = Depends(require_student),
+):
+    student_id_str = str(student.id)
+
+    # Fetch all student attempts sorted newest first
+    all_attempts = await QuizAttemptDocument.find(
+        QuizAttemptDocument.student_id == student_id_str,
+    ).sort("-created_at").to_list()
+
+    # Resolve course titles for every course referenced in attempts
+    course_ids = list({a.course_id for a in all_attempts if a.course_id})
+    valid_oids = [ObjectId(cid) for cid in course_ids if ObjectId.is_valid(cid)]
+    course_docs = (
+        await CourseDocument.find({"_id": {"$in": valid_oids}}).to_list()
+        if valid_oids
+        else []
+    )
+    course_title_map = {str(c.id): (c.title or "Course") for c in course_docs}
+
+    # Build course dropdown options across all student attempts
+    course_counts: dict[str, int] = {}
+    for a in all_attempts:
+        course_counts[a.course_id] = course_counts.get(a.course_id, 0) + 1
+    course_options = [
+        QuizHistoryCourseOption(
+            course_id=cid,
+            course_title=course_title_map.get(cid, f"Course {cid[-6:].upper()}"),
+            attempts=cnt,
+        )
+        for cid, cnt in sorted(course_counts.items(), key=lambda x: -x[1])
+    ]
+
+    # Apply optional filters
+    filtered = all_attempts
+    if course_id and course_id != "all":
+        filtered = [a for a in filtered if a.course_id == course_id]
+    if concept and concept != "all":
+        filtered = [a for a in filtered if a.concept_name.lower() == concept.lower()]
+    if result == "correct":
+        filtered = [a for a in filtered if a.is_correct]
+    elif result == "incorrect":
+        filtered = [a for a in filtered if not a.is_correct]
+
+    # Load latest mastery states for accurate concept summary
+    mastery_docs = await StudentMasteryDocument.find(
+        StudentMasteryDocument.student_id == student_id_str,
+    ).to_list()
+    mastery_lookup = {
+        (m.course_id, m.concept_name): round(m.mastery_probability * 100, 1)
+        for m in mastery_docs
+    }
+
+    # Build concept-wise summary from filtered attempts
+    concept_buckets: dict[tuple[str, str], dict] = {}
+    for a in filtered:
+        key = (a.course_id, a.concept_name)
+        if key not in concept_buckets:
+            concept_buckets[key] = {
+                "course_id": a.course_id,
+                "course_title": course_title_map.get(a.course_id, f"Course {a.course_id[-6:].upper()}"),
+                "concept_name": a.concept_name,
+                "attempts": 0,
+                "correct": 0,
+                "incorrect": 0,
+                "latest_mastery": mastery_lookup.get(key, round(a.posterior_mastery * 100, 1)),
+            }
+        b = concept_buckets[key]
+        b["attempts"] += 1
+        if a.is_correct:
+            b["correct"] += 1
+        else:
+            b["incorrect"] += 1
+
+    concept_summary = [
+        ConceptHistorySummary(
+            course_id=b["course_id"],
+            course_title=b["course_title"],
+            concept_name=b["concept_name"],
+            attempts=b["attempts"],
+            correct=b["correct"],
+            incorrect=b["incorrect"],
+            accuracy_percentage=round((b["correct"] / b["attempts"]) * 100, 1) if b["attempts"] else 0.0,
+            latest_mastery_percentage=b["latest_mastery"],
+        )
+        for b in sorted(concept_buckets.values(), key=lambda x: (-x["attempts"], x["concept_name"]))
+    ]
+
+    # Resolve grounded textbook chunks (cached per (course_id, concept) for legacy attempts lacking saved source_chunks)
+    fallback_chunk_cache: dict[tuple[str, str], list[dict]] = {}
+    history_items: list[QuizHistoryItem] = []
+
+    for a in filtered:
+        raw_chunks = list(a.source_chunks or [])
+        if not raw_chunks:
+            cache_key = (a.course_id, a.concept_name)
+            if cache_key not in fallback_chunk_cache:
+                fallback_chunk_cache[cache_key] = await cognitive_rag.get_grounded_chunks_for_concept(
+                    course_id=a.course_id,
+                    concept_name=a.concept_name,
+                    max_chunks=3,
+                )
+            raw_chunks = fallback_chunk_cache[cache_key]
+
+        chunk_items = [
+            SourceChunkItem(
+                chunk_id=str(c.get("chunk_id", "chunk")),
+                page_number=c.get("page_number"),
+                text=str(c.get("text", "")),
+            )
+            for c in raw_chunks
+            if c.get("text")
+        ]
+        chunk_ids = list(a.evidence_chunk_ids or [c.chunk_id for c in chunk_items])
+
+        history_items.append(
+            QuizHistoryItem(
+                id=str(a.id),
+                course_id=a.course_id,
+                course_title=course_title_map.get(a.course_id, f"Course {a.course_id[-6:].upper()}"),
+                concept_name=a.concept_name,
+                question_id=a.question_id,
+                question_text=a.question_text,
+                options=a.options or [],
+                correct_option=a.correct_option,
+                selected_option=a.selected_option,
+                is_correct=a.is_correct,
+                explanation=a.explanation,
+                difficulty=a.difficulty,
+                prior_mastery=round(a.prior_mastery * 100, 1),
+                posterior_mastery=round(a.posterior_mastery * 100, 1),
+                evidence_chunk_ids=chunk_ids,
+                source_chunks=chunk_items,
+                created_at=a.created_at,
+            )
+        )
+
+    total = len(history_items)
+    correct_cnt = sum(1 for item in history_items if item.is_correct)
+    incorrect_cnt = total - correct_cnt
+    acc = round((correct_cnt / total) * 100, 1) if total > 0 else 0.0
+
+    return QuizHistoryResponse(
+        total_attempts=total,
+        correct_count=correct_cnt,
+        incorrect_count=incorrect_cnt,
+        accuracy_percentage=acc,
+        courses=course_options,
+        concept_summary=concept_summary,
+        attempts=history_items,
     )
 
 
@@ -446,16 +637,15 @@ async def ask_ai_tutor(
     cat_name = enriched.coarse_grained_category[0] if (enriched and enriched.coarse_grained_category) else "Compiler Architecture"
     prereqs = enriched.prerequisites if enriched else []
 
-    # Attempt LLM if API key available
+    # Attempt LLM if API key or Ollama provider is available
     answer = None
-    has_key = bool(os.getenv("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEYS"))
-    if has_key:
+    llm_provider = os.getenv("LLM_PROVIDER", "gemini").lower().strip()
+    llm_available = (llm_provider == "ollama") or bool(
+        os.getenv("GEMINI_API_KEY", "").strip() or os.getenv("GEMINI_API_KEYS", "").strip()
+    )
+    if llm_available:
         try:
-            from llm import LLM
-            tutor_llm = LLM(
-                sys_msg="You are an encouraging, expert academic AI Tutor specializing in computer science and compiler construction. Explain concepts clearly with precise textbook citations.",
-                temperature=0.3,
-            )
+            tutor_llm = cognitive_rag.get_tutor_llm_client()
             context_str = "\n\n".join(chunk_texts) if chunk_texts else f"Curriculum topic: {concept or 'Compiler Design'}."
             tutor_prompt = (
                 f"Student Question: {question}\n\n"
@@ -465,7 +655,7 @@ async def ask_ai_tutor(
                 f"Source Textbook Chunks:\n{context_str}\n\n"
                 f"Provide a clear, educational, step-by-step explanation answering the student's doubt directly, citing evidence where appropriate."
             )
-            answer = tutor_llm.get_response(tutor_prompt).strip()
+            answer = (await asyncio.to_thread(tutor_llm.get_response, tutor_prompt)).strip()
         except Exception as e:
             logging.getLogger("server.student").info("LLM AI Tutor fallback used (%s)", e)
 

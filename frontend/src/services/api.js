@@ -287,6 +287,21 @@ export const studentApi = {
     }),
 
   /**
+   * Get student's past answered questions with results and grounded textbook chunks
+   * @param {object} [filters] - { courseId, concept, result }
+   */
+  getQuizHistory: ({ courseId = null, concept = null, result = null } = {}) => {
+    const params = new URLSearchParams();
+    if (courseId && courseId !== 'all') params.set('course_id', courseId);
+    if (concept && concept !== 'all') params.set('concept', concept);
+    if (result && result !== 'all') params.set('result', result);
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return request(`/api/v1/student/quiz/history${query}`, {
+      method: 'GET',
+    });
+  },
+
+  /**
    * Ask AI Tutor a question with grounded textbook citations
    * @param {object} payload - { course_id, question, concept_name }
    */

@@ -6,10 +6,15 @@ from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from server.config import settings
+
+# Load .env into os.environ so Main/llm.py and Cognitive-RAG see GEMINI_API_KEY / LLM_PROVIDER
+load_dotenv(settings.PROJECT_ROOT / ".env", override=False)
+
 from server.database import close_db, init_db
 from server.services.seed_service import seed_initial_data_if_empty
 from server.routers import auth, graph, student, teacher
