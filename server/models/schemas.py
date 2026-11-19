@@ -196,6 +196,14 @@ class StudentKnowledgeGraphResponse(BaseModel):
     edges: list[StudentKnowledgeGraphEdge]
 
 
+class GraphSearchNode(BaseModel):
+    """A searchable node from the canonical course graph."""
+
+    id: str
+    label: str
+    node_type: str
+
+
 class SourceChunkItem(BaseModel):
     chunk_id: str
     page_number: int | None = None

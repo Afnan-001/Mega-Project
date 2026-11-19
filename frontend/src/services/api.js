@@ -331,6 +331,12 @@ export const graphApi = {
 
   getGmlUrl: (courseId) => `${API_BASE}/api/v1/graph/${courseId}/gml`,
 
+  /** Get every node, including red category/topic nodes, for graph search. */
+  getNodes: (courseId) =>
+    request(`/api/v1/graph/${courseId}/nodes`, {
+      method: 'GET',
+    }),
+
   getNeighborhood: (courseId, conceptName) =>
     request(`/api/v1/graph/${courseId}/concept-neighborhood/${encodeURIComponent(conceptName)}`, {
       method: 'GET',

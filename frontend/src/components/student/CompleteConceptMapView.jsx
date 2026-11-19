@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ExternalLink, RefreshCw, Search, Share2 } from 'lucide-react';
-import { graphApi, studentApi } from '../../services/api';
+import { graphApi } from '../../services/api';
 
 /** Shows the complete, course-wide curriculum graph without filtering by mastery. */
 export default function CompleteConceptMapView({ courses = [] }) {
@@ -19,8 +19,8 @@ export default function CompleteConceptMapView({ courses = [] }) {
     if (!selectedCourseId) return;
     setSearchQuery('');
     setSelectedMatch(null);
-    studentApi.getLearningPath(selectedCourseId)
-      .then(result => setConcepts((result?.path || []).map(item => item.concept_name)))
+    graphApi.getNodes(selectedCourseId)
+      .then(result => setConcepts(Array.isArray(result) ? result : []))
       .catch(() => setConcepts([]));
   }, [selectedCourseId]);
 
@@ -30,17 +30,18 @@ export default function CompleteConceptMapView({ courses = [] }) {
   const graphOrigin = new URL(graphUrl, window.location.origin).origin;
 
   const matchingConcepts = searchQuery.trim()
-    ? concepts.filter(concept => concept.toLowerCase().includes(searchQuery.trim().toLowerCase())).slice(0, 7)
+    ? concepts.filter(node => `${node.label} ${node.id}`.toLowerCase().includes(searchQuery.trim().toLowerCase())).slice(0, 7)
     : [];
 
-  const highlightConcept = (concept) => {
-    setSelectedMatch(concept);
-    setSearchQuery(concept);
-    graphFrameRef.current?.contentWindow?.postMessage({ type: 'edugraph:highlight-concept', concept }, graphOrigin);
+  const highlightConcept = (node) => {
+    setSelectedMatch(node.id);
+    setSearchQuery(node.label);
+    graphFrameRef.current?.contentWindow?.postMessage({ type: 'edugraph:highlight-concept', concept: node.id }, graphOrigin);
   };
 
   const handleFrameLoad = () => {
-    if (selectedMatch) highlightConcept(selectedMatch);
+    const selectedNode = concepts.find(node => node.id === selectedMatch);
+    if (selectedNode) highlightConcept(selectedNode);
   };
 
   return (
@@ -78,8 +79,8 @@ export default function CompleteConceptMapView({ courses = [] }) {
         </div>
         {matchingConcepts.length > 0 && (
           <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '7px' }}>
-            {matchingConcepts.map(concept => (
-              <button key={concept} type="button" onClick={() => highlightConcept(concept)} style={{ border: '1px solid rgba(56, 189, 248, 0.35)', background: selectedMatch === concept ? 'rgba(56, 189, 248, 0.22)' : 'rgba(15, 23, 42, 0.6)', color: '#bae6fd', borderRadius: '16px', padding: '5px 10px', cursor: 'pointer', fontSize: '12px' }}>{concept}</button>
+            {matchingConcepts.map(node => (
+              <button key={node.id} type="button" onClick={() => highlightConcept(node)} style={{ border: '1px solid rgba(56, 189, 248, 0.35)', background: selectedMatch === node.id ? 'rgba(56, 189, 248, 0.22)' : 'rgba(15, 23, 42, 0.6)', color: '#bae6fd', borderRadius: '16px', padding: '5px 10px', cursor: 'pointer', fontSize: '12px' }}>{node.label}{node.node_type === 'coarse_grained_category' ? ' · topic' : ''}</button>
             ))}
           </div>
         )}

@@ -13,7 +13,7 @@ from server.models.knowledge import (
     ContentChunkDocument,
     KnowledgeGraphDocument,
 )
-from server.models.schemas import ConceptNeighborhoodResponse
+from server.models.schemas import ConceptNeighborhoodResponse, GraphSearchNode
 from server.models.user import UserDocument
 
 router = APIRouter(prefix="/api/v1/graph", tags=["Knowledge Graph"])
@@ -108,6 +108,33 @@ async def get_raw_graph_html(course_id: str | None = None):
         content = content.replace("</body>", f"{IFRAME_HIGHLIGHT_SCRIPT}</body>")
 
     return HTMLResponse(content=content)
+
+
+@router.get(
+    "/{course_id}/nodes",
+    response_model=list[GraphSearchNode],
+    summary="List every searchable node in a course knowledge graph",
+)
+async def list_graph_nodes(
+    course_id: str,
+    user: UserDocument = Depends(get_current_user),
+):
+    """Return both fine-grained concepts and coarse-grained category nodes."""
+    kg_doc = await KnowledgeGraphDocument.find_one(
+        KnowledgeGraphDocument.course_id == course_id
+    )
+    if not kg_doc:
+        raise HTTPException(status_code=404, detail="Knowledge graph not found.")
+
+    return [
+        GraphSearchNode(
+            id=str(node["id"]),
+            label=str(node.get("label") or node["id"]),
+            node_type=str(node.get("type") or "concept"),
+        )
+        for node in kg_doc.nodes
+        if node.get("id")
+    ]
 
 
 @router.get(
