@@ -1,0 +1,905 @@
+[
+    {
+        "iteration": 1,
+        "removed_edge": "Inheritance -> Specialization",
+        "source": "Inheritance",
+        "target": "Specialization",
+        "confidence": 0.7,
+        "evidence_chunk": "book2_p115_c0",
+        "evidence_text": "Inheritance allows subclasses to acquire attributes and relationships defined in their superclass.",
+        "cycle": [
+            "Subclass",
+            "Generalization",
+            "Inheritance",
+            "Specialization"
+        ]
+    },
+    {
+        "iteration": 2,
+        "removed_edge": "Subclass -> Generalization",
+        "source": "Subclass",
+        "target": "Generalization",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p114_c0",
+        "evidence_text": "A subclass is a more specialized entity type that inherits attributes and relationships from its superclass.",
+        "cycle": [
+            "Subclass",
+            "Generalization",
+            "Inheritance",
+            "Superclass",
+            "Specialization"
+        ]
+    },
+    {
+        "iteration": 3,
+        "removed_edge": "Subclass -> Inheritance",
+        "source": "Subclass",
+        "target": "Inheritance",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p17_c0",
+        "evidence_text": "Subclass: A specialized class derived from a superclass. Superclass: The general class from which subclasses derive. Inheritance: Subclasses inherit attributes and relationships from the superclass.",
+        "cycle": [
+            "Subclass",
+            "Inheritance",
+            "Superclass",
+            "Generalization"
+        ]
+    },
+    {
+        "iteration": 4,
+        "removed_edge": "Subclass -> Specialization",
+        "source": "Subclass",
+        "target": "Specialization",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p114_c0",
+        "evidence_text": "A subclass is a more specialized entity type that inherits attributes and relationships from its superclass.",
+        "cycle": [
+            "Subclass",
+            "Specialization",
+            "Inheritance",
+            "Superclass",
+            "Generalization"
+        ]
+    },
+    {
+        "iteration": 5,
+        "removed_edge": "Superclass -> Generalization",
+        "source": "Superclass",
+        "target": "Generalization",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p114_c0",
+        "evidence_text": "A superclass is a more general entity type that encompasses a broader category of entities, while a subclass is a more specialized entity type that inherits attributes and relationships from its superclass.",
+        "cycle": [
+            "Subclass",
+            "Superclass",
+            "Generalization"
+        ]
+    },
+    {
+        "iteration": 6,
+        "removed_edge": "Superclass -> Inheritance",
+        "source": "Superclass",
+        "target": "Inheritance",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p17_c0",
+        "evidence_text": "Subclass: A specialized class derived from a superclass. Superclass: The general class from which subclasses derive. Inheritance: Subclasses inherit attributes and relationships from the superclass.",
+        "cycle": [
+            "Superclass",
+            "Inheritance"
+        ]
+    },
+    {
+        "iteration": 7,
+        "removed_edge": "Superclass -> Specialization",
+        "source": "Superclass",
+        "target": "Specialization",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p114_c0",
+        "evidence_text": "A superclass is a more general entity type that encompasses a broader category of entities, while a subclass is a more specialized entity type that inherits attributes and relationships from its superclass.",
+        "cycle": [
+            "Superclass",
+            "Specialization",
+            "Inheritance"
+        ]
+    },
+    {
+        "iteration": 8,
+        "removed_edge": "Superclass -> Subclass",
+        "source": "Superclass",
+        "target": "Subclass",
+        "confidence": 0.9,
+        "evidence_chunk": "book2_p17_c0",
+        "evidence_text": "Subclass: A specialized class derived from a superclass. Superclass: The general class from which subclasses derive.",
+        "cycle": [
+            "Superclass",
+            "Subclass"
+        ]
+    },
+    {
+        "iteration": 9,
+        "removed_edge": "Object-Oriented Database -> Object Identifier",
+        "source": "Object-Oriented Database",
+        "target": "Object Identifier",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p126_c0",
+        "evidence_text": "Object-oriented databases are characterized by object identity, encapsulation of operations, inheritance, and the ability to handle complex structured objects through nesting of type constructors.",
+        "cycle": [
+            "Object-Oriented Database",
+            "Object Identifier",
+            "Object Identity"
+        ]
+    },
+    {
+        "iteration": 10,
+        "removed_edge": "Object-Oriented Database -> Object Identity",
+        "source": "Object-Oriented Database",
+        "target": "Object Identity",
+        "confidence": 0.7,
+        "evidence_chunk": "book2_p33_c0",
+        "evidence_text": "Object databases (ODBs) are highlighted for their capacity to manage more complex data structures, especially in fields such as engineering, telecommunications, and multimedia.",
+        "cycle": [
+            "Object-Oriented Database",
+            "Object Identity"
+        ]
+    },
+    {
+        "iteration": 11,
+        "removed_edge": "Object Identifier -> Object Identity",
+        "source": "Object Identifier",
+        "target": "Object Identity",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p126_c0",
+        "evidence_text": "OIDs provide a unique, system-wide identifier for each object, ensuring that the integrity and identity of objects are maintained.",
+        "cycle": [
+            "Object Identity",
+            "Object Identifier"
+        ]
+    },
+    {
+        "iteration": 12,
+        "removed_edge": "Hashing -> Hash Table",
+        "source": "Hashing",
+        "target": "Hash Table",
+        "confidence": 0.9,
+        "evidence_chunk": "book3_p685_c2",
+        "evidence_text": "In such a structure there is a hash function h that takes a search key (the hash key) as an argument and computes from it an integer in the range 0 to B — 1, where B is the number of buckets.",
+        "cycle": [
+            "Hashing",
+            "Hash Table"
+        ]
+    },
+    {
+        "iteration": 13,
+        "removed_edge": "Precedence Graph -> Serializability",
+        "source": "Precedence Graph",
+        "target": "Serializability",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p986_c0",
+        "evidence_text": "An easy test for conflict-serializability is to construct a precedence graph for the schedule. Nodes correspond to transactions, and there is an arc T -¥ U if some action of T in the schedule conflicts with a later action of U.",
+        "cycle": [
+            "Serializability",
+            "Conflict Serializability",
+            "Precedence Graph"
+        ]
+    },
+    {
+        "iteration": 14,
+        "removed_edge": "Serializability -> Conflict Serializability",
+        "source": "Serializability",
+        "target": "Conflict Serializability",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p928_c2",
+        "evidence_text": "Conflict-serializability is a sufficient condition for serializability; i.e., a conflict-serializable schedule is a serializable schedule.",
+        "cycle": [
+            "Serializability",
+            "Conflict Serializability"
+        ]
+    },
+    {
+        "iteration": 15,
+        "removed_edge": "Precedence Graph -> Conflict Serializability",
+        "source": "Precedence Graph",
+        "target": "Conflict Serializability",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p986_c0",
+        "evidence_text": "An easy test for conflict-serializability is to construct a precedence graph for the schedule.",
+        "cycle": [
+            "Precedence Graph",
+            "Conflict Serializability"
+        ]
+    },
+    {
+        "iteration": 16,
+        "removed_edge": "Buffer Manager -> Block Addressing",
+        "source": "Buffer Manager",
+        "target": "Block Addressing",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p45_c0",
+        "evidence_text": "The storage manager keeps track of the location of files on the disk and obtains the block or blocks containing a file on request from the buffer manager.",
+        "cycle": [
+            "Buffer Manager",
+            "Block Addressing",
+            "Disk Block"
+        ]
+    },
+    {
+        "iteration": 17,
+        "removed_edge": "Disk Scheduling -> Disk Block",
+        "source": "Disk Scheduling",
+        "target": "Disk Block",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p652_c2",
+        "evidence_text": "The disk controller is a processor that controls one or more disk units. It is responsible for moving the disk heads to the proper cylinder to read or write a requested track. It also may schedule competing requests for disk access and buffers the blocks to be read or written.",
+        "cycle": [
+            "Block Transfer Time",
+            "Disk Scheduling",
+            "Disk Block"
+        ]
+    },
+    {
+        "iteration": 18,
+        "removed_edge": "Buffer Management -> Storage Management",
+        "source": "Buffer Management",
+        "target": "Storage Management",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p45_c0",
+        "evidence_text": "The storage manager keeps track of the location of files on the disk and obtains the block or blocks containing a file on request from the buffer manager.",
+        "cycle": [
+            "Storage Management",
+            "Buffer Management"
+        ]
+    },
+    {
+        "iteration": 19,
+        "removed_edge": "Block Transfer Time -> Rotational Delay",
+        "source": "Block Transfer Time",
+        "target": "Rotational Delay",
+        "confidence": 0.7,
+        "evidence_chunk": "book2_p170_c0",
+        "evidence_text": "1.Question What are the three main time components involved in accessing a disk block? Answer:1. Seek time (s): Time taken to position the read/write head correctly. 2. Rotational delay (rd): Time waiting for the required block to come under the head. 3. Block transfer time (btt): Time needed to transfer data once the head is positioned.",
+        "cycle": [
+            "Rotational Delay",
+            "Block Transfer Time"
+        ]
+    },
+    {
+        "iteration": 20,
+        "removed_edge": "Seek Time -> Rotational Delay",
+        "source": "Seek Time",
+        "target": "Rotational Delay",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p170_c0",
+        "evidence_text": "1.Question What are the three main time components involved in accessing a disk block? Answer:1. Seek time (s): Time taken to position the read/write head correctly. 2. Rotational delay (rd): Time waiting for the required block to come under the head. 3. Block transfer time (btt): Time needed to transfer data once the head is positioned.",
+        "cycle": [
+            "Rotational Delay",
+            "Seek Time"
+        ]
+    },
+    {
+        "iteration": 21,
+        "removed_edge": "Data Warehouse -> ETL",
+        "source": "Data Warehouse",
+        "target": "ETL",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p158_c0",
+        "evidence_text": "ETL (Extract, Transform, Load) processes are crucial for cleaning, aggregating, and loading data from multiple sources into the data warehouse, ensuring that the data is consistent, accurate, and structured appropriately for analysis.",
+        "cycle": [
+            "ETL",
+            "Data Warehouse"
+        ]
+    },
+    {
+        "iteration": 22,
+        "removed_edge": "Encryption -> Access Control",
+        "source": "Encryption",
+        "target": "Access Control",
+        "confidence": 0.7,
+        "evidence_chunk": "book2_p164_c0",
+        "evidence_text": "Encryption transforms sensitive data into an unreadable format, ensuring that even if data is intercepted or accessed illegitimately, it remains secure and confidential.",
+        "cycle": [
+            "Encryption",
+            "Access Control"
+        ]
+    },
+    {
+        "iteration": 23,
+        "removed_edge": "Access Control -> Authentication",
+        "source": "Access Control",
+        "target": "Authentication",
+        "confidence": 0.7,
+        "evidence_chunk": "book2_p65_c0",
+        "evidence_text": "Control Measures - Four major types of control: access control, inference control, flow control, and encryption.",
+        "cycle": [
+            "Authorization",
+            "Access Control",
+            "Authentication"
+        ]
+    },
+    {
+        "iteration": 24,
+        "removed_edge": "Authorization -> Authentication",
+        "source": "Authorization",
+        "target": "Authentication",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p462_c1",
+        "evidence_text": "10.1 Security and User Authorization in SQL SQL postulates the existence of authorization ID ’s, which are essentially user names.",
+        "cycle": [
+            "Authorization",
+            "Authentication"
+        ]
+    },
+    {
+        "iteration": 25,
+        "removed_edge": "Domain -> Attribute",
+        "source": "Domain",
+        "target": "Attribute",
+        "confidence": 0.8,
+        "evidence_chunk": "book1_p39_c1",
+        "evidence_text": "domain: the original sets of atomic values used to model data; a set of acceptable values that a column is allowed to contain.",
+        "cycle": [
+            "Attribute",
+            "Domain"
+        ]
+    },
+    {
+        "iteration": 26,
+        "removed_edge": "Relation -> Attribute",
+        "source": "Relation",
+        "target": "Attribute",
+        "confidence": 0.85,
+        "evidence_chunk": "book3_p59_c1",
+        "evidence_text": "The attributes in a relation schema are a set, not a list. In the relational model, a database consists of one or more relations.",
+        "cycle": [
+            "Attribute",
+            "Domain",
+            "Relation"
+        ]
+    },
+    {
+        "iteration": 27,
+        "removed_edge": "Entity Set -> Entity",
+        "source": "Entity Set",
+        "target": "Entity",
+        "confidence": 1.0,
+        "evidence_chunk": "book3_p163_c1",
+        "evidence_text": "An entity is an abstract object of some sort, and a collection of similar entities forms an entity set.",
+        "cycle": [
+            "Entity Set",
+            "Entity"
+        ]
+    },
+    {
+        "iteration": 28,
+        "removed_edge": "Domain -> Atomic Value",
+        "source": "Domain",
+        "target": "Atomic Value",
+        "confidence": 1.0,
+        "evidence_chunk": "book1_p37_c1",
+        "evidence_text": "A domain is the original sets of atomic values used to model data. By atomic value, we mean that each value in the domain is indivisible as far as the relational model is concerned.",
+        "cycle": [
+            "Domain",
+            "Atomic Value"
+        ]
+    },
+    {
+        "iteration": 29,
+        "removed_edge": "Min-Max Constraint -> Cardinality Ratio",
+        "source": "Min-Max Constraint",
+        "target": "Cardinality Ratio",
+        "confidence": 0.7,
+        "evidence_chunk": "book2_p68_c0",
+        "evidence_text": "The chapter elaborates on different styles for representing minimum and maximum constraints alongside cardinality ratios and participation types.",
+        "cycle": [
+            "Min-Max Constraint",
+            "Cardinality Ratio"
+        ]
+    },
+    {
+        "iteration": 30,
+        "removed_edge": "Relation -> Tuple",
+        "source": "Relation",
+        "target": "Tuple",
+        "confidence": 0.8,
+        "evidence_chunk": "book1_p39_c1",
+        "evidence_text": "relation: a subset of the Cartesian product of a list of domains characterized by a name; the technical term for table or file",
+        "cycle": [
+            "Tuple",
+            "Relation"
+        ]
+    },
+    {
+        "iteration": 31,
+        "removed_edge": "Intersection -> Set Difference",
+        "source": "Intersection",
+        "target": "Set Difference",
+        "confidence": 1.0,
+        "evidence_chunk": "book3_p76_c1",
+        "evidence_text": "The three most common operations on sets are union, intersection, and difference. We assume the reader is familiar with these operations, which are defined as follows on arbitrary sets R and S: • R ∩ S, the intersection of R and S, is the set of elements that are in both R and S.",
+        "cycle": [
+            "Intersection",
+            "Set Difference"
+        ]
+    },
+    {
+        "iteration": 32,
+        "removed_edge": "Relational Algebra -> Relational Database",
+        "source": "Relational Algebra",
+        "target": "Relational Database",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p75_c0",
+        "evidence_text": "To begin our study of operations on relations, we shall learn about a special algebra, called relational algebra, that consists of some simple but powerful ways to construct new relations from given relations.",
+        "cycle": [
+            "Relational Algebra",
+            "Relational Database"
+        ]
+    },
+    {
+        "iteration": 33,
+        "removed_edge": "Prepared Statement -> Parameter Passing",
+        "source": "Prepared Statement",
+        "target": "Parameter Passing",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p453_c0",
+        "evidence_text": "To do so in JDBC, we need to create a prepared statement, and we need to apply to that PreparedStatement object methods such as setString(i, v) or setInt(i, v) that bind the value v, which must be of the appropriate type for the method, to the *th parameter in the query.",
+        "cycle": [
+            "Parameter Passing",
+            "Prepared Statement"
+        ]
+    },
+    {
+        "iteration": 34,
+        "removed_edge": "Data Abstraction -> Conceptual Data Model",
+        "source": "Data Abstraction",
+        "target": "Conceptual Data Model",
+        "confidence": 0.7,
+        "evidence_chunk": "book1_p28_c1",
+        "evidence_text": "Figure 5.1. Data abstraction layers. Schemas A schema is an overall description of a database, and it i.",
+        "cycle": [
+            "Conceptual Schema",
+            "Three Schema Architecture",
+            "Logical Data Independence",
+            "Data Abstraction",
+            "Conceptual Data Model"
+        ]
+    },
+    {
+        "iteration": 35,
+        "removed_edge": "Data Model -> Conceptual Model",
+        "source": "Data Model",
+        "target": "Conceptual Model",
+        "confidence": 0.7,
+        "evidence_chunk": "book1_p27_c0",
+        "evidence_text": "Conceptual models are the basis for identification and high-level description of main data objects; they avoid details.",
+        "cycle": [
+            "Data Model",
+            "Conceptual Model",
+            "Physical Model",
+            "Data Independence",
+            "Logical Schema",
+            "Database Design",
+            "Conceptual Data Modeling"
+        ]
+    },
+    {
+        "iteration": 36,
+        "removed_edge": "Logical Schema -> Data Independence",
+        "source": "Logical Schema",
+        "target": "Data Independence",
+        "confidence": 0.8,
+        "evidence_chunk": "book1_p29_c1",
+        "evidence_text": "The ability to change the logical schema, without changing the external schema or user view, is called logical data independence.",
+        "cycle": [
+            "Logical Schema",
+            "Data Independence"
+        ]
+    },
+    {
+        "iteration": 37,
+        "removed_edge": "Logical Design -> Physical Model",
+        "source": "Logical Design",
+        "target": "Physical Model",
+        "confidence": 0.7,
+        "evidence_chunk": "book1_p28_c1",
+        "evidence_text": "Once a DBMS is selected, you can then implement it. This is the internal model. Here you create all the tables, constraints, keys, rules, etc. This is often referred to as the logical design.",
+        "cycle": [
+            "Logical Schema",
+            "Logical Design",
+            "Physical Model",
+            "Data Independence"
+        ]
+    },
+    {
+        "iteration": 38,
+        "removed_edge": "Logical Data Independence -> Three Schema Architecture",
+        "source": "Logical Data Independence",
+        "target": "Three Schema Architecture",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p83_c0",
+        "evidence_text": "Logical data independence is the capacity to change the conceptual schema without having to change external schemas or application programs.",
+        "cycle": [
+            "Three Schema Architecture",
+            "Logical Data Independence"
+        ]
+    },
+    {
+        "iteration": 39,
+        "removed_edge": "XML -> Semistructured Data",
+        "source": "XML",
+        "target": "Semistructured Data",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p520_c0",
+        "evidence_text": "After a general discussion of semistructured data, we turn to the most important manifestation of this idea: XML.",
+        "cycle": [
+            "XML",
+            "Semistructured Data"
+        ]
+    },
+    {
+        "iteration": 40,
+        "removed_edge": "Peer-to-Peer Networks -> Distributed Hash Table",
+        "source": "Peer-to-Peer Networks",
+        "target": "Distributed Hash Table",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p1022_c1",
+        "evidence_text": "The extreme case of a distributed architecture is a collection of independent machines, often called 'peer-to-peer' networks. In these networks, even data lookup becomes problematic. We shall therefore discuss distributed hash tables and distributed search in peer-to-peer networks.",
+        "cycle": [
+            "Distributed Hash Table",
+            "Peer-to-Peer Networks"
+        ]
+    },
+    {
+        "iteration": 41,
+        "removed_edge": "Hadoop -> MapReduce",
+        "source": "Hadoop",
+        "target": "MapReduce",
+        "confidence": 0.85,
+        "evidence_chunk": "book2_p58_c0",
+        "evidence_text": "Hadoop Ecosystem : Includes various framework applications (e.g., Pig, Hive) enabling higher-level data processing on top of the core Hadoop components.",
+        "cycle": [
+            "MapReduce",
+            "Hadoop"
+        ]
+    },
+    {
+        "iteration": 42,
+        "removed_edge": "Primary Key -> Entity Integrity",
+        "source": "Primary Key",
+        "target": "Entity Integrity",
+        "confidence": 0.8,
+        "evidence_chunk": "book1_p58_c1",
+        "evidence_text": "To ensure entity integrity, it is required that every table have a primary key. Neither the PK nor any part of it can contain null values.",
+        "cycle": [
+            "Primary Key",
+            "Entity Integrity"
+        ]
+    },
+    {
+        "iteration": 43,
+        "removed_edge": "Candidate Key -> Primary Key",
+        "source": "Candidate Key",
+        "target": "Primary Key",
+        "confidence": 0.8,
+        "evidence_chunk": "book1_p47_c1",
+        "evidence_text": "A candidate key is selected by the designer to uniquely identify tuples in a table. It must not be null.",
+        "cycle": [
+            "Primary Key",
+            "Functional Dependency",
+            "Candidate Key"
+        ]
+    },
+    {
+        "iteration": 44,
+        "removed_edge": "Referential Integrity Constraint -> Foreign Key",
+        "source": "Referential Integrity Constraint",
+        "target": "Foreign Key",
+        "confidence": 0.9,
+        "evidence_chunk": "book1_p59_c0",
+        "evidence_text": "The referential integrity constraint states that CrsCode in the Class table must match a valid CrsCode in the Course table.",
+        "cycle": [
+            "Referential Integrity Constraint",
+            "Foreign Key"
+        ]
+    },
+    {
+        "iteration": 45,
+        "removed_edge": "Trigger -> Event-Condition-Action Rule",
+        "source": "Trigger",
+        "target": "Event-Condition-Action Rule",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p369_c0",
+        "evidence_text": "Triggers, sometimes called event-condition-action rules or ECA rules, differ from the kinds of constraints discussed previously in three ways.",
+        "cycle": [
+            "Trigger",
+            "Event-Condition-Action Rule"
+        ]
+    },
+    {
+        "iteration": 46,
+        "removed_edge": "ACID -> Logging",
+        "source": "ACID",
+        "target": "Logging",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p48_c3",
+        "evidence_text": "Another thread is scheduling: controlling the order of events in transactions to assure the ACID properties.",
+        "cycle": [
+            "Recovery",
+            "Transaction",
+            "ACID",
+            "Logging"
+        ]
+    },
+    {
+        "iteration": 47,
+        "removed_edge": "ACID -> Recovery",
+        "source": "ACID",
+        "target": "Recovery",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p51_c0",
+        "evidence_text": "Atomicity: Complete or not at all Consistency: Maintain consistent database state Isolation: Non-interference between transactions Durability: Persist change.",
+        "cycle": [
+            "Recovery",
+            "Transaction",
+            "ACID"
+        ]
+    },
+    {
+        "iteration": 48,
+        "removed_edge": "Logging -> Recovery",
+        "source": "Logging",
+        "target": "Recovery",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p918_c1",
+        "evidence_text": "The latter, along with [4] and [8] are the primary sources for much of the logging and recovery technology.",
+        "cycle": [
+            "Recovery",
+            "Transaction",
+            "Logging"
+        ]
+    },
+    {
+        "iteration": 49,
+        "removed_edge": "Transaction -> Recoverable Schedule",
+        "source": "Transaction",
+        "target": "Recoverable Schedule",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p993_c1",
+        "evidence_text": "For any of the logging methods we have discussed in Chapter 17 to allow recovery, the set of transactions that are regarded as committed after recovery must be consistent.",
+        "cycle": [
+            "Recovery",
+            "Transaction",
+            "Recoverable Schedule"
+        ]
+    },
+    {
+        "iteration": 50,
+        "removed_edge": "Isolation -> ACID",
+        "source": "Isolation",
+        "target": "ACID",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p184_c0",
+        "evidence_text": "Transaction isolation refers to the degree to which the operations in one transaction are isolated from those in other concurrent transactions.",
+        "cycle": [
+            "Isolation",
+            "ACID",
+            "Transaction",
+            "Concurrency Control"
+        ]
+    },
+    {
+        "iteration": 51,
+        "removed_edge": "Transaction -> ACID",
+        "source": "Transaction",
+        "target": "ACID",
+        "confidence": 0.9,
+        "evidence_chunk": "book3_p45_c1",
+        "evidence_text": "It is normal to group one or more database operations into a transaction, which is a unit of work that must be executed atomically and in apparent isolation from other transactions.",
+        "cycle": [
+            "Transaction",
+            "ACID"
+        ]
+    },
+    {
+        "iteration": 52,
+        "removed_edge": "Atomicity -> ACID",
+        "source": "Atomicity",
+        "target": "ACID",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p194_c0",
+        "evidence_text": "A transaction must fully complete or not execute at all, which defines the principle of atomicity in the ACID properties.",
+        "cycle": [
+            "Transaction",
+            "Atomicity",
+            "ACID"
+        ]
+    },
+    {
+        "iteration": 53,
+        "removed_edge": "Transaction -> Concurrency Control",
+        "source": "Transaction",
+        "target": "Concurrency Control",
+        "confidence": 0.85,
+        "evidence_chunk": "book2_p52_c0",
+        "evidence_text": "A transaction is a logical unit of database processing, vital for applications like banking and airline reservations.",
+        "cycle": [
+            "Transaction",
+            "Concurrency Control"
+        ]
+    },
+    {
+        "iteration": 54,
+        "removed_edge": "Transaction -> Consistency",
+        "source": "Transaction",
+        "target": "Consistency",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p884_c1",
+        "evidence_text": "A fundamental assumption about transactions is: • The Correctness Principle: If a transaction executes in the absence of any other transactions or system errors, and it starts with the database in a consistent state, then the database is also in a consistent state when the transaction ends.",
+        "cycle": [
+            "Transaction",
+            "Consistency",
+            "ACID"
+        ]
+    },
+    {
+        "iteration": 55,
+        "removed_edge": "Durability -> ACID",
+        "source": "Durability",
+        "target": "ACID",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p46_c0",
+        "evidence_text": "'D' stands for 'durability,' the condition that the effect on the database of a transaction must never be lost, once the transaction has completed.",
+        "cycle": [
+            "Durability",
+            "ACID",
+            "Transaction"
+        ]
+    },
+    {
+        "iteration": 56,
+        "removed_edge": "Exclusive Lock -> Shared Lock",
+        "source": "Exclusive Lock",
+        "target": "Shared Lock",
+        "confidence": 0.85,
+        "evidence_chunk": "book3_p942_c1",
+        "evidence_text": "We are thus motivated to introduce the most common locking scheme, where there are two different kinds of locks, one for reading (called a “shared lock” or “read lock”), and one for writing (called an “exclusive lock” or “write lock”).",
+        "cycle": [
+            "Exclusive Lock",
+            "Shared Lock"
+        ]
+    },
+    {
+        "iteration": 57,
+        "removed_edge": "Log Manager -> Recovery Manager",
+        "source": "Log Manager",
+        "target": "Recovery Manager",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p883_c1",
+        "evidence_text": "The log manager maintains the log. It must deal with the buffer manager, since space for the log initially appears in main-memory buffers, and at certain times these buffers must be copied to disk.",
+        "cycle": [
+            "Recovery Manager",
+            "Log Manager"
+        ]
+    },
+    {
+        "iteration": 58,
+        "removed_edge": "Saga -> Compensating Transaction",
+        "source": "Saga",
+        "target": "Compensating Transaction",
+        "confidence": 0.85,
+        "evidence_chunk": "book3_p1016_c0",
+        "evidence_text": "In a saga, each action A has a compensating transaction, which we denote A -1.",
+        "cycle": [
+            "Saga",
+            "Compensating Transaction"
+        ]
+    },
+    {
+        "iteration": 59,
+        "removed_edge": "Abort -> Rollback",
+        "source": "Abort",
+        "target": "Rollback",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p337_c2",
+        "evidence_text": "The SQL statement ROLLBACK causes the transaction to abort, or terminate unsuccessfully.",
+        "cycle": [
+            "Rollback",
+            "Abort"
+        ]
+    },
+    {
+        "iteration": 60,
+        "removed_edge": "Horizontal Fragmentation -> Data Fragmentation",
+        "source": "Horizontal Fragmentation",
+        "target": "Data Fragmentation",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p55_c0",
+        "evidence_text": "Horizontal fragmentation divides tables into subsets of rows.",
+        "cycle": [
+            "Fragmentation",
+            "Horizontal Fragmentation",
+            "Data Fragmentation"
+        ]
+    },
+    {
+        "iteration": 61,
+        "removed_edge": "Cost-Based Optimization -> Query Optimization",
+        "source": "Cost-Based Optimization",
+        "target": "Query Optimization",
+        "confidence": 0.85,
+        "evidence_chunk": "book2_p142_c0",
+        "evidence_text": "Cost-based optimization estimates the costs of various strategies based on statistical information from the database catalog, selecting the strategy with the lowest estimated cost.",
+        "cycle": [
+            "Cost-Based Optimization",
+            "Query Optimization",
+            "Query Plan"
+        ]
+    },
+    {
+        "iteration": 62,
+        "removed_edge": "Query Plan -> Query Optimization",
+        "source": "Query Plan",
+        "target": "Query Optimization",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p47_c0",
+        "evidence_text": "SQL queries are transformed into an equivalent relational algebra expression represented as a query tree. The optimizer produces an execution plan that maximizes efficiency.",
+        "cycle": [
+            "Query Optimization",
+            "Query Plan"
+        ]
+    },
+    {
+        "iteration": 63,
+        "removed_edge": "Syntax Analysis -> Parsing",
+        "source": "Syntax Analysis",
+        "target": "Parsing",
+        "confidence": 0.8,
+        "evidence_chunk": "book3_p797_c0",
+        "evidence_text": "The job of the parser is to take text written in a language such as SQL and convert it to a parse tree, which is a tree whose nodes correspond to either: 1. Atoms, which are lexical elements such as keywords (e.g., SELECT), names of attributes or relations, constants, parentheses, operators such as + or <, and other schema.",
+        "cycle": [
+            "Parsing",
+            "Query Parser",
+            "Parse Tree",
+            "Syntax Analysis"
+        ]
+    },
+    {
+        "iteration": 64,
+        "removed_edge": "Query Compiler -> Parsing",
+        "source": "Query Compiler",
+        "target": "Parsing",
+        "confidence": 0.7,
+        "evidence_chunk": "book3_p796_c1",
+        "evidence_text": "The first step, parsing, is the subject of Section 16.1. The result of this step is a parse tree for the query.",
+        "cycle": [
+            "Query Preprocessor",
+            "Query Compiler",
+            "Parsing",
+            "Query Parser"
+        ]
+    },
+    {
+        "iteration": 65,
+        "removed_edge": "Parse Tree -> Syntax Analysis",
+        "source": "Parse Tree",
+        "target": "Syntax Analysis",
+        "confidence": 0.9,
+        "evidence_chunk": "book3_p797_c1",
+        "evidence_text": "The job of the parser is to take text written in a language such as SQL and convert it to a parse tree, which is a tree whose nodes correspond to either: 1. Atoms, which are lexical elements such as keywords (e.g., SELECT), names of attributes or relations, constants, parentheses, operators such as + or <, and other schema.",
+        "cycle": [
+            "Parse Tree",
+            "Syntax Analysis"
+        ]
+    },
+    {
+        "iteration": 66,
+        "removed_edge": "4NF -> Multivalued Dependency",
+        "source": "4NF",
+        "target": "Multivalued Dependency",
+        "confidence": 0.8,
+        "evidence_chunk": "book2_p133_c0",
+        "evidence_text": "Multivalued dependencies indicate that a set of attributes can independently determine another set; they can cause redundancy and are addressed during normalization into the fourth normal form (4NF) to eliminate complications.",
+        "cycle": [
+            "Multivalued Dependency",
+            "4NF"
+        ]
+    }
+]
