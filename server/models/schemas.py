@@ -169,6 +169,33 @@ class StudentMasteryResponse(BaseModel):
     concepts: list[ConceptMasteryItem]
 
 
+class StudentKnowledgeGraphNode(BaseModel):
+    """A concept which has reached the student's mastery threshold."""
+
+    id: str
+    label: str
+    mastery_percentage: float
+    attempts_count: int
+
+
+class StudentKnowledgeGraphEdge(BaseModel):
+    source: str
+    target: str
+    relation: str = "PREREQUISITE_FOR"
+
+
+class StudentKnowledgeGraphResponse(BaseModel):
+    """The mastered-only projection of a course knowledge graph for one student."""
+
+    course_id: str
+    student_id: str
+    mastery_threshold: float
+    mastered_concepts_count: int
+    total_concepts_count: int
+    nodes: list[StudentKnowledgeGraphNode]
+    edges: list[StudentKnowledgeGraphEdge]
+
+
 class SourceChunkItem(BaseModel):
     chunk_id: str
     page_number: int | None = None

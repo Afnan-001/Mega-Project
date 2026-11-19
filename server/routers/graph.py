@@ -32,6 +32,27 @@ CANDIDATE_UTILS_PATHS = [
     ROOT_DIR / "Main" / "lib" / "bindings" / "utils.js",
 ]
 
+# Added to the generated PyVis page at response time.  This keeps generated
+# graph artifacts immutable while allowing the React dashboard to select and
+# focus a concept in its iframe.
+IFRAME_HIGHLIGHT_SCRIPT = """
+<script>
+window.addEventListener('message', function (event) {
+  var message = event.data || {};
+  if (message.type !== 'edugraph:highlight-concept' || !network || !data || !data.nodes) return;
+  var query = String(message.concept || '').trim().toLowerCase();
+  if (!query) { network.unselectAll(); return; }
+  var matchingId = data.nodes.getIds().find(function (id) {
+    var node = data.nodes.get(id) || {};
+    return String(id).toLowerCase() === query || String(node.label || '').toLowerCase() === query;
+  });
+  if (matchingId === undefined) return;
+  network.selectNodes([matchingId], false);
+  network.focus(matchingId, { scale: 1.45, animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+});
+</script>
+"""
+
 
 @router.get(
     "/raw-html",
@@ -80,6 +101,11 @@ async def get_raw_graph_html(course_id: str | None = None):
             '<script src="lib/bindings/utils.js"></script>',
             f'<script>\n/* Inlined lib/bindings/utils.js */\n{utils_content}\n</script>',
         )
+
+    # The dashboard uses postMessage to request a highlighted, focused node.
+    # Insert only once in case a stored artifact already contains this helper.
+    if "edugraph:highlight-concept" not in content:
+        content = content.replace("</body>", f"{IFRAME_HIGHLIGHT_SCRIPT}</body>")
 
     return HTMLResponse(content=content)
 

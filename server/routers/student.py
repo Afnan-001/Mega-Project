@@ -35,6 +35,9 @@ from server.models.schemas import (
     QuizSubmitResponse,
     SourceChunkItem,
     StudentMasteryResponse,
+    StudentKnowledgeGraphEdge,
+    StudentKnowledgeGraphNode,
+    StudentKnowledgeGraphResponse,
 )
 from server.models.student import QuizAttemptDocument, StudentMasteryDocument
 from server.models.user import UserDocument
@@ -553,6 +556,72 @@ async def get_student_mastery_overview(
         student_id=str(student.id),
         overall_mastery_percentage=overall_pct,
         concepts=items,
+    )
+
+
+@router.get(
+    "/knowledge-graph/{course_id}",
+    response_model=StudentKnowledgeGraphResponse,
+    summary="Get the student's progressively built graph of mastered concepts",
+)
+async def get_student_knowledge_graph(
+    course_id: str,
+    student: UserDocument = Depends(require_student),
+):
+    """Project the canonical course DAG onto concepts this student has mastered.
+
+    A node enters this personal graph only when BKT mastery reaches 85%.  An
+    edge is retained only when both concepts are mastered, so the graph grows
+    naturally as the learner demonstrates mastery of individual concepts.
+    """
+    kg_doc = await KnowledgeGraphDocument.find_one(
+        KnowledgeGraphDocument.course_id == course_id
+    )
+    if not kg_doc:
+        raise HTTPException(status_code=404, detail="Knowledge graph not found.")
+
+    mastery_docs = await StudentMasteryDocument.find(
+        StudentMasteryDocument.student_id == str(student.id),
+        StudentMasteryDocument.course_id == course_id,
+    ).to_list()
+    mastery_by_concept = {m.concept_name: m for m in mastery_docs}
+    mastery_threshold = 0.85
+
+    concept_node_ids = {
+        node["id"] for node in kg_doc.nodes
+        if node.get("type") == "fine_grained_concept" and node.get("id")
+    }
+    mastered_ids = {
+        concept_id for concept_id in concept_node_ids
+        if (mastery := mastery_by_concept.get(concept_id))
+        and mastery.mastery_probability >= mastery_threshold
+    }
+
+    nodes = [
+        StudentKnowledgeGraphNode(
+            id=node_id,
+            label=node_id,
+            mastery_percentage=round(mastery_by_concept[node_id].mastery_probability * 100, 1),
+            attempts_count=mastery_by_concept[node_id].attempts_count,
+        )
+        for node_id in sorted(mastered_ids, key=str.lower)
+    ]
+    edges = [
+        StudentKnowledgeGraphEdge(source=edge["source"], target=edge["target"])
+        for edge in kg_doc.edges
+        if edge.get("relation") == "PREREQUISITE_FOR"
+        and edge.get("source") in mastered_ids
+        and edge.get("target") in mastered_ids
+    ]
+
+    return StudentKnowledgeGraphResponse(
+        course_id=course_id,
+        student_id=str(student.id),
+        mastery_threshold=mastery_threshold,
+        mastered_concepts_count=len(nodes),
+        total_concepts_count=len(concept_node_ids),
+        nodes=nodes,
+        edges=edges,
     )
 
 

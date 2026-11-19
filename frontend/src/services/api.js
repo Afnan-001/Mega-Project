@@ -287,6 +287,15 @@ export const studentApi = {
     }),
 
   /**
+   * Get the student's mastered-only projection of the course knowledge graph.
+   * Nodes and prerequisite edges appear as BKT mastery reaches 85%.
+   */
+  getKnowledgeGraph: (courseId) =>
+    request(`/api/v1/student/knowledge-graph/${courseId}`, {
+      method: 'GET',
+    }),
+
+  /**
    * Get student's past answered questions with results and grounded textbook chunks
    * @param {object} [filters] - { courseId, concept, result }
    */

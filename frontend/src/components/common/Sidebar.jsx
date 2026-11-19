@@ -31,7 +31,8 @@ export default function Sidebar({ activeTab, setActiveTab, currentRole, onOpenUp
     { id: 'my-learning', label: 'My Enrolled Courses', icon: BookMarked },
     { id: 'quiz-history', label: 'Past Questions & Review', icon: History },
     { id: 'study-materials', label: 'Course Materials & PDFs', icon: FileText },
-    { id: 'concept-map', label: 'Interactive Concept Map', icon: Share2 },
+    { id: 'concept-map', label: 'Complete Curriculum Graph', icon: Share2 },
+    { id: 'my-knowledge-graph', label: 'My Knowledge Graph', icon: Network },
     { id: 'ai-tutor', label: 'AI Tutor & Doubts', icon: HelpCircle },
   ];
 

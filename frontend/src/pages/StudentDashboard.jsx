@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import StudentOverview from '../components/student/StudentOverview';
 import StudentMaterialsView from '../components/student/StudentMaterialsView';
 import StudentConceptMapView from '../components/student/StudentConceptMapView';
+import CompleteConceptMapView from '../components/student/CompleteConceptMapView';
 import StudentAiTutorView from '../components/student/StudentAiTutorView';
 import StudentQuizHistoryView from '../components/student/StudentQuizHistoryView';
 import CognitiveRagQuizModal from '../components/student/CognitiveRagQuizModal';
@@ -76,10 +77,16 @@ export default function StudentDashboard({
         />
       )}
 
-      {/* Tab 4: Interactive Concept Map (Knowledge Graph) */}
+      {/* Tab 4: Complete course-wide curriculum graph */}
       {normalizedTab === 'concept-map' && (
+        <CompleteConceptMapView courses={courses} />
+      )}
+
+      {/* Tab 5: Student's progressively built, mastered-only graph */}
+      {normalizedTab === 'my-knowledge-graph' && (
         <StudentConceptMapView 
           courses={courses}
+          masteryRefreshKey={historyRefreshKey}
           onAskTutor={handleAskTutor}
           onTakeQuiz={(concept, cId) => setQuizModal({
             isOpen: true,
@@ -89,7 +96,7 @@ export default function StudentDashboard({
         />
       )}
 
-      {/* Tab 5: AI Tutor & Doubts Desk */}
+      {/* Tab 6: AI Tutor & Doubts Desk */}
       {normalizedTab === 'ai-tutor' && (
         <StudentAiTutorView 
           courses={courses}

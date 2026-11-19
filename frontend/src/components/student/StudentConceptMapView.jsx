@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { 
-  Network, 
   Share2, 
-  BookOpen, 
   Search, 
-  ExternalLink, 
   HelpCircle, 
   Award, 
-  Maximize2, 
   RefreshCw,
-  Sparkles,
-  Layers,
-  ArrowRight
+  Loader2,
+  CheckCircle2,
 } from 'lucide-react';
-import { graphApi, studentApi } from '../../services/api';
+import { studentApi } from '../../services/api';
 
 export default function StudentConceptMapView({ 
   courses = [], 
   onAskTutor,
-  onTakeQuiz 
+  onTakeQuiz,
+  masteryRefreshKey = 0,
 }) {
   const [selectedCourseId, setSelectedCourseId] = useState(courses[0]?.id || '');
   const [learningPath, setLearningPath] = useState([]);
   const [selectedConcept, setSelectedConcept] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [iframeKey, setIframeKey] = useState(0);
+  const [studentGraph, setStudentGraph] = useState(null);
+  const [isGraphLoading, setIsGraphLoading] = useState(false);
+  const [graphRefreshKey, setGraphRefreshKey] = useState(0);
 
   useEffect(() => {
     if (!selectedCourseId && courses.length > 0) {
@@ -47,11 +45,49 @@ export default function StudentConceptMapView({
     fetchPath();
   }, [selectedCourseId]);
 
-  const currentCourse = courses.find(c => c.id === selectedCourseId) || courses[0];
-  const graphUrl = selectedCourseId ? graphApi.getCourseRawHtmlUrl(selectedCourseId) : graphApi.getRawHtmlUrl();
+  useEffect(() => {
+    if (!selectedCourseId) {
+      setStudentGraph(null);
+      return;
+    }
+    const fetchStudentGraph = async () => {
+      setIsGraphLoading(true);
+      try {
+        setStudentGraph(await studentApi.getKnowledgeGraph(selectedCourseId));
+      } catch {
+        setStudentGraph(null);
+      } finally {
+        setIsGraphLoading(false);
+      }
+    };
+    fetchStudentGraph();
+  }, [selectedCourseId, masteryRefreshKey, graphRefreshKey]);
 
+  const currentCourse = courses.find(c => c.id === selectedCourseId) || courses[0];
   const filteredConcepts = learningPath.filter(item => 
     !searchQuery || item.concept_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const graphLayout = useMemo(() => {
+    const nodes = studentGraph?.nodes || [];
+    const width = 900;
+    const height = 520;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radius = Math.min(180, Math.max(80, 42 * nodes.length));
+    return nodes.map((node, index) => {
+      const angle = nodes.length === 1 ? -Math.PI / 2 : (2 * Math.PI * index / nodes.length) - Math.PI / 2;
+      return {
+        ...node,
+        x: centerX + radius * Math.cos(angle),
+        y: centerY + radius * Math.sin(angle),
+      };
+    });
+  }, [studentGraph]);
+
+  const graphNodeMap = useMemo(
+    () => new Map(graphLayout.map(node => [node.id, node])),
+    [graphLayout],
   );
 
   return (
@@ -64,10 +100,10 @@ export default function StudentConceptMapView({
           </div>
           <div>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', margin: 0 }}>
-              Interactive Concept Knowledge Graph
+              My Knowledge Graph
             </h2>
             <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: '2px 0 0' }}>
-              Explore the textbook curriculum DAG, prerequisite pathways, and concept dependencies
+              Your graph grows when you master a concept (85% BKT mastery or higher)
             </p>
           </div>
         </div>
@@ -102,29 +138,19 @@ export default function StudentConceptMapView({
           <button
             type="button"
             className="btn-ghost-hero"
-            onClick={() => setIframeKey(k => k + 1)}
-            title="Reload Graph"
+            onClick={() => setGraphRefreshKey(k => k + 1)}
+            title="Refresh my knowledge graph"
             style={{ padding: '6px 10px' }}
           >
             <RefreshCw size={14} />
           </button>
 
-          <a
-            href={graphUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-ghost-hero"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', fontSize: '12px', textDecoration: 'none' }}
-          >
-            <span>Fullscreen</span>
-            <ExternalLink size={13} />
-          </a>
         </div>
       </div>
 
       {/* Main Split Grid: Interactive Graph + Concept Quick Inspector */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px', flex: 1, minHeight: 0 }}>
-        {/* Interactive PyVis Canvas */}
+        {/* Personal mastered-concept graph */}
         <div 
           className="glass-panel" 
           style={{ 
@@ -136,12 +162,53 @@ export default function StudentConceptMapView({
             flexDirection: 'column'
           }}
         >
-          <iframe
-            key={iframeKey}
-            src={graphUrl}
-            title="Interactive Knowledge Graph"
-            style={{ width: '100%', height: '100%', border: 'none', background: '#0a0d14' }}
-          />
+          <div style={{ padding: '16px 20px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+            <div>
+              <h3 style={{ margin: 0, color: '#f8fafc', fontSize: '0.95rem' }}>Mastered concepts</h3>
+              <p style={{ margin: '4px 0 0', color: '#94a3b8', fontSize: '0.75rem' }}>
+                {studentGraph ? `${studentGraph.mastered_concepts_count} of ${studentGraph.total_concepts_count} concepts unlocked in your graph` : 'Loading your progress…'}
+              </p>
+            </div>
+            <span style={{ color: '#34d399', fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <CheckCircle2 size={14} /> Mastered
+            </span>
+          </div>
+          <div style={{ flex: 1, minHeight: 0, padding: '12px' }}>
+            {isGraphLoading ? (
+              <div style={{ height: '100%', display: 'grid', placeItems: 'center', color: '#94a3b8', gap: '8px' }}>
+                <Loader2 size={28} className="animate-spin" />
+              </div>
+            ) : graphLayout.length === 0 ? (
+              <div style={{ height: '100%', display: 'grid', placeItems: 'center', textAlign: 'center', padding: '32px', color: '#94a3b8' }}>
+                <div>
+                  <Award size={34} color="#64748b" style={{ marginBottom: '12px' }} />
+                  <div style={{ color: '#e2e8f0', fontWeight: 700, marginBottom: '6px' }}>Your graph is ready to grow</div>
+                  <div style={{ fontSize: '0.8rem', lineHeight: 1.5 }}>Pass quizzes to reach 85% mastery. Each mastered concept will appear here with its mastered prerequisites.</div>
+                </div>
+              </div>
+            ) : (
+              <svg viewBox="0 0 900 520" role="img" aria-label="Student knowledge graph" style={{ width: '100%', height: '100%', minHeight: '360px', background: 'radial-gradient(circle at center, rgba(16, 185, 129, 0.10), transparent 65%)' }}>
+                <defs>
+                  <marker id="knowledge-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399" />
+                  </marker>
+                </defs>
+                {(studentGraph?.edges || []).map((edge) => {
+                  const source = graphNodeMap.get(edge.source);
+                  const target = graphNodeMap.get(edge.target);
+                  if (!source || !target) return null;
+                  return <line key={`${edge.source}-${edge.target}`} x1={source.x} y1={source.y} x2={target.x} y2={target.y} stroke="rgba(52, 211, 153, 0.55)" strokeWidth="2" markerEnd="url(#knowledge-arrow)" />;
+                })}
+                {graphLayout.map((node) => (
+                  <g key={node.id} onClick={() => setSelectedConcept(learningPath.find(item => item.concept_name === node.id) || { concept_name: node.id, mastery_percentage: node.mastery_percentage, status: 'Mastered' })} style={{ cursor: 'pointer' }}>
+                    <circle cx={node.x} cy={node.y} r="29" fill="#065f46" stroke="#34d399" strokeWidth="3" />
+                    <text x={node.x} y={node.y + 5} textAnchor="middle" fill="#ecfdf5" fontSize="13" fontWeight="700">{Math.round(node.mastery_percentage)}%</text>
+                    <text x={node.x} y={node.y + 47} textAnchor="middle" fill="#e2e8f0" fontSize="12">{node.label.length > 24 ? `${node.label.slice(0, 22)}…` : node.label}</text>
+                  </g>
+                ))}
+              </svg>
+            )}
+          </div>
         </div>
 
         {/* Sidebar: Concept Browser & Inspector */}
